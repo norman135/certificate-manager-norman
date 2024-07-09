@@ -1,8 +1,11 @@
 import React from "react";
+import { SideBar } from "./SideBar";
 
 const App = () => {
     return (
-        <h1>Hello World</h1>
+        <>
+            <SideBar/>
+        </>
     )
 }
 
