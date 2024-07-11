@@ -2,7 +2,7 @@ import React from "react";
 
 const MainTitle = () => {
     return (
-        <div className="mainTitle">
+        <div className="main-title">
             <h1>DCCS Tuzla</h1>
         </div>
     )
