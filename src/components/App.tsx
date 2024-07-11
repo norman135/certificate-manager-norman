@@ -1,9 +1,9 @@
 import React from "react";
 
-const App = () => {
+const App: React.FC = (): React.JSX.Element => {
     return (
         <h1>Hello World</h1>
-    )
-}
+    );
+};
 
-export {App};
+export default App;

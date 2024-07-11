@@ -4,6 +4,15 @@
       "jsx": "react",
       "module": "esnext",
       "moduleResolution": "node",
+      "outDir": "./dist",
+      "rootDir": "./src",
+      "baseUrl": ".",
+      "paths": {
+        "@/*": ["src/*"]
+      },
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noImplicitReturns": true,
       "lib": [
         "dom",
         "esnext"
@@ -12,7 +21,7 @@
       "sourceMap": true,
       "target": "esnext",
     },
-    "exclude": [
-      "node_modules"
-    ]
-  }
+  "exclude": [
+    "node_modules"
+  ]
+}
