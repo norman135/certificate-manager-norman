@@ -5,7 +5,7 @@ const MainTitle = () => {
         <div className="main-title">
             <h1>DCCS Tuzla</h1>
         </div>
-    )
+    );
 }
 
-export {MainTitle};
+export default MainTitle;

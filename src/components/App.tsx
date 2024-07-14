@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { SideBar } from "./SideBar";
-import { Main } from "./Main";
+import React, { useState } from "react"
+import SideBar from "./SideBar"
+import Main from "./Main"
 
 
 const App = () => {
@@ -13,7 +13,7 @@ const App = () => {
                 content={visibleContent}
             />
         </div>
-    )
+    );
 }
 
-export {App};
+export default App;

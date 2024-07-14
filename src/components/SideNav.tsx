@@ -27,18 +27,18 @@ const SideNav = (props: {setVisibleContent:any}) => {
                 <h1>Example 3</h1>
             )
         }
-    ]
+    ];
 
     const [selectedItem, setSelectedItem] = useState(0);
 
     const handleClick = (index:number, content:React.ReactNode) => {
         setSelectedItem(index);
         setVisibleContent(content);
-    }
+    };
 
     const handleSubItemClick = (content:React.ReactNode) => {
         setVisibleContent(content);
-    }
+    };
 
     type menuItem = {
         svgIconPath: string,
@@ -47,7 +47,7 @@ const SideNav = (props: {setVisibleContent:any}) => {
         content: React.ReactNode,
         subMenu: subMenuItem[],
         selected: boolean
-    }
+    };
 
     const menuItems: menuItem[] = [
         {
@@ -68,7 +68,8 @@ const SideNav = (props: {setVisibleContent:any}) => {
             subMenu: machineLearningSubMenu,
             selected: false
         }
-    ]
+    ];
+
     return (
         <div className="side-nav">
             {
@@ -90,7 +91,7 @@ const SideNav = (props: {setVisibleContent:any}) => {
                 )
             }
         </div>
-    )
+    );
 }
 
-export {SideNav};
+export default SideNav;

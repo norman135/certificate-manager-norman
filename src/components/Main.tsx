@@ -10,7 +10,7 @@ const Main = (props: {content: React.ReactNode}) => {
                 {content}
             </div>
         </main>
-    )
+    );
 }
 
-export {Main};
+export default Main;
