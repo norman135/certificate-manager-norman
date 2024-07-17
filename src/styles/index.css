@@ -90,3 +90,14 @@ th, td {
     padding: 10px;
     text-align: left;
 }
+.certificates-button {
+    background-color: #c0cc3c;
+    color: white;
+    border: solid 1px green;
+    border-radius: 0;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    margin: 20px 0;
+    font-size: 20px;
+}

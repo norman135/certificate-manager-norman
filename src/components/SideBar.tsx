@@ -105,10 +105,7 @@ const SideNav: React.FC <SideNavProps> = ({setVisibleContent}): JSX.Element => {
                     {
                         text: "Example 1",
                         content: (
-                            <>
-                                <h1>Example 1</h1>
-                                <CertificatesTable/>
-                            </>
+                            <CertificatesTable/>
                         )
                     },
                     {

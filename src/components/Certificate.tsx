@@ -42,32 +42,36 @@ const CertificatesTable: React.FC = (): JSX.Element => {
     }
 
     return (
-        <div className="certificates-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Supplier</th>
-                        <th>Certificate type</th>
-                        <th>Valid from</th>
-                        <th>Valid to</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        certificates.map((certificate, index) => (
-                            <tr>
-                                <td></td>
-                                <td>{certificate.supplier}</td>
-                                <td>{certificate.type}</td>
-                                <td>{formatDate(certificate.validFrom)}</td>
-                                <td>{formatDate(certificate.validTo)}</td>
-                            </tr>
-                        ))
-                    }
-                </tbody>
-            </table>
-        </div>
+        <>
+            <h1>Example 1</h1>
+            <button className="certificates-button">New Certificate</button>
+            <div className="certificates-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Supplier</th>
+                            <th>Certificate type</th>
+                            <th>Valid from</th>
+                            <th>Valid to</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            certificates.map((certificate, index) => (
+                                <tr>
+                                    <td></td>
+                                    <td>{certificate.supplier}</td>
+                                    <td>{certificate.type}</td>
+                                    <td>{formatDate(certificate.validFrom)}</td>
+                                    <td>{formatDate(certificate.validTo)}</td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </>
     )
 }
 
