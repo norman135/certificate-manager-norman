@@ -1,13 +1,13 @@
-import React from "react"
-import {createRoot, Root} from "react-dom/client"
-import App from "./App"
+import React from 'react';
+import { createRoot, Root } from 'react-dom/client';
+import App from './App';
 
-const container:HTMLElement  = document.getElementById("root")!;
+const container: HTMLElement = document.getElementById('root')!;
 
 if (container) {
-    const root:Root = createRoot(container);
+  const root: Root = createRoot(container);
 
-    root.render(<App/>);
+  root.render(<App />);
 } else {
-    console.log("Root element does not exist.");
-};
+  console.log('Root element does not exist.');
+}
