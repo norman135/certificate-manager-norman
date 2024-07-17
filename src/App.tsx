@@ -1,9 +1,9 @@
-import React, { useState } from "react"
-import SideBar from "./SideBar"
-import Main from "./Main"
+import React, { FC, useState } from "react"
+import SideBar from "./components/SideBar"
+import Main from "./components/Main"
 
 
-const App = () => {
+const App: FC = () => {
     const [visibleContent, setVisibleContent] = useState(<h1>Start</h1>);
 
     return (
