@@ -11,6 +11,53 @@ interface CTProps {
     certificates: Certificate[]
 };
 
+
+const NewCertificate: React.FC = (): JSX.Element => {
+    return (
+        <div className="new-certificate">
+            <div className="new-certificates-input-area">
+                <div className="new-certificate-inputs">
+                    <div className="new-certificate-input">
+                        <label>Supplier</label>
+                        <input type="text"/>
+                        <button>Search</button>
+                        <button>Cancel</button>
+                    </div>
+                    <div className="new-certificate-input">
+                        <label>Certificate type</label>
+                        <select>
+                            <option value="0">Select Your Option</option>
+                            <option value="1">Permission of Printing</option>
+                            <option value="2">OHSAS 18001</option>
+                        </select>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 448 512" className="expand-icon expand-icon-selected">
+                            <path d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/>
+                        </svg>
+                    </div>
+                    <div className="new-certificate-input">
+                        <label>Valid From</label>
+                        <input type="datetime-local" placeholder="Click to Select Date"/>
+                    </div>
+                    <div className="new-certificate-input">
+                        <label>Valid To</label>
+                        <input type="datetime-local" placeholder="Click to Select Date"/>
+                    </div>
+                </div>
+                <div className="pdf-preview-area">
+                    <label htmlFor="nc-upload-file-button">Upload</label>
+                    <input type="file" id="nc-upload-file-button" style={{display: "none"}}/>
+                    <iframe src="" className="pdf-preview-iframe"></iframe>
+                </div>
+            </div>
+            <div className="new-certificates-buttons-area">
+                <button className="certificates-button">Save</button>
+                <button className="certificates-neutral-button">Cancel</button>
+            </div>
+        </div>
+    )
+}
+
+
 const CertificatesTable: React.FC = (): JSX.Element => {
     const certificates: Certificate[] = [
         {
@@ -75,4 +122,4 @@ const CertificatesTable: React.FC = (): JSX.Element => {
     )
 }
 
-export default CertificatesTable;
+export {CertificatesTable, NewCertificate};

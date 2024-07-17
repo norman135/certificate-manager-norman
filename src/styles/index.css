@@ -101,3 +101,11 @@ th, td {
     margin: 20px 0;
     font-size: 20px;
 }
+.certificates-neutral-button {
+    border-radius: 0;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    margin: 20px 0;
+    font-size: 20px;
+}

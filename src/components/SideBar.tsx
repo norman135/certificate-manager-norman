@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CertificatesTable from "./Certificate";
+import {CertificatesTable, NewCertificate} from "./Certificate";
 
 type menuItem = {
     svgIconPath: string,
@@ -111,7 +111,7 @@ const SideNav: React.FC <SideNavProps> = ({setVisibleContent}): JSX.Element => {
                     {
                         text: "Example 2",
                         content: (
-                            <h1>Example 2</h1>
+                            <NewCertificate/>
                         )
                     },
                     {
