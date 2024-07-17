@@ -1,11 +1,14 @@
-const prod = process.env.NODE_ENV === 'production';
+const { PRODUCTION, DEVELOPMENT, ENTRY, TEMPLATE } = require('./webpack.constants');
+
+const prod = process.env.NODE_ENV === PRODUCTION;
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+
 module.exports = {
-  mode: prod ? 'production' : 'development',
-  entry: './src/index.tsx',
+  mode: prod ? PRODUCTION : DEVELOPMENT,
+  entry: ENTRY,
   output: {
     path: __dirname + '/dist/',
   },
@@ -28,7 +31,7 @@ module.exports = {
   devtool: prod ? undefined : 'source-map',
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      template: TEMPLATE,
     }),
     new MiniCssExtractPlugin(),
   ],
