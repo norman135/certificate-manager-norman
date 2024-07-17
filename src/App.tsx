@@ -3,8 +3,8 @@ import SideBar from "./components/SideBar"
 import Main from "./components/Main"
 
 
-const App: FC = () => {
-    const [visibleContent, setVisibleContent] = useState(<h1>Start</h1>);
+const App: FC = (): JSX.Element => {
+    const [visibleContent, setVisibleContent] = useState<JSX.Element>(<h1>Start</h1>);
 
     return (
         <div className="main-container">

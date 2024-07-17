@@ -1,8 +1,10 @@
 import React from "react";
 
-const Main = (props: {content: React.ReactNode}) => {
-    const { content } = props;
+interface MainProps {
+    content: JSX.Element;
+};
 
+const Main: React.FC <MainProps> = ({ content }): JSX.Element => {
     return (
         <main className="main-content">
             <div className="main-top-bar"></div>
