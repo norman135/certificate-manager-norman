@@ -4,11 +4,12 @@
 }
 body {
     font-size: 20px;
-    font-family: 'Open Sans', 'Arial Narrow', Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans',  sans-serif;
 }
 h1 {
     font-weight: 400;
     color: #444444;
+    margin-bottom: 20px;
 }
 .main-container {
     display: flex;
@@ -36,6 +37,7 @@ h1 {
 }
 .main-title h1 {
     color: white;
+    margin: 0;
 }
 .side-nav {
     padding: 20px 0;
@@ -75,4 +77,16 @@ h1 {
 }
 .content-container {
     padding: 40px 30px;
+}
+table {
+    border-width: 5px;
+    border-collapse: collapse;
+    width: 100%;
+}
+table, th {
+    border: 1px solid rgb(216, 216, 216);
+}
+th, td {
+    padding: 10px;
+    text-align: left;
 }
