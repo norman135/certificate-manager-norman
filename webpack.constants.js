@@ -1,8 +1,6 @@
 module.exports = {
-    PRODUCTION: 'production',
-    DEVELOPMENT: 'development',
-    ENTRY_POINT: './src/index.tsx',
-    OUTPUT_PATH: '/dist/',
-    HTML_TEMPLATE: './public/index.html',
-  };
-  
+    PRODUCTION: "production",
+    DEVELOPMENT: "development",
+    TEMPLATE: "./public/index.html",
+    ENTRY: "./src/index.tsx"
+}
