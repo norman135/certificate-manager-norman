@@ -6,7 +6,10 @@
   "semi": true,
   "useTabs": true,
   "bracketSpacing": true,
-  "jsxBracketSameLine": false,
-  "arrowParens": "avoid",
-  "endOfLine": "crlf"
+  "jsxSingleQuote": false,
+  "arrowParens": "always",
+  "proseWrap": "preserve",
+  "bracketSameLine": false,
+  "singleAttributePerLine": true,
+  "endOfLine": "lf"
 }
