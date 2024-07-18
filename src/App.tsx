@@ -1,6 +1,6 @@
-import React from 'react';
+import { FC } from 'react';
 
-const App: React.FC = (): React.JSX.Element => {
+const App: FC = (): JSX.Element => {
   return <h1>Hello World</h1>;
 };
 
