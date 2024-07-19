@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import './Example1.css';
-import Button from '../../components/button/Button';
 
 type Certificate = {
 	supplier: string;
