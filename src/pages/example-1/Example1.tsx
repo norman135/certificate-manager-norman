@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import './Example1.css';
+import Button from '../../components/button/Button';
 
 type Certificate = {
 	supplier: string;
@@ -8,22 +9,28 @@ type Certificate = {
 	validTo: Date;
 };
 
-const certificates: Certificate[] = [
+export enum CertificateType {
+	none = "",
+	printingPermission = "Permission of Printing",
+	ohsas = "OHSAS 18001"
+}
+
+export const certificates: Certificate[] = [
 	{
 		supplier: 'DAIMLER AG, 1, Berlin',
-		type: 'Permission of Printing',
+		type: CertificateType.printingPermission,
 		validFrom: new Date('08-21-2017'),
 		validTo: new Date('08-26-2017'),
 	},
 	{
 		supplier: 'ANDEMIS GmBH, 1, Stuttgart',
-		type: 'OHSAS 18001',
+		type: CertificateType.ohsas,
 		validFrom: new Date('08-18-2017'),
 		validTo: new Date('08-24-2017'),
 	},
 	{
 		supplier: 'ANDEMIS GmBH, 1, Stuttgart',
-		type: 'Permission of Printing',
+		type: CertificateType.printingPermission,
 		validFrom: new Date('10-04-2017'),
 		validTo: new Date('10-10-2017'),
 	},
@@ -40,6 +47,14 @@ const formatDate = (date: Date): string => {
 const Example1: FC = (): JSX.Element => {
 	return (
 		<>
+			<Button
+				name="New Certificate"
+				bg="#c0cc38"
+				color="white"
+				type='link'
+				to="/new-certificate"
+				onClick={() => {}}
+			/>
 			<div className="certificates-table">
 				<table>
 					<thead>
