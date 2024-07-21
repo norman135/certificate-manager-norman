@@ -37,8 +37,10 @@
 .sub-menu-item {
 	padding-left: 50px;
 	font-size: 16px;
+}
+.sub-menu-item a {
 	cursor: pointer;
 }
-.sub-menu-item:hover {
+.sub-menu-item a:hover {
 	color: #3f9ac9;
 }
