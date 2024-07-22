@@ -1,6 +1,7 @@
-.new-certificates-input-area {
+.new-certificate-input-area {
 	display: flex;
 	flex-direction: row;
+	width: 100%;
 }
 .new-certificate-inputs {
 	flex-basis: 50%;
@@ -29,6 +30,15 @@
 }
 .new-certificate-input-container input {
 	flex: 1;
+	border: solid 1px grey;
+}
+.new-certificate-input-container button {
+	border-radius: 0;
+	border: solid 1px grey;
+	min-width: 40px;
+}
+.pdf-preview-area {
+	flex-basis: 50%;
 }
 .pdf-preview-area iframe {
 	width: 100%;

@@ -3,6 +3,8 @@ import './NewCertificate.css';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import AppRoutes from '../../../common/app-routes/AppRoutes';
 import Button from '../../../common/components/button/Button';
+import CancelIcon from '../../../common/components/icons/CancelIcon';
+import SearchIcon from '../../../common/components/icons/SearchIcon';
 import { CertificateType } from '../../../common/models/certificate.model';
 import certificates from '../certificates-mock-data';
 
@@ -11,6 +13,7 @@ const NewCertificate: FC = (): JSX.Element => {
 	const [type, setType] = useState<string>(CertificateType.none);
 	const [validFrom, setValidFrom] = useState<string>('2000-01-01');
 	const [validTo, setValidTo] = useState<string>('2000-01-01');
+	const [fileURL, setFileURL] = useState<string>('');
 
 	const handleSave = (): void => {
 		certificates.push({
@@ -34,9 +37,17 @@ const NewCertificate: FC = (): JSX.Element => {
 		setValidTo('2000-01-01');
 	};
 
+	const handlePDF = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		if (file) {
+			const url = URL.createObjectURL(file);
+			setFileURL(url);
+		}
+	};
+
 	return (
 		<div className="new-certificate">
-			<div className="new-certificates-input-area">
+			<div className="new-certificate-input-area">
 				<div className="new-certificate-inputs">
 					<div className="new-certificate-input">
 						<label>Supplier</label>
@@ -48,8 +59,18 @@ const NewCertificate: FC = (): JSX.Element => {
 									setSupplier(e.target.value);
 								}}
 							/>
-							<button>Search</button>
-							<button>Cancel</button>
+							<button>
+								<SearchIcon
+									width={24}
+									height={24}
+								/>
+							</button>
+							<button>
+								<CancelIcon
+									width={12}
+									height={12}
+								/>
+							</button>
 						</div>
 					</div>
 					<div className="new-certificate-input">
@@ -108,9 +129,10 @@ const NewCertificate: FC = (): JSX.Element => {
 						type="file"
 						id="nc-upload-file-button"
 						style={{ display: 'none' }}
+						onChange={handlePDF}
 					/>
 					<iframe
-						src=""
+						src={fileURL}
 						className="pdf-preview-iframe"
 					/>
 				</div>
