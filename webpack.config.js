@@ -11,6 +11,7 @@ module.exports = {
   entry: ENTRY,
   output: {
     path: __dirname + '/dist/',
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -35,4 +36,7 @@ module.exports = {
     }),
     new MiniCssExtractPlugin(),
   ],
+  devServer: {
+    historyApiFallback: true,
+  },
 };

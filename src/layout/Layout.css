@@ -1,0 +1,13 @@
+.main-container {
+	display: flex;
+	flex-direction: row;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+}
+.main-content {
+	flex: 1;
+}
+.content-container {
+	padding: 40px 30px;
+}

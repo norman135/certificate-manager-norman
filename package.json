@@ -19,12 +19,13 @@
   "scripts": {
     "start": "webpack serve --port 3000",
     "build": "set NODE_ENV=production && webpack",
-    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
+    "lint": "eslint src/**/*.{js,jsx,ts,tsx}",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
   },
   "dependencies": {
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.25.1"
   },
   "devDependencies": {
     "@babel/core": "^7.24.9",
@@ -55,8 +56,8 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.4"
   },
-  "engines" : { 
-    "npm" : ">=9.0.0 <10.8.0",
-    "node" : ">=18.0.0 <21.0.0"
+  "engines": {
+    "npm": ">=9.0.0 <10.8.0",
+    "node": ">=18.0.0 <21.0.0"
   }
 }

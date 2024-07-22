@@ -1,0 +1,44 @@
+.side-bar {
+	background-color: #e7e9ea;
+	width: max-content;
+}
+.side-nav {
+	padding: 20px 0;
+	color: #265c79;
+	fill: #265c79;
+}
+.side-nav-item-desc:hover,
+.sni-selected {
+	border-left: solid #3f9ac9 10px !important;
+	color: #3f9ac9 !important;
+	fill: #3f9ac9;
+}
+.side-nav-item-desc {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 5px 20px;
+	border-left: solid transparent 10px;
+	cursor: pointer;
+}
+.side-nav-item-desc svg {
+	margin-right: 10px;
+}
+.expand-icon {
+	margin-left: auto;
+	rotate: -90deg;
+}
+.expand-icon-selected {
+	rotate: 0deg;
+}
+.sub-menu {
+	padding: 10px 0;
+}
+.sub-menu-item {
+	padding-left: 50px;
+	font-size: 16px;
+	cursor: pointer;
+}
+.sub-menu-item:hover {
+    color: #3f9ac9;
+}
