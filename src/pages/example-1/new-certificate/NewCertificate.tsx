@@ -1,11 +1,12 @@
 import { FC, useState } from 'react';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import './NewCertificate.css';
+import AppRoutes from '../../../common/app-routes/AppRoutes';
 import Button from '../../../common/components/button/Button';
 import CancelIcon from '../../../common/components/icons/CancelIcon';
 import SearchIcon from '../../../common/components/icons/SearchIcon';
 import { CertificateType } from '../../../common/models/certificate.model';
 import certificates from '../certificates-mock-data';
-import { goBack } from './new-certificate';
 
 const NewCertificate: FC = (): JSX.Element => {
 	const [supplier, setSupplier] = useState<string>('');
@@ -38,6 +39,13 @@ const NewCertificate: FC = (): JSX.Element => {
 			setFileURL(url);
 		}
 	};
+
+	const navigate: NavigateFunction = useNavigate;
+
+	const goBack = (): void => {
+		navigate(AppRoutes.Example1);
+	};
+
 
 	return (
 		<div className="new-certificate">
