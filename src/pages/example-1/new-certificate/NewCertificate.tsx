@@ -28,6 +28,7 @@ const NewCertificate: FC = (): JSX.Element => {
 		setType(CertificateType.none);
 		setValidFrom('2000-01-01');
 		setValidTo('2000-01-01');
+		setFileURL('');
 	};
 	
 	const handlePDF = (event: React.ChangeEvent<HTMLInputElement>) => {
