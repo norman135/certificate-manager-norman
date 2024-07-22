@@ -1,12 +1,11 @@
 import { FC, useState } from 'react';
 import './NewCertificate.css';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
-import AppRoutes from '../../../common/app-routes/AppRoutes';
 import Button from '../../../common/components/button/Button';
 import CancelIcon from '../../../common/components/icons/CancelIcon';
 import SearchIcon from '../../../common/components/icons/SearchIcon';
 import { CertificateType } from '../../../common/models/certificate.model';
 import certificates from '../certificates-mock-data';
+import { goBack } from './new-certificate';
 
 const NewCertificate: FC = (): JSX.Element => {
 	const [supplier, setSupplier] = useState<string>('');
@@ -24,19 +23,13 @@ const NewCertificate: FC = (): JSX.Element => {
 		});
 	};
 
-	const navigate: NavigateFunction = useNavigate();
-
-	const goBack = (): void => {
-		navigate(AppRoutes.Example1);
-	};
-
 	const resetInput = (): void => {
 		setSupplier('');
 		setType(CertificateType.none);
 		setValidFrom('2000-01-01');
 		setValidTo('2000-01-01');
 	};
-
+	
 	const handlePDF = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
 		if (file) {
