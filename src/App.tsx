@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import AppRoutes from './common/app-routes/AppRoutes';
 import Layout from './layout/Layout';
 import Example1 from './pages/example-1/Example1';
 import Example2 from './pages/example-2/Example2';
@@ -12,19 +13,19 @@ const App: FC = (): JSX.Element => {
 			<Layout>
 				<Routes>
 					<Route
-						path="/"
+						path={AppRoutes.Root}
 						element={<Start />}
 					/>
 					<Route
-						path="/example-1"
+						path={AppRoutes.Example1}
 						element={<Example1 />}
 					/>
 					<Route
-						path="/example-2"
+						path={AppRoutes.Example2}
 						element={<Example2 />}
 					/>
 					<Route
-						path="/example-3"
+						path={AppRoutes.Example3}
 						element={<Example3 />}
 					/>
 				</Routes>
