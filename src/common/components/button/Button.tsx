@@ -6,15 +6,22 @@ interface ButtonProps {
 	name: string;
 	color: string;
 	bg: string;
-	type: "link" | "button";
+	type: 'link' | 'button';
 	to: string;
 	onClick: () => void;
 }
 
-const Button: FC<ButtonProps> = ({ name, color, bg, type, to = "", onClick = () => {} }) => {
+const Button: FC<ButtonProps> = ({
+	name,
+	color,
+	bg,
+	type,
+	to = '',
+	onClick = (): void => {},
+}) => {
 	return (
 		<>
-			{type === "link" ? (
+			{type === 'link' ? (
 				<Link
 					to={to}
 					className="button"
@@ -40,7 +47,5 @@ const Button: FC<ButtonProps> = ({ name, color, bg, type, to = "", onClick = () 
 		</>
 	);
 };
-
-Button.defaultProps
 
 export default Button;

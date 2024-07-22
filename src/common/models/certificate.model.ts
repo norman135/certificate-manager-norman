@@ -5,4 +5,10 @@ type Certificate = {
 	validTo: Date;
 };
 
+export enum CertificateType {
+	none = '',
+	printingPermission = 'Permission of Printing',
+	ohsas = 'OHSAS 18001',
+}
+
 export default Certificate;
