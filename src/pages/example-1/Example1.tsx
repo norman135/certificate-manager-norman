@@ -30,41 +30,39 @@ const certificates: Certificate[] = [
 ];
 
 const formatDate = (date: Date): string => {
-	const date_ = date.getDate();
+	const day = date.getDate();
 	const month = date.getMonth();
 	const year = date.getFullYear();
 
-	return `${date_}.${month}.${year}`;
+	return `${day}.${month}.${year}`;
 };
 
 const Example1: FC = (): JSX.Element => {
 	return (
-		<>
-			<div className="certificates-table">
-				<table>
-					<thead>
-						<tr>
-							<th></th>
-							<th>Supplier</th>
-							<th>Certificate type</th>
-							<th>Valid from</th>
-							<th>Valid to</th>
+		<div className="certificates-table">
+			<table>
+				<thead>
+					<tr>
+						<th />
+						<th>Supplier</th>
+						<th>Certificate type</th>
+						<th>Valid from</th>
+						<th>Valid to</th>
+					</tr>
+				</thead>
+				<tbody>
+					{certificates.map((certificate) => (
+						<tr key={certificate.supplier}>
+							<td />
+							<td>{certificate.supplier}</td>
+							<td>{certificate.type}</td>
+							<td>{formatDate(certificate.validFrom)}</td>
+							<td>{formatDate(certificate.validTo)}</td>
 						</tr>
-					</thead>
-					<tbody>
-						{certificates.map((certificate, index) => (
-							<tr>
-								<td></td>
-								<td>{certificate.supplier}</td>
-								<td>{certificate.type}</td>
-								<td>{formatDate(certificate.validFrom)}</td>
-								<td>{formatDate(certificate.validTo)}</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</div>
-		</>
+					))}
+				</tbody>
+			</table>
+		</div>
 	);
 };
 
