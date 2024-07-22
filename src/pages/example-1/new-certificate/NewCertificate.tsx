@@ -1,51 +1,51 @@
 import { FC, useState } from 'react';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './NewCertificate.css';
 import AppRoutes from '../../../common/app-routes/AppRoutes';
 import Button from '../../../common/components/button/Button';
 import CancelIcon from '../../../common/components/icons/CancelIcon';
 import SearchIcon from '../../../common/components/icons/SearchIcon';
-import { CertificateType } from '../../../common/models/certificate.model';
+import Certificate, {
+	CertificateType,
+} from '../../../common/models/certificate.model';
 import certificates from '../certificates-mock-data';
+import DatePicker from '../../../common/date-picker/DatePicker';
+import Select from '../../../common/select/Select';
+import PdfViewer from '../pdf-viewer/PdfViewer';
 
 const NewCertificate: FC = (): JSX.Element => {
-	const [supplier, setSupplier] = useState<string>('');
-	const [type, setType] = useState<string>(CertificateType.none);
-	const [validFrom, setValidFrom] = useState<string>('2000-01-01');
-	const [validTo, setValidTo] = useState<string>('2000-01-01');
+	const [certificate, setCertificate] = useState<Certificate>({
+		id: 0,
+		supplier: '',
+		type: CertificateType.none,
+		validFrom: new Date('2000-01-01'),
+		validTo: new Date('2000-01-01'),
+	});
 	const [fileURL, setFileURL] = useState<string>('');
 
 	const handleSave = (): void => {
-		certificates.push({
-			supplier: supplier,
-			type: type,
-			validFrom: new Date(validFrom),
-			validTo: new Date(validTo),
-		});
+		setCertificate((prev) => ({
+			...prev,
+			id: certificates.length + 1,
+		}));
+		certificates.push(certificate);
 	};
 
 	const resetInput = (): void => {
-		setSupplier('');
-		setType(CertificateType.none);
-		setValidFrom('2000-01-01');
-		setValidTo('2000-01-01');
-		setFileURL('');
-	};
-	
-	const handlePDF = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const file = event.target.files?.[0];
-		if (file) {
-			const url = URL.createObjectURL(file);
-			setFileURL(url);
-		}
+		setCertificate((prev) => ({
+			...prev,
+			supplier: '',
+			type: CertificateType.none,
+			validFrom: new Date('2000-01-01'),
+			validTo: new Date('2000-01-01'),
+		}));
 	};
 
-	const navigate: NavigateFunction = useNavigate;
+	const navigate = useNavigate();
 
 	const goBack = (): void => {
 		navigate(AppRoutes.Example1);
 	};
-
 
 	return (
 		<div className="new-certificate">
@@ -56,9 +56,12 @@ const NewCertificate: FC = (): JSX.Element => {
 						<div className="new-certificate-input-container">
 							<input
 								type="text"
-								value={supplier}
+								value={certificate.supplier}
 								onChange={(e) => {
-									setSupplier(e.target.value);
+									setCertificate((prev) => ({
+										...prev,
+										supplier: e.target.value,
+									}));
 								}}
 							/>
 							<button>
@@ -77,65 +80,64 @@ const NewCertificate: FC = (): JSX.Element => {
 					</div>
 					<div className="new-certificate-input">
 						<label>Certificate type</label>
-						<select
-							value={type}
+						<Select
+							options={[
+								{
+									value: CertificateType.none,
+									text: 'Select Your Option',
+								},
+								{
+									value: CertificateType.printingPermission,
+									text: CertificateType.printingPermission,
+								},
+								{
+									value: CertificateType.ohsas,
+									text: CertificateType.ohsas,
+								},
+							]}
 							onChange={(e) => {
-								setType(e.target.value);
+								setCertificate((prev) => ({
+									...prev,
+									type: e.target.value,
+								}));
 							}}
-						>
-							<option value={CertificateType.none}>Select Your Option</option>
-							<option value={CertificateType.printingPermission}>
-								{CertificateType.printingPermission}
-							</option>
-							<option value={CertificateType.ohsas}>
-								{CertificateType.ohsas}
-							</option>
-						</select>
+						/>
 					</div>
 					<div className="new-certificate-input">
 						<label>Valid from</label>
 						<div className="new-certificate-input-container">
-							<input
-								type="date"
-								placeholder="Click to Select Date"
-								value={validFrom}
-								onChange={(e) => {
-									setValidFrom(e.target.value);
+							<DatePicker
+								value={certificate.validFrom.toISOString().split('T')[0]}
+								onChange={(e): void => {
+									setCertificate((prev) => ({
+										...prev,
+										validFrom: new Date(e.target.value),
+									}));
 								}}
+								min=""
 							/>
 						</div>
 					</div>
 					<div className="new-certificate-input">
 						<label>Valid to</label>
 						<div className="new-certificate-input-container">
-							<input
-								type="date"
-								placeholder="Click to Select Date"
-								value={validTo}
-								onChange={(e) => {
-									setValidTo(e.target.value);
+							<DatePicker
+								value={certificate.validTo.toISOString().split('T')[0]}
+								onChange={(e): void => {
+									setCertificate((prev) => ({
+										...prev,
+										validTo: new Date(e.target.value),
+									}));
 								}}
+								min={certificate.validFrom.toISOString().split('T')[0]}
 							/>
 						</div>
 					</div>
 				</div>
 				<div className="pdf-preview-area">
-					<label
-						htmlFor="nc-upload-file-button"
-						className="button"
-						style={{ backgroundColor: '#3f9ac9', color: 'white' }}
-					>
-						Upload
-					</label>
-					<input
-						type="file"
-						id="nc-upload-file-button"
-						style={{ display: 'none' }}
-						onChange={handlePDF}
-					/>
-					<iframe
-						src={fileURL}
-						className="pdf-preview-iframe"
+					<PdfViewer
+						fileUrl={fileURL}
+						setFileUrl={setFileURL}
 					/>
 				</div>
 			</div>
