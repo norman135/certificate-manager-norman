@@ -22,6 +22,10 @@ const App: FC = (): JSX.Element => {
 						element={<Example1 />}
 					/>
 					<Route
+						path="/new-certificate"
+						element={<NewCertificate />}
+					/>
+					<Route
 						path={AppRoutes.Example2}
 						element={<Example2 />}
 					/>
