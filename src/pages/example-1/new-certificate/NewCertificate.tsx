@@ -12,6 +12,7 @@ const NewCertificate: FC = (): JSX.Element => {
 
 	const handleSave = (): void => {
 		certificates.push({
+			id: certificates.length + 1,
 			supplier: supplier,
 			type: type,
 			validFrom: new Date(validFrom),
