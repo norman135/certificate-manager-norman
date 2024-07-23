@@ -7,6 +7,7 @@
 .dropdown-item {
 	cursor: pointer;
 	background-color: white;
+	padding: 5px 10px;
 }
 .dropdown-item:hover {
 	background-color: rgb(219, 219, 219);

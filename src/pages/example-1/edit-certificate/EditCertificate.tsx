@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './NewCertificate.css';
+import { useNavigate, useParams } from 'react-router-dom';
+import './EditCertificate.css';
 import AppRoutes from '../../../common/app-routes/AppRoutes';
 import Button from '../../../common/components/button/Button';
 import CancelIcon from '../../../common/components/icons/CancelIcon';
@@ -13,22 +13,25 @@ import DatePicker from '../../../common/date-picker/DatePicker';
 import Select from '../../../common/select/Select';
 import PdfViewer from '../pdf-viewer/PdfViewer';
 
-const NewCertificate: FC = (): JSX.Element => {
-	const [certificate, setCertificate] = useState<Certificate>({
-		id: 0,
-		supplier: '',
-		type: CertificateType.none,
-		validFrom: new Date('2000-01-01'),
-		validTo: new Date('2000-01-01'),
-	});
+const EditCertificate: FC = (): JSX.Element => {
+	const { certificateId } = useParams<{ certificateId: string }>();
+	const certificateIdNum: number = certificateId ? parseInt(certificateId): NaN;
+
+	const certificateIndex: number = certificates.findIndex(certificate_ => certificate_.id === certificateIdNum);
+
+	const [certificate, setCertificate] = useState<Certificate>(certificates[certificateIndex]);
+	console.log(certificateId);
 	const [fileURL, setFileURL] = useState<string>('');
 
 	const handleSave = (): void => {
+		certificates[certificateIndex] = certificate;
 		setCertificate((prev) => ({
 			...prev,
-			id: certificates.length + 1,
+			supplier: '',
+			type: CertificateType.none,
+			validFrom: new Date('2000-01-01'),
+			validTo: new Date('2000-01-01'),
 		}));
-		certificates.push(certificate);
 	};
 
 	const resetInput = (): void => {
@@ -169,4 +172,4 @@ const NewCertificate: FC = (): JSX.Element => {
 	);
 };
 
-export default NewCertificate;
+export default EditCertificate;

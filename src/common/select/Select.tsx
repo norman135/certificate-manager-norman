@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { CertificateType } from '../models/certificate.model';
 
 type Option = {
 	value: string;
@@ -7,12 +8,15 @@ type Option = {
 
 interface SelectProps {
 	options: Option[];
+	value: string;
 	onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const Select: FC<SelectProps> = ({ options, onChange }): JSX.Element => {
+const Select: FC<SelectProps> = ({ options, value, onChange }): JSX.Element => {
 	return (
-		<select onChange={onChange}>
+		<select
+			onChange={onChange}
+			value={value}>
 			{options.map((option) => (
 				<option
 					key={option.value}
