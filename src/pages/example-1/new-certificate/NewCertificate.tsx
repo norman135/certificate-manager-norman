@@ -144,17 +144,27 @@ const NewCertificate: FC = (): JSX.Element => {
 			<div className="new-certificate-buttons-area">
 				<Button
 					name="Save"
+					name="Save"
 					color="white"
 					bg="#c0cc38"
+					type="button"
 					type="button"
 					onClick={() => {
 						handleSave();
 						goBack();
 					}}
+					}}
 					to=""
 				/>
 				<Button
 					name="Reset"
+					color="black"
+					bg="rgba(0,0,0,0)"
+					type="button"
+					to=""
+					onClick={() => {
+						resetInput();
+					}}
 					color="black"
 					bg="rgba(0,0,0,0)"
 					type="button"

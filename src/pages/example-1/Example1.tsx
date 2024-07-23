@@ -1,7 +1,9 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import certificates from './certificates-mock-data';
 import AppRoutes from '../../common/app-routes/AppRoutes';
 import Button from '../../common/components/button/Button';
+import { DropDownItem } from '../../components/dropdown/DropDown';
 import Table from '../../common/components/table/Table';
 import formatDate from '../../common/utils/format-date.utils';
 import './Example1.css';
