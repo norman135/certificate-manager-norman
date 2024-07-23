@@ -1,9 +1,11 @@
 .button {
 	display: block;
+	border: solid 1px grey;
 	width: fit-content;
 	min-width: 150px;
 	padding: 10px;
 	margin: 10px 0;
+	margin-right: 10px;
 	font-size: 15px;
 	text-align: center;
 	cursor: pointer;
