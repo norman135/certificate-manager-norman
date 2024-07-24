@@ -36,6 +36,7 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
         const handleDelete = () => {
             deleteCertificate(index);
         }
+        
 		return [
 			{
 				name: 'Edit',

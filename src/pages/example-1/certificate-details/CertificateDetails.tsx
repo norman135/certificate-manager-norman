@@ -61,6 +61,34 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		setCertificate(initialCertificate);
 	};
 
+	const handleSupplierChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setCertificate((prev) => ({
+			...prev,
+			supplier: e.target.value,
+		}));
+	}
+
+	const handleTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setCertificate((prev) => ({
+			...prev,
+			type: e.target.value,
+		}));
+	}
+
+	const handleValidFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setCertificate((prev) => ({
+			...prev,
+			validFrom: new Date(e.target.value),
+		}));
+	}
+
+	const handleValidToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setCertificate((prev) => ({
+			...prev,
+			validTo: new Date(e.target.value),
+		}));
+	}
+
 	return (
 		<div className="edit-certificate">
 			<div className="edit-certificate-input-area">
@@ -71,12 +99,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 							<input
 								type="text"
 								value={certificate.supplier}
-								onChange={(e) => {
-									setCertificate((prev) => ({
-										...prev,
-										supplier: e.target.value,
-									}));
-								}}
+								onChange={(e) => handleSupplierChange(e)}
 							/>
 							<button>
 								<SearchIcon
@@ -123,12 +146,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<div className="edit-certificate-input-container">
 							<DatePicker
 								value={toIsoString(certificate.validFrom)}
-								onChange={(e): void => {
-									setCertificate((prev) => ({
-										...prev,
-										validFrom: new Date(e.target.value),
-									}));
-								}}
+								onChange={(e) => {handleValidFromChange(e)}}
 								min=""
 							/>
 						</div>
@@ -138,12 +156,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<div className="edit-certificate-input-container">
 							<DatePicker
 								value={toIsoString(certificate.validTo)}
-								onChange={(e): void => {
-									setCertificate((prev) => ({
-										...prev,
-										validTo: new Date(e.target.value),
-									}));
-								}}
+								onChange={(e) => {handleValidToChange(e)}}
 								min={toIsoString(certificate.validFrom)}
 							/>
 						</div>
@@ -171,9 +184,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 					bg="rgba(0,0,0,0)"
 					type="button"
 					to=""
-					onClick={() => {
-						resetInput();
-					}}
+					onClick={resetInput}
 				/>
 			</div>
 		</div>

@@ -10,14 +10,18 @@ interface DropDownProps {
 	items: DropDownItem[];
 }
 
+const handleClick = (item: DropDownItem) => {
+	item.action()
+}
+
 const DropDown: FC<DropDownProps> = ({ items }): JSX.Element => {
 	return (
 		<div className="dropdown">
 			{items.map((item) => (
 				<div
 					className="dropdown-item"
-					onClick={() => item.action()}
-					onKeyDown={() => item.action()}
+					onClick={() => handleClick(item)}
+					onKeyDown={() => handleClick(item)}
 					key={item.name}
 				>
 					{item.name}

@@ -17,6 +17,10 @@ interface SideNavItemProps {
 	onclick: (index: number) => void;
 }
 
+const handleSubmenuClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.KeyboardEvent<HTMLDivElement>) => {
+	e.stopPropagation();
+}
+
 const SideNavItem: React.FC<SideNavItemProps> = ({
 	svgIconPath,
 	svgVB,
@@ -69,12 +73,8 @@ const SideNavItem: React.FC<SideNavItemProps> = ({
 						<div
 							key={SubMenuItem.text}
 							className="sub-menu-item"
-							onClick={(e) => {
-								e.stopPropagation();
-							}}
-							onKeyDown={(e) => {
-								e.stopPropagation();
-							}}
+							onClick={(e) => handleSubmenuClick(e)}
+							onKeyDown={(e) => handleSubmenuClick(e)}
 						>
 							<Link to={SubMenuItem.to}>{SubMenuItem.text}</Link>
 						</div>
