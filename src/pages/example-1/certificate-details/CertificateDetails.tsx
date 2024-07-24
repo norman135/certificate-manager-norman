@@ -1,5 +1,5 @@
-import { FC, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { FC, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './CertificateDetails.css';
 import AppRoutes from '../../../common/app-routes/AppRoutes';
 import Button from '../../../common/components/button/Button';
@@ -13,27 +13,46 @@ import DatePicker from '../../../common/date-picker/DatePicker';
 import Select from '../../../common/select/Select';
 import PdfViewer from '../pdf-viewer/PdfViewer';
 import { toIsoString } from '../../../common/utils/format-date.utils';
-import initialCertificate, { handleSave } from '../../../common/utils/certificate.utils';
+import initialCertificate, {
+	getCertificateIndex,
+} from '../../../common/utils/certificate.utils';
 
 interface CertificateDetailsProps {
 	certificateId?: number;
 }
 
-const CertificateDetails: FC <CertificateDetailsProps> = ({ certificateId }): JSX.Element => {
-
-	const [certificate, setCertificate] = useState<Certificate>(initialCertificate(certificateId));
+const CertificateDetails: FC<CertificateDetailsProps> = ({
+	certificateId,
+}): JSX.Element => {
+	const [certificate, setCertificate] =
+		useState<Certificate>(initialCertificate);
 	const [fileURL, setFileURL] = useState<string>('');
 
-	
+	useEffect(() => {
+		if (certificateId) {
+			const certificateIndex: number = getCertificateIndex(certificateId);
+			setCertificate(certificates[certificateIndex]);
+		} else {
+			setCertificate(initialCertificate);
+			setCertificate((prev) => ({
+				...prev,
+				id: certificates.length + 1,
+			}));
+		}
+	}, [certificateId]);
+
+	const handleSave = (): void => {
+		if (certificateId) {
+			const certificateIndex: number = getCertificateIndex(certificateId);
+			certificates[certificateIndex] = certificate;
+			setCertificate(initialCertificate);
+		} else {
+			certificates.push(certificate);
+		}
+	};
 
 	const resetInput = (): void => {
-		setCertificate((prev) => ({
-			...prev,
-			supplier: '',
-			type: CertificateType.none,
-			validFrom: new Date('2000-01-01'),
-			validTo: new Date('2000-01-01'),
-		}));
+		setCertificate(initialCertificate);
 	};
 
 	const navigate = useNavigate();
@@ -144,7 +163,7 @@ const CertificateDetails: FC <CertificateDetailsProps> = ({ certificateId }): JS
 					bg="#c0cc38"
 					type="button"
 					onClick={() => {
-						handleSave(certificateId, setCertificate, certificate);
+						handleSave();
 						goBack();
 					}}
 					to=""

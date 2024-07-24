@@ -24,13 +24,13 @@ const Example1: FC = (): JSX.Element => {
 				<Table
 					columns={['', 'Supplier', 'Type', 'Valid from', 'Valid to']}
 					data={certificates.map((certificate, index) => [
-						(<CertificateSettings
+						<CertificateSettings
 							certificateId={certificate.id}
 							certificateIndex={index}
 							update={() => {
 								setCount(count + 1);
 							}}
-						/>),
+						/>,
 						certificate.supplier,
 						certificate.type,
 						formatDate(certificate.validFrom),

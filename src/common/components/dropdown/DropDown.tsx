@@ -1,30 +1,30 @@
-import { FC } from "react";
+import { FC } from 'react';
 import './DropDown.css';
 
 export type DropDownItem = {
-    name: string,
-    action: () => void
-}
+	name: string;
+	action: () => void;
+};
 
 interface DropDownProps {
-    items: DropDownItem[]
+	items: DropDownItem[];
 }
 
-
-const DropDown: FC <DropDownProps> = ({ items }): JSX.Element => {
-    return (
-        <div className="dropdown">
-            {
-                items.map(item => (
-                    <div
-                        className="dropdown-item"
-                        onClick={() => item.action()}
-                        key={item.name}
-                    >{item.name}</div>
-                ))
-            }
-        </div>
-    )
-}
+const DropDown: FC<DropDownProps> = ({ items }): JSX.Element => {
+	return (
+		<div className="dropdown">
+			{items.map((item) => (
+				<div
+					className="dropdown-item"
+					onClick={() => item.action()}
+					onKeyDown={() => item.action()}
+					key={item.name}
+				>
+					{item.name}
+				</div>
+			))}
+		</div>
+	);
+};
 
 export default DropDown;
