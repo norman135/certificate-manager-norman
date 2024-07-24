@@ -10,6 +10,10 @@ import CertificateSettings from './certificate-settings/CertificateSettings';
 const Example1: FC = (): JSX.Element => {
 	const [count, setCount] = useState<number>(0);
 
+	const handleUpdate = () => {
+		setCount(count + 1);
+	}
+
 	return (
 		<>
 			<Button
@@ -27,9 +31,7 @@ const Example1: FC = (): JSX.Element => {
 						<CertificateSettings
 							certificateId={certificate.id}
 							certificateIndex={index}
-							update={() => {
-								setCount(count + 1);
-							}}
+							update={handleUpdate}
 						/>,
 						certificate.supplier,
 						certificate.type,

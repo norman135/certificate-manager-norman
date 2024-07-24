@@ -26,19 +26,24 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 		update();
 	};
 
+    
+
 	const certificateDropDown = (id: number, index: number): DropDownItem[] => {
+        const handleEdit = () => {
+        navigate(`${AppRoutes.EditCertificate}${id}`);
+        }
+
+        const handleDelete = () => {
+            deleteCertificate(index);
+        }
 		return [
 			{
 				name: 'Edit',
-				action: () => {
-					navigate(`${AppRoutes.EditCertificate}${id}`);
-				},
+				action: handleEdit,
 			},
 			{
 				name: 'Delete',
-				action: () => {
-					deleteCertificate(index);
-				},
+				action: handleDelete,
 			},
 		];
 	};

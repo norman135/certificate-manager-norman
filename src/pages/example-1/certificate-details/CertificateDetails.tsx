@@ -24,9 +24,14 @@ interface CertificateDetailsProps {
 const CertificateDetails: FC<CertificateDetailsProps> = ({
 	certificateId,
 }): JSX.Element => {
-	const [certificate, setCertificate] =
-		useState<Certificate>(initialCertificate);
+	const [certificate, setCertificate] = useState<Certificate>(initialCertificate);
 	const [fileURL, setFileURL] = useState<string>('');
+
+	const navigate = useNavigate();
+
+	const goBack = (): void => {
+		navigate(AppRoutes.Example1);
+	};
 
 	useEffect(() => {
 		if (certificateId) {
@@ -49,16 +54,11 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		} else {
 			certificates.push(certificate);
 		}
+		goBack();
 	};
 
 	const resetInput = (): void => {
 		setCertificate(initialCertificate);
-	};
-
-	const navigate = useNavigate();
-
-	const goBack = (): void => {
-		navigate(AppRoutes.Example1);
 	};
 
 	return (
@@ -162,10 +162,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 					color="white"
 					bg="#c0cc38"
 					type="button"
-					onClick={() => {
-						handleSave();
-						goBack();
-					}}
+					onClick={handleSave}
 					to=""
 				/>
 				<Button
