@@ -1,4 +1,4 @@
-import { FC, useReducer } from "react";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import certificates from "../certificates-mock-data";
 import DropDown, { DropDownItem } from "../../../common/components/dropdown/DropDown";

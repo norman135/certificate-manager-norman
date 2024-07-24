@@ -1,11 +1,15 @@
 import certificates from '../../pages/example-1/certificates-mock-data';
 import Certificate, { CertificateType } from '../models/certificate.model';
 
+const getCertificateIndex = (certificateId: number): number => {
+	return certificates.findIndex(
+		(certificate_) => certificate_.id === certificateId,
+	);
+};
+
 const initialCertificate = (certificateId: number | undefined): Certificate => {
 	if (certificateId) {
-		const certificateIndex: number = certificates.findIndex(
-			(certificate_) => certificate_.id === certificateId,
-		);
+		const certificateIndex: number = getCertificateIndex(certificateId);
 		return certificates[certificateIndex];
 	} else {
 		return {
@@ -24,9 +28,7 @@ export const handleSave = (
 	certificate: Certificate,
 ): void => {
 	if (certificateId) {
-		const certificateIndex: number = certificates.findIndex(
-			(certificate_) => certificate_.id === certificateId,
-		);
+		const certificateIndex: number = getCertificateIndex(certificateId);
 		certificates[certificateIndex] = certificate;
 		update((prev) => ({
 			...prev,

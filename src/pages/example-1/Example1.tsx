@@ -29,7 +29,6 @@ const Example1: FC = (): JSX.Element => {
 							certificateIndex={index}
 							update={() => {
 								setCount(count + 1);
-								document.body.focus();
 							}}
 						/>),
 						certificate.supplier,

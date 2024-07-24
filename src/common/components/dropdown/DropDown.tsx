@@ -18,9 +18,7 @@ const DropDown: FC <DropDownProps> = ({ items }): JSX.Element => {
                 items.map(item => (
                     <div
                         className="dropdown-item"
-                        onClick={() => {
-                            item.action()
-                        }}
+                        onClick={() => item.action()}
                         key={item.name}
                     >{item.name}</div>
                 ))
