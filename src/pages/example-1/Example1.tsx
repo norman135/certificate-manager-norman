@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import certificates from './certificates-mock-data';
 import AppRoutes from '../../common/app-routes/AppRoutes';
 import Button from '../../common/components/button/Button';
@@ -8,6 +8,8 @@ import './Example1.css';
 import CertificateSettings from './certificate-settings/CertificateSettings';
 
 const Example1: FC = (): JSX.Element => {
+	const [count, setCount] = useState<number>(0);
+
 	return (
 		<>
 			<Button
@@ -25,6 +27,10 @@ const Example1: FC = (): JSX.Element => {
 						(<CertificateSettings
 							certificateId={certificate.id}
 							certificateIndex={index}
+							update={() => {
+								setCount(count + 1);
+								document.body.focus();
+							}}
 						/>),
 						certificate.supplier,
 						certificate.type,

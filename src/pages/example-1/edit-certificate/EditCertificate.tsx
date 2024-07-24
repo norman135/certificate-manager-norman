@@ -16,7 +16,7 @@ import PdfViewer from '../pdf-viewer/PdfViewer';
 const EditCertificate: FC = (): JSX.Element => {
 	const { certificateId } = useParams<{ certificateId: string }>();
 	const certificateIdNum: number = certificateId ? parseInt(certificateId): NaN;
-
+	
 	const certificateIndex: number = certificates.findIndex(certificate_ => certificate_.id === certificateIdNum);
 
 	const [certificate, setCertificate] = useState<Certificate>(certificates[certificateIndex]);
@@ -51,12 +51,12 @@ const EditCertificate: FC = (): JSX.Element => {
 	};
 
 	return (
-		<div className="new-certificate">
-			<div className="new-certificate-input-area">
-				<div className="new-certificate-inputs">
-					<div className="new-certificate-input">
+		<div className="edit-certificate">
+			<div className="edit-certificate-input-area">
+				<div className="edit-certificate-inputs">
+					<div className="edit-certificate-input">
 						<label>Supplier</label>
-						<div className="new-certificate-input-container">
+						<div className="edit-certificate-input-container">
 							<input
 								type="text"
 								value={certificate.supplier}
@@ -81,7 +81,7 @@ const EditCertificate: FC = (): JSX.Element => {
 							</button>
 						</div>
 					</div>
-					<div className="new-certificate-input">
+					<div className="edit-certificate-input">
 						<label>Certificate type</label>
 						<Select
 							options={[
@@ -107,9 +107,9 @@ const EditCertificate: FC = (): JSX.Element => {
 							}}
 						/>
 					</div>
-					<div className="new-certificate-input">
+					<div className="edit-certificate-input">
 						<label>Valid from</label>
-						<div className="new-certificate-input-container">
+						<div className="edit-certificate-input-container">
 							<DatePicker
 								value={certificate.validFrom.toISOString().split('T')[0]}
 								onChange={(e): void => {
@@ -122,9 +122,9 @@ const EditCertificate: FC = (): JSX.Element => {
 							/>
 						</div>
 					</div>
-					<div className="new-certificate-input">
+					<div className="edit-certificate-input">
 						<label>Valid to</label>
-						<div className="new-certificate-input-container">
+						<div className="edit-certificate-input-container">
 							<DatePicker
 								value={certificate.validTo.toISOString().split('T')[0]}
 								onChange={(e): void => {
@@ -145,7 +145,7 @@ const EditCertificate: FC = (): JSX.Element => {
 					/>
 				</div>
 			</div>
-			<div className="new-certificate-buttons-area">
+			<div className="edit-certificate-buttons-area">
 				<Button
 					name="Save"
 					color="white"

@@ -27,7 +27,7 @@ const App: FC = (): JSX.Element => {
 						element={<NewCertificate />}
 					/>
 					<Route
-						path={AppRoutes.EditCertificate}
+						path={AppRoutes.EditCertificateParam}
 						element={<EditCertificate />}
 					/>
 					<Route
