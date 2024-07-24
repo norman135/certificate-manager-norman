@@ -68,7 +68,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		}));
 	};
 
-	const handleTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setCertificate((prev) => ({
 			...prev,
 			type: e.target.value,
@@ -99,7 +99,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 							<input
 								type="text"
 								value={certificate.supplier}
-								onChange={(e) => handleSupplierChange(e)}
+								onChange={handleSupplierChange}
 							/>
 							<button>
 								<SearchIcon
@@ -133,12 +133,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 								},
 							]}
 							value={certificate.type}
-							onChange={(e) => {
-								setCertificate((prev) => ({
-									...prev,
-									type: e.target.value,
-								}));
-							}}
+							onChange={handleTypeChange}
 						/>
 					</div>
 					<div className="edit-certificate-input">
@@ -146,9 +141,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<div className="edit-certificate-input-container">
 							<DatePicker
 								value={toIsoString(certificate.validFrom)}
-								onChange={(e) => {
-									handleValidFromChange(e);
-								}}
+								onChange={handleValidFromChange}
 								min=""
 							/>
 						</div>
@@ -158,9 +151,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<div className="edit-certificate-input-container">
 							<DatePicker
 								value={toIsoString(certificate.validTo)}
-								onChange={(e) => {
-									handleValidToChange(e);
-								}}
+								onChange={handleValidToChange}
 								min={toIsoString(certificate.validFrom)}
 							/>
 						</div>

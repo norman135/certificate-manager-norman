@@ -77,8 +77,8 @@ const SideNavItem: React.FC<SideNavItemProps> = ({
 						<div
 							key={SubMenuItem.text}
 							className="sub-menu-item"
-							onClick={(e) => handleSubmenuClick(e)}
-							onKeyDown={(e) => handleSubmenuClick(e)}
+							onClick={handleSubmenuClick}
+							onKeyDown={handleSubmenuClick}
 						>
 							<Link to={SubMenuItem.to}>{SubMenuItem.text}</Link>
 						</div>
