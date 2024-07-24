@@ -11,8 +11,8 @@ interface DropDownProps {
 }
 
 const handleClick = (item: DropDownItem) => {
-	item.action()
-}
+	item.action();
+};
 
 const DropDown: FC<DropDownProps> = ({ items }): JSX.Element => {
 	return (

@@ -24,7 +24,8 @@ interface CertificateDetailsProps {
 const CertificateDetails: FC<CertificateDetailsProps> = ({
 	certificateId,
 }): JSX.Element => {
-	const [certificate, setCertificate] = useState<Certificate>(initialCertificate);
+	const [certificate, setCertificate] =
+		useState<Certificate>(initialCertificate);
 	const [fileURL, setFileURL] = useState<string>('');
 
 	const navigate = useNavigate();
@@ -66,28 +67,28 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			...prev,
 			supplier: e.target.value,
 		}));
-	}
+	};
 
 	const handleTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCertificate((prev) => ({
 			...prev,
 			type: e.target.value,
 		}));
-	}
+	};
 
 	const handleValidFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCertificate((prev) => ({
 			...prev,
 			validFrom: new Date(e.target.value),
 		}));
-	}
+	};
 
 	const handleValidToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCertificate((prev) => ({
 			...prev,
 			validTo: new Date(e.target.value),
 		}));
-	}
+	};
 
 	return (
 		<div className="edit-certificate">
@@ -146,7 +147,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<div className="edit-certificate-input-container">
 							<DatePicker
 								value={toIsoString(certificate.validFrom)}
-								onChange={(e) => {handleValidFromChange(e)}}
+								onChange={(e) => {
+									handleValidFromChange(e);
+								}}
 								min=""
 							/>
 						</div>
@@ -156,7 +159,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<div className="edit-certificate-input-container">
 							<DatePicker
 								value={toIsoString(certificate.validTo)}
-								onChange={(e) => {handleValidToChange(e)}}
+								onChange={(e) => {
+									handleValidToChange(e);
+								}}
 								min={toIsoString(certificate.validFrom)}
 							/>
 						</div>

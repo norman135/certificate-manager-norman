@@ -12,7 +12,7 @@ const Example1: FC = (): JSX.Element => {
 
 	const handleUpdate = () => {
 		setCount(count + 1);
-	}
+	};
 
 	return (
 		<>
