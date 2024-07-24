@@ -1,6 +1,12 @@
+export type Supplier = {
+	index: number;
+	name: string;
+	city: string;
+};
+
 type Certificate = {
 	id: number;
-	supplier: string;
+	supplier: Supplier;
 	type: string;
 	validFrom: Date;
 	validTo: Date;

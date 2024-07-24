@@ -9,7 +9,11 @@ export const getCertificateIndex = (certificateId: number): number => {
 
 export const initialCertificate = {
 	id: 0,
-	supplier: '',
+	supplier: {
+		name: '',
+		index: 0,
+		city: '',
+	},
 	type: CertificateType.none,
 	validFrom: new Date('2000-01-01'),
 	validTo: new Date('2000-01-01'),

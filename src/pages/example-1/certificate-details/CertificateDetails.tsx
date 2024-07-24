@@ -61,12 +61,12 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		setCertificate(initialCertificate);
 	};
 
-	const handleSupplierChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setCertificate((prev) => ({
-			...prev,
-			supplier: e.target.value,
-		}));
-	};
+	// const handleSupplierChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	// 	setCertificate((prev) => ({
+	// 		...prev,
+	// 		supplier: e.target.value,
+	// 	}));
+	// };
 
 	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setCertificate((prev) => ({
@@ -98,8 +98,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<div className="edit-certificate-input-container">
 							<input
 								type="text"
-								value={certificate.supplier}
-								onChange={handleSupplierChange}
+								value={`${certificate.supplier.name}, ${certificate.supplier.index}, ${certificate.supplier.city}`}
+								// onChange={handleSupplierChange}
+								disabled={true}
 							/>
 							<button>
 								<SearchIcon
