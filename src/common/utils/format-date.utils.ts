@@ -6,4 +6,8 @@ const formatDate = (date: Date): string => {
 	return `${day}.${month}.${year}`;
 };
 
+export const toIsoString = (date: Date): string => {
+	return date.toISOString().split('T')[0];
+};
+
 export default formatDate;
