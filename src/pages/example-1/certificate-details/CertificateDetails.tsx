@@ -39,11 +39,10 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			const certificateIndex: number = getCertificateIndex(certificateId);
 			setCertificate(certificates[certificateIndex]);
 		} else {
-			setCertificate(initialCertificate);
-			setCertificate((prev) => ({
-				...prev,
+			setCertificate({
+				...initialCertificate,
 				id: certificates.length + 1,
-			}));
+			});
 		}
 	}, [certificateId]);
 
