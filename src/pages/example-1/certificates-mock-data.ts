@@ -1,23 +1,24 @@
 import Certificate from '../../common/models/certificate.model';
+import suppliers from './suppliers-mock-data';
 
 const certificates: Certificate[] = [
 	{
 		id: 1,
-		supplier: 'DAIMLER AG, 1, Berlin',
+		supplier: suppliers[1],
 		type: 'Permission of Printing',
 		validFrom: new Date('2017-08-21'),
 		validTo: new Date('2017-08-26'),
 	},
 	{
 		id: 2,
-		supplier: 'ANDEMIS GmBH, 1, Stuttgart',
+		supplier: suppliers[2],
 		type: 'OHSAS 18001',
 		validFrom: new Date('2017-08-18'),
 		validTo: new Date('2017-08-24'),
 	},
 	{
 		id: 3,
-		supplier: 'ANDEMIS GmBH, 1, Stuttgart',
+		supplier: suppliers[2],
 		type: 'Permission of Printing',
 		validFrom: new Date('2017-10-04'),
 		validTo: new Date('2017-10-10'),

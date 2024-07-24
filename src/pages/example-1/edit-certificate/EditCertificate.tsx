@@ -12,6 +12,7 @@ import certificates from '../certificates-mock-data';
 import DatePicker from '../../../common/date-picker/DatePicker';
 import Select from '../../../common/select/Select';
 import PdfViewer from '../pdf-viewer/PdfViewer';
+import suppliers from '../suppliers-mock-data';
 
 const EditCertificate: FC = (): JSX.Element => {
 	const { certificateId } = useParams<{ certificateId: string }>();
@@ -27,7 +28,7 @@ const EditCertificate: FC = (): JSX.Element => {
 		certificates[certificateIndex] = certificate;
 		setCertificate((prev) => ({
 			...prev,
-			supplier: '',
+			supplier: suppliers[0],
 			type: CertificateType.none,
 			validFrom: new Date('2000-01-01'),
 			validTo: new Date('2000-01-01'),
@@ -37,7 +38,7 @@ const EditCertificate: FC = (): JSX.Element => {
 	const resetInput = (): void => {
 		setCertificate((prev) => ({
 			...prev,
-			supplier: '',
+			supplier: suppliers[0],
 			type: CertificateType.none,
 			validFrom: new Date('2000-01-01'),
 			validTo: new Date('2000-01-01'),
@@ -59,13 +60,7 @@ const EditCertificate: FC = (): JSX.Element => {
 						<div className="edit-certificate-input-container">
 							<input
 								type="text"
-								value={certificate.supplier}
-								onChange={(e) => {
-									setCertificate((prev) => ({
-										...prev,
-										supplier: e.target.value,
-									}));
-								}}
+								value={`${certificate.supplier.name}, ${certificate.supplier.index}, ${certificate.supplier.city}`}
 							/>
 							<button>
 								<SearchIcon
