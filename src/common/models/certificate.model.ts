@@ -1,9 +1,15 @@
 type Certificate = {
 	id: number;
-	supplier: string;
+	supplier: Supplier;
 	type: string;
 	validFrom: Date;
 	validTo: Date;
+};
+
+export type Supplier = {
+	index: number;
+	name: string;
+	city: string;
 };
 
 export enum CertificateType {
