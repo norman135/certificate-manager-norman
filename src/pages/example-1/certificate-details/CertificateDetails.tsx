@@ -102,10 +102,20 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	};
 
 	const handleValidFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setCertificate((prev) => ({
-			...prev,
-			validFrom: new Date(e.target.value),
-		}));
+		const validFromDate = new Date(e.target.value);
+
+		if (validFromDate > certificate.validTo) {
+			setCertificate((prev) => ({
+				...prev,
+				validFrom: validFromDate,
+				validTo: validFromDate,
+			}));
+		} else {
+			setCertificate((prev) => ({
+				...prev,
+				validFrom: validFromDate,
+			}));
+		}
 	};
 
 	const handleValidToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
