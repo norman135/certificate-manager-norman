@@ -50,7 +50,7 @@ const deleteCertificate = async (id: string): Promise<boolean> => {
 
 const getAllCertificates = async (): Promise<Certificate[]> => {
 	try {
-		const request = await getAllItems();
+		const request = await getAllItems('certificates');
 		return new Promise<Certificate[]>((resolve, reject) => {
 			request.onsuccess = () => {
 				resolve(request.result as Certificate[]);
