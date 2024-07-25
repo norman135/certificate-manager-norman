@@ -1,0 +1,14 @@
+.dropdown {
+	border: solid 1px black;
+	font-size: 15px;
+	position: absolute;
+	transform: translate(12px, -24px);
+}
+.dropdown-item {
+	cursor: pointer;
+	background-color: white;
+	padding: 5px 10px;
+}
+.dropdown-item:hover {
+	background-color: rgb(219, 219, 219);
+}

@@ -1,0 +1,14 @@
+.edit-icon {
+	fill: #3f9ac9;
+	cursor: pointer;
+}
+.dropdown {
+	display: none;
+}
+.certificate-edit-button:focus .dropdown {
+	display: block;
+}
+button {
+	background: none;
+	border: none;
+}
