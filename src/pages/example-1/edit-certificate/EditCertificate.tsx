@@ -4,11 +4,7 @@ import CertificateDetails from '../certificate-details/CertificateDetails';
 
 const EditCertificate: FC = (): JSX.Element => {
 	const { certificateId } = useParams<{ certificateId: string }>();
-	const certificateIdNum: number = certificateId
-		? parseInt(certificateId)
-		: NaN;
-
-	return <CertificateDetails certificateId={certificateIdNum} />;
+	return <CertificateDetails certificateId={certificateId} />;
 };
 
 export default EditCertificate;

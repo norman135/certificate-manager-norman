@@ -1,5 +1,5 @@
 type Certificate = {
-	id: number;
+	id: string;
 	supplier: string;
 	type: string;
 	validFrom: Date;

@@ -29,7 +29,7 @@ const addItem = async (item: Certificate) => {
 	return transaction.oncomplete;
 };
 
-const getItem = async (id: number) => {
+const getItem = async (id: string) => {
 	const db = await openDatabase();
 	const transaction = db.transaction('certificates', 'readonly');
 	const store = transaction.objectStore('certificates');
@@ -44,7 +44,7 @@ const updateItem = async (item: Certificate) => {
 	return transaction.oncomplete;
 };
 
-const deleteItem = async (id: number) => {
+const deleteItem = async (id: string) => {
 	const db = await openDatabase();
 	const transaction = db.transaction('certificates', 'readwrite');
 	const store = transaction.objectStore('certificates');

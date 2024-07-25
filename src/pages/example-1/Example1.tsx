@@ -34,10 +34,9 @@ const Example1: FC = (): JSX.Element => {
 			<div className="certificates-table">
 				<Table
 					columns={['', 'Supplier', 'Type', 'Valid from', 'Valid to']}
-					data={certificates.map((certificate, index) => [
+					data={certificates.map((certificate) => [
 						<CertificateSettings
 							certificateId={certificate.id}
-							certificateIndex={index}
 							update={fetchCertificates}
 						/>,
 						certificate.supplier,

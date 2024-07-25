@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import './CertificateDetails.css';
 import AppRoutes from '../../../common/app-routes/AppRoutes';
 import Button from '../../../common/components/button/Button';
@@ -12,18 +13,15 @@ import DatePicker from '../../../common/date-picker/DatePicker';
 import Select from '../../../common/select/Select';
 import PdfViewer from '../pdf-viewer/PdfViewer';
 import { toIsoString } from '../../../common/utils/format-date.utils';
-import initialCertificate, {
-	getCertificateIndex,
-} from '../../../common/utils/certificate.utils';
 import {
 	addCertificate,
-	getAllCertificates,
 	getCertificate,
 	updateCertificate,
 } from '../../../common/db/certificate-service';
+import initialCertificate from '../../../common/utils/certificate.utils';
 
 interface CertificateDetailsProps {
-	certificateId?: number;
+	certificateId?: string;
 }
 
 const CertificateDetails: FC<CertificateDetailsProps> = ({
@@ -54,11 +52,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			fetchCertificate();
 		} else {
 			const fetchCerts = async () => {
-				const _certs = await getAllCertificates();
-
 				setCertificate({
 					...initialCertificate,
-					id: _certs.length + 1,
+					id: uuidv4(),
 				});
 			};
 

@@ -1,6 +1,5 @@
 import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import certificates from '../certificates-mock-data';
 import DropDown, {
 	DropDownItem,
 } from '../../../common/components/dropdown/DropDown';
@@ -10,19 +9,17 @@ import SettingsIcon from '../../../common/components/icons/SettingsIcon';
 import { deleteCertificate } from '../../../common/db/certificate-service';
 
 interface CertificateSettingsProps {
-	certificateId: number;
-	certificateIndex: number;
+	certificateId: string;
 	update: () => void;
 }
 
 const CertificateSettings: FC<CertificateSettingsProps> = ({
 	certificateId,
-	certificateIndex,
 	update,
 }): JSX.Element => {
 	const navigate = useNavigate();
 
-	const _deleteCertificate = (id: number): void => {
+	const _deleteCertificate = (id: string): void => {
 		if (confirm('Are you sure?')) {
 			const deleteCert = async () => {
 				if (!(await deleteCertificate(id))) {
@@ -35,7 +32,7 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 		}
 	};
 
-	const certificateDropDown = (id: number, index: number): DropDownItem[] => {
+	const certificateDropDown = (id: string): DropDownItem[] => {
 		const handleEdit = () => {
 			navigate(`${AppRoutes.EditCertificate}${id}`);
 		};
@@ -65,7 +62,7 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 				width={32}
 				height={32}
 			/>
-			<DropDown items={certificateDropDown(certificateId, certificateIndex)} />
+			<DropDown items={certificateDropDown(certificateId)} />
 		</button>
 	);
 };

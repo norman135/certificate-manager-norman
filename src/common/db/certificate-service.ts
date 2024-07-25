@@ -11,7 +11,7 @@ const addCertificate = async (item: Certificate): Promise<boolean> => {
 	}
 };
 
-const getCertificate = async (id: number): Promise<Certificate | null> => {
+const getCertificate = async (id: string): Promise<Certificate | null> => {
 	try {
 		const request = await getItem(id);
 		return new Promise<Certificate | null>((resolve, reject) => {
@@ -38,7 +38,7 @@ const updateCertificate = async (item: Certificate): Promise<boolean> => {
 	}
 };
 
-const deleteCertificate = async (id: number): Promise<boolean> => {
+const deleteCertificate = async (id: string): Promise<boolean> => {
 	try {
 		await deleteItem(id);
 		return true;
