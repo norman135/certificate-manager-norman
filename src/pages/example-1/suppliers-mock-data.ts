@@ -1,16 +1,6 @@
-import { Supplier } from '../../common/models/certificate.model';
-
-const suppliers: Supplier[] = [
-	{
-		index: 1,
-		name: 'DAIMLER AG',
-		city: 'Berlin',
-	},
-	{
-		index: 2,
-		name: 'ANDEMIS GmBH',
-		city: 'Stuttgart',
-	},
+const suppliers: string[] = [
+	'DAIMLER AG, 1, Berlin',
+	'ANDEMIS GmBH, 2, Stuttgart',
 ];
 
 export default suppliers;

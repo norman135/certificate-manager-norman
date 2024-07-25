@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import certificates from '../certificates-mock-data';
 import DropDown, {
@@ -7,6 +7,7 @@ import DropDown, {
 import './CertificateSettings.css';
 import AppRoutes from '../../../common/app-routes/AppRoutes';
 import SettingsIcon from '../../../common/components/icons/SettingsIcon';
+import { deleteCertificate } from '../../../common/db/certificate-service';
 
 interface CertificateSettingsProps {
 	certificateId: number;
@@ -21,9 +22,16 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 }): JSX.Element => {
 	const navigate = useNavigate();
 
-	const deleteCertificate = (index: number): void => {
-		certificates.splice(index, 1);
-		update();
+	const _deleteCertificate = (id: number): void => {
+		if (confirm('Are you sure?')) {
+			const deleteCert = async () => {
+				if (!(await deleteCertificate(id))) {
+					console.log('Error deleting certificate!');
+				}
+			};
+
+			deleteCert();
+		}
 	};
 
 	const certificateDropDown = (id: number, index: number): DropDownItem[] => {
@@ -32,7 +40,7 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 		};
 
 		const handleDelete = () => {
-			deleteCertificate(index);
+			_deleteCertificate(id);
 		};
 
 		return [

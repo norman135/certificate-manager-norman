@@ -7,13 +7,9 @@ export const getCertificateIndex = (certificateId: number): number => {
 	);
 };
 
-export const initialCertificate = {
+export const initialCertificate: Certificate = {
 	id: 0,
-	supplier: {
-		name: '',
-		index: 0,
-		city: '',
-	},
+	supplier: '',
 	type: CertificateType.none,
 	validFrom: new Date('2000-01-01'),
 	validTo: new Date('2000-01-01'),

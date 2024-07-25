@@ -8,7 +8,6 @@ import SearchIcon from '../../../common/components/icons/SearchIcon';
 import Certificate, {
 	CertificateType,
 } from '../../../common/models/certificate.model';
-import certificates from '../certificates-mock-data';
 import DatePicker from '../../../common/date-picker/DatePicker';
 import Select from '../../../common/select/Select';
 import PdfViewer from '../pdf-viewer/PdfViewer';
@@ -16,6 +15,12 @@ import { toIsoString } from '../../../common/utils/format-date.utils';
 import initialCertificate, {
 	getCertificateIndex,
 } from '../../../common/utils/certificate.utils';
+import {
+	addCertificate,
+	getAllCertificates,
+	getCertificate,
+	updateCertificate,
+} from '../../../common/db/certificate-service';
 
 interface CertificateDetailsProps {
 	certificateId?: number;
@@ -36,23 +41,48 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 
 	useEffect(() => {
 		if (certificateId) {
-			const certificateIndex: number = getCertificateIndex(certificateId);
-			setCertificate(certificates[certificateIndex]);
+			const fetchCertificate = async () => {
+				const _cert = await getCertificate(certificateId);
+
+				if (_cert) {
+					setCertificate(_cert);
+				} else {
+					console.log('Error retrieving certificate.');
+				}
+			};
+
+			fetchCertificate();
 		} else {
-			setCertificate({
-				...initialCertificate,
-				id: certificates.length + 1,
-			});
+			const fetchCerts = async () => {
+				const _certs = await getAllCertificates();
+
+				setCertificate({
+					...initialCertificate,
+					id: _certs.length + 1,
+				});
+			};
+
+			fetchCerts();
 		}
 	}, [certificateId]);
 
 	const handleSave = (): void => {
 		if (certificateId) {
-			const certificateIndex: number = getCertificateIndex(certificateId);
-			certificates[certificateIndex] = certificate;
-			setCertificate(initialCertificate);
+			const updateCert = async () => {
+				if (!(await updateCertificate(certificate))) {
+					console.log('Error attempting to update certificate.');
+				}
+			};
+
+			updateCert();
 		} else {
-			certificates.push(certificate);
+			const addCert = async () => {
+				if (!(await addCertificate(certificate))) {
+					console.log('Error attempting to add certificate');
+				}
+			};
+
+			addCert();
 		}
 		goBack();
 	};
@@ -61,12 +91,12 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		setCertificate(initialCertificate);
 	};
 
-	// const handleSupplierChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-	// 	setCertificate((prev) => ({
-	// 		...prev,
-	// 		supplier: e.target.value,
-	// 	}));
-	// };
+	const handleSupplierChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setCertificate((prev) => ({
+			...prev,
+			supplier: e.target.value,
+		}));
+	};
 
 	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setCertificate((prev) => ({
@@ -98,9 +128,8 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<div className="edit-certificate-input-container">
 							<input
 								type="text"
-								value={`${certificate.supplier.name}, ${certificate.supplier.index}, ${certificate.supplier.city}`}
-								// onChange={handleSupplierChange}
-								disabled={true}
+								value={certificate.supplier}
+								onChange={handleSupplierChange}
 							/>
 							<button>
 								<SearchIcon
