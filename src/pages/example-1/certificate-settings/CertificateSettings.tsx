@@ -31,6 +31,7 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 			};
 
 			deleteCert();
+			update();
 		}
 	};
 

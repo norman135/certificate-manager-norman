@@ -9,20 +9,15 @@ import Certificate from '../../common/models/certificate.model';
 import { getAllCertificates } from '../../common/db/certificate-service';
 
 const Example1: FC = (): JSX.Element => {
-	const [count, setCount] = useState<number>(0);
 	const [certificates, setCertificates] = useState<Certificate[]>([]);
 
-	const handleUpdate = () => {
-		setCount(count + 1);
+	const fetchCertificates = async () => {
+		const _certs = await getAllCertificates();
+
+		setCertificates(_certs);
 	};
 
 	useEffect(() => {
-		const fetchCertificates = async () => {
-			const _certs = await getAllCertificates();
-
-			setCertificates(_certs);
-		};
-
 		fetchCertificates();
 	}, []);
 
@@ -43,7 +38,7 @@ const Example1: FC = (): JSX.Element => {
 						<CertificateSettings
 							certificateId={certificate.id}
 							certificateIndex={index}
-							update={handleUpdate}
+							update={fetchCertificates}
 						/>,
 						certificate.supplier,
 						certificate.type,
