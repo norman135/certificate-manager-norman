@@ -20,6 +20,10 @@ import {
 } from '../../../common/db/certificate-service';
 import initialCertificate from '../../../common/utils/certificate.utils';
 import Supplier from '../../../common/models/supplier.model';
+import {
+	Languages,
+	useLanguageContext,
+} from '../../../common/language/Language';
 import SupplierLookup from '../../../common/components/supplier-user-lookup/SupplierLookup';
 import { initialSupplier } from '../../../common/utils/supplier.utils';
 
@@ -34,6 +38,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		useState<Certificate>(initialCertificate);
 	const [fileURL, setFileURL] = useState<string>('');
 	const [isSearchDialogOpen, setIsSearchDialogOpen] = useState<boolean>(false);
+	const { language } = useLanguageContext();
 
 	const navigate = useNavigate();
 
@@ -49,7 +54,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 				if (_cert) {
 					setCertificate(_cert);
 				} else {
-					console.log('Error retrieving certificate.');
+					console.error('Error retrieving certificate.');
 				}
 			};
 
@@ -70,7 +75,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		if (certificateId) {
 			const updateCert = async () => {
 				if (!(await updateCertificate(certificate))) {
-					console.log('Error attempting to update certificate.');
+					console.error('Error attempting to update certificate.');
 				}
 			};
 
@@ -78,7 +83,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		} else {
 			const addCert = async () => {
 				if (!(await addCertificate(certificate))) {
-					console.log('Error attempting to add certificate');
+					console.error('Error attempting to add certificate');
 				}
 			};
 
@@ -106,12 +111,16 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	const selectSupplier = (supplier: Supplier) => {
 		setCertificate((prev) => ({
 			...prev,
-			supplier: supplier as Supplier,
+			supplier: supplier,
 		}));
 	};
 
 	const clearSupplier = () => {
 		selectSupplier(initialSupplier);
+	};
+
+	const supplierNameDisplay = (supplier: Supplier): string => {
+		return `${supplier.name}, ${supplier.indexValue}, ${supplier.city}`;
 	};
 
 	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -150,15 +159,19 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			<div className="edit-certificate-input-area">
 				<div className="edit-certificate-inputs">
 					<div className="edit-certificate-input">
-						<label>Supplier</label>
+						<label>
+							{language === Languages.English ? 'Supplier' : 'Anbieter'}
+						</label>
 						<div className="edit-certificate-input-container">
 							<input
 								type="text"
 								value={
-									certificate.supplier!.indexValue ===
-									initialSupplier.indexValue
-										? 'Select a Supplier'
-										: `${certificate.supplier!.name}, ${certificate.supplier!.indexValue}, ${certificate.supplier!.city}`
+									certificate.supplier.indexValue ===
+									initialCertificate.supplier.indexValue
+										? language === Languages.English
+											? 'Select a Supplier'
+											: 'Wählen Sie einen Lieferanten aus'
+										: supplierNameDisplay(certificate.supplier)
 								}
 								disabled={true}
 								style={{
@@ -186,12 +199,19 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						</div>
 					</div>
 					<div className="edit-certificate-input">
-						<label>Certificate type</label>
+						<label>
+							{language === Languages.English
+								? 'Certificate type'
+								: 'Art des Zertifikats'}
+						</label>
 						<Select
 							options={[
 								{
 									value: CertificateType.none,
-									text: 'Select Your Option',
+									text:
+										language === Languages.English
+											? 'Select Your Option'
+											: 'Wählen Sie Ihre Option',
 								},
 								{
 									value: CertificateType.printingPermission,
@@ -207,7 +227,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						/>
 					</div>
 					<div className="edit-certificate-input">
-						<label>Valid from</label>
+						<label>
+							{language === Languages.English ? 'Valid from' : 'Gültig ab'}
+						</label>
 						<div className="edit-certificate-input-container">
 							<DatePicker
 								value={toIsoString(certificate.validFrom!)}
@@ -217,7 +239,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						</div>
 					</div>
 					<div className="edit-certificate-input">
-						<label>Valid to</label>
+						<label>
+							{language === Languages.English ? 'Valid to' : 'Gültig bis'}
+						</label>
 						<div className="edit-certificate-input-container">
 							<DatePicker
 								value={toIsoString(certificate.validTo!)}
@@ -236,7 +260,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			</div>
 			<div className="edit-certificate-buttons-area">
 				<Button
-					name="Save"
+					name={language === Languages.English ? 'Save' : 'Speichern'}
 					color="white"
 					bg="#c0cc38"
 					type="button"
@@ -244,7 +268,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 					to=""
 				/>
 				<Button
-					name="Reset"
+					name={language === Languages.English ? 'Reset' : 'Zurücksetzen'}
 					color="black"
 					bg="rgba(0,0,0,0)"
 					type="button"

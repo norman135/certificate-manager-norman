@@ -7,10 +7,12 @@ import './Example1.css';
 import CertificateSettings from './certificate-settings/CertificateSettings';
 import Certificate from '../../common/models/certificate.model';
 import { getAllCertificates } from '../../common/db/certificate-service';
+import { Languages, useLanguageContext } from '../../common/language/Language';
 import Supplier from '../../common/models/supplier.model';
 
 const Example1: FC = (): JSX.Element => {
 	const [certificates, setCertificates] = useState<Certificate[]>([]);
+	const { language } = useLanguageContext();
 
 	const fetchCertificates = async () => {
 		const _certs = await getAllCertificates();
@@ -28,7 +30,11 @@ const Example1: FC = (): JSX.Element => {
 	return (
 		<>
 			<Button
-				name="New Certificate"
+				name={
+					language === Languages.English
+						? 'New Certificate'
+						: 'Neues Zertifikat'
+				}
 				bg="#c0cc38"
 				color="white"
 				type="link"
@@ -37,7 +43,11 @@ const Example1: FC = (): JSX.Element => {
 			/>
 			<div className="certificates-table">
 				<Table
-					columns={['', 'Supplier', 'Type', 'Valid from', 'Valid to']}
+					columns={
+						language === Languages.English
+							? ['', 'Supplier', 'Type', 'Valid from', 'Valid to']
+							: ['', 'Anbieter', 'Typ', 'Gültig ab', 'Gültig bis']
+					}
 					data={certificates.map((certificate) => [
 						<CertificateSettings
 							certificateId={certificate.id}
