@@ -8,7 +8,7 @@ import AppRoutes from '../../../common/app-routes/AppRoutes';
 import SettingsIcon from '../../../common/components/icons/SettingsIcon';
 import { deleteCertificate } from '../../../common/db/certificate-service';
 import {
-	Languages,
+	toSelectedLocale,
 	useLanguageContext,
 } from '../../../common/language/Language';
 
@@ -29,7 +29,7 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 		if (confirm(toSelectedLocale('sure', language))) {
 			const deleteCert = async () => {
 				if (!(await deleteCertificate(id))) {
-					console.log('Error deleting certificate!');
+					console.error('Error deleting certificate!');
 				}
 			};
 
