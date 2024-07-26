@@ -23,6 +23,10 @@ import SearchItems, {
 	SearchType,
 } from '../../../common/components/search-items/SearchItems';
 import Supplier from '../../../common/models/supplier.model';
+import {
+	Languages,
+	useLanguageContext,
+} from '../../../common/language/Language';
 
 interface CertificateDetailsProps {
 	certificateId?: string;
@@ -35,6 +39,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		useState<Certificate>(initialCertificate);
 	const [fileURL, setFileURL] = useState<string>('');
 	const [search, setSearch] = useState<boolean>(false);
+	const { language } = useLanguageContext();
 
 	const navigate = useNavigate();
 
@@ -152,14 +157,18 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			<div className="edit-certificate-input-area">
 				<div className="edit-certificate-inputs">
 					<div className="edit-certificate-input">
-						<label>Supplier</label>
+						<label>
+							{language === Languages.English ? 'Supplier' : 'Anbieter'}
+						</label>
 						<div className="edit-certificate-input-container">
 							<input
 								type="text"
 								value={
 									certificate.supplier.indexValue ===
 									initialCertificate.supplier.indexValue
-										? 'Select a Supplier'
+										? language === Languages.English
+											? 'Select a Supplier'
+											: 'Wählen Sie einen Lieferanten aus'
 										: `${certificate.supplier.name}, ${certificate.supplier.indexValue}, ${certificate.supplier.city}`
 								}
 								disabled={true}
@@ -189,12 +198,19 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						</div>
 					</div>
 					<div className="edit-certificate-input">
-						<label>Certificate type</label>
+						<label>
+							{language === Languages.English
+								? 'Certificate type'
+								: 'Art des Zertifikats'}
+						</label>
 						<Select
 							options={[
 								{
 									value: CertificateType.none,
-									text: 'Select Your Option',
+									text:
+										language === Languages.English
+											? 'Select Your Option'
+											: 'Wählen Sie Ihre Option',
 								},
 								{
 									value: CertificateType.printingPermission,
@@ -210,7 +226,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						/>
 					</div>
 					<div className="edit-certificate-input">
-						<label>Valid from</label>
+						<label>
+							{language === Languages.English ? 'Valid from' : 'Gültig ab'}
+						</label>
 						<div className="edit-certificate-input-container">
 							<DatePicker
 								value={toIsoString(certificate.validFrom)}
@@ -220,7 +238,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						</div>
 					</div>
 					<div className="edit-certificate-input">
-						<label>Valid to</label>
+						<label>
+							{language === Languages.English ? 'Valid to' : 'Gültig bis'}
+						</label>
 						<div className="edit-certificate-input-container">
 							<DatePicker
 								value={toIsoString(certificate.validTo)}
@@ -239,7 +259,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			</div>
 			<div className="edit-certificate-buttons-area">
 				<Button
-					name="Save"
+					name={language === Languages.English ? 'Save' : 'Speichern'}
 					color="white"
 					bg="#c0cc38"
 					type="button"
@@ -247,7 +267,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 					to=""
 				/>
 				<Button
-					name="Reset"
+					name={language === Languages.English ? 'Reset' : 'Zurücksetzen'}
 					color="black"
 					bg="rgba(0,0,0,0)"
 					type="button"
