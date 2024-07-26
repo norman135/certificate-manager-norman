@@ -19,6 +19,8 @@ import {
 	updateCertificate,
 } from '../../../common/db/certificate-service';
 import initialCertificate from '../../../common/utils/certificate.utils';
+import SearchItems from '../../../common/components/search-items/SearchItems';
+import Supplier from '../../../common/models/supplier.model';
 
 interface CertificateDetailsProps {
 	certificateId?: string;
@@ -30,6 +32,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	const [certificate, setCertificate] =
 		useState<Certificate>(initialCertificate);
 	const [fileURL, setFileURL] = useState<string>('');
+	const [search, setSearch] = useState<boolean>(false);
 
 	const navigate = useNavigate();
 
@@ -72,6 +75,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 
 			updateCert();
 		} else {
+			console.log(certificate);
 			const addCert = async () => {
 				if (!(await addCertificate(certificate))) {
 					console.log('Error attempting to add certificate');
@@ -84,14 +88,30 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	};
 
 	const resetInput = (): void => {
-		setCertificate(initialCertificate);
+		const _cert = initialCertificate;
+		if (certificateId) {
+			_cert.id = certificateId;
+		}
+		setCertificate(_cert);
 	};
 
-	const handleSupplierChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const openSearch = () => {
+		setSearch(true);
+	};
+
+	const closeSearch = () => {
+		setSearch(false);
+	};
+
+	const setSupplier = (supplier: Supplier) => {
 		setCertificate((prev) => ({
 			...prev,
-			supplier: e.target.value,
+			supplier: supplier,
 		}));
+	};
+
+	const clearSupplier = () => {
+		setSupplier(initialCertificate.supplier);
 	};
 
 	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -134,21 +154,35 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<div className="edit-certificate-input-container">
 							<input
 								type="text"
-								value={certificate.supplier}
-								onChange={handleSupplierChange}
+								value={
+									certificate.supplier.index ===
+									initialCertificate.supplier.index
+										? 'Select a Supplier'
+										: `${certificate.supplier.name}, ${certificate.supplier.index}, ${certificate.supplier.city}`
+								}
+								disabled={true}
+								style={{
+									cursor: 'not-allowed',
+								}}
 							/>
-							<button>
+							<button onClick={openSearch}>
 								<SearchIcon
 									width={24}
 									height={24}
 								/>
 							</button>
-							<button>
+							<button onClick={clearSupplier}>
 								<CancelIcon
 									width={12}
 									height={12}
 								/>
 							</button>
+							{search ? (
+								<SearchItems
+									closeSearch={closeSearch}
+									selectItem={setSupplier}
+								/>
+							) : null}
 						</div>
 					</div>
 					<div className="edit-certificate-input">

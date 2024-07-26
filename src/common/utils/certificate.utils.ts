@@ -2,7 +2,12 @@ import Certificate, { CertificateType } from '../models/certificate.model';
 
 export const initialCertificate: Certificate = {
 	id: '',
-	supplier: '',
+	supplier: {
+		id: '',
+		index: 0,
+		name: '',
+		city: '',
+	},
 	type: CertificateType.none,
 	validFrom: new Date('2000-01-01'),
 	validTo: new Date('2000-01-01'),

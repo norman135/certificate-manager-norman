@@ -39,7 +39,7 @@ const Example1: FC = (): JSX.Element => {
 							certificateId={certificate.id}
 							update={fetchCertificates}
 						/>,
-						certificate.supplier,
+						`${certificate.supplier.name}, ${certificate.supplier.index}, ${certificate.supplier.city}`,
 						certificate.type,
 						formatDate(certificate.validFrom),
 						formatDate(certificate.validTo),

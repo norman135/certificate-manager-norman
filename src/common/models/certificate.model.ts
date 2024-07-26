@@ -1,6 +1,8 @@
+import Supplier from './supplier.model';
+
 type Certificate = {
 	id: string;
-	supplier: string;
+	supplier: Supplier;
 	type: string;
 	validFrom: Date;
 	validTo: Date;
@@ -11,5 +13,10 @@ export enum CertificateType {
 	printingPermission = 'Permission of Printing',
 	ohsas = 'OHSAS 18001',
 }
+
+export type CertificateTypeModel = {
+	id: string;
+	type: CertificateType;
+};
 
 export default Certificate;
