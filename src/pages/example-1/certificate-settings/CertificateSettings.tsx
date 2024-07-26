@@ -9,7 +9,6 @@ import SettingsIcon from '../../../common/components/icons/SettingsIcon';
 import { deleteCertificate } from '../../../common/db/certificate-service';
 import {
 	Languages,
-	toSelectedLocale,
 	useLanguageContext,
 } from '../../../common/language/Language';
 

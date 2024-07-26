@@ -1,7 +1,5 @@
 import { FC } from 'react';
 import {
-	LanguageContext,
-	Languages,
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../../common/language/Language';

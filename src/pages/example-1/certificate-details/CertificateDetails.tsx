@@ -19,12 +19,9 @@ import {
 import initialCertificate from '../../../common/utils/certificate.utils';
 import Supplier from '../../../common/models/supplier.model';
 import {
-	Languages,
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../../common/language/Language';
-import SupplierLookup from '../../../common/components/supplier-user-lookup/SupplierLookup';
-import { initialSupplier } from '../../../common/utils/supplier.utils';
 import SupplierInputLookup from './supplier-lookup-input/SupplierInputLookup';
 
 interface CertificateDetailsProps {
