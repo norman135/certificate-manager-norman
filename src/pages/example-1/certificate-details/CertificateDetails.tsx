@@ -19,7 +19,9 @@ import {
 	updateCertificate,
 } from '../../../common/db/certificate-service';
 import initialCertificate from '../../../common/utils/certificate.utils';
-import SearchItems from '../../../common/components/search-items/SearchItems';
+import SearchItems, {
+	SearchType,
+} from '../../../common/components/search-items/SearchItems';
 import Supplier from '../../../common/models/supplier.model';
 
 interface CertificateDetailsProps {
@@ -103,15 +105,15 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		setSearch(false);
 	};
 
-	const setSupplier = (supplier: Supplier) => {
+	const selectSupplier = (supplier: Supplier) => {
 		setCertificate((prev) => ({
 			...prev,
-			supplier: supplier,
+			supplier: supplier as Supplier,
 		}));
 	};
 
 	const clearSupplier = () => {
-		setSupplier(initialCertificate.supplier);
+		selectSupplier(initialCertificate.supplier);
 	};
 
 	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -155,10 +157,10 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 							<input
 								type="text"
 								value={
-									certificate.supplier.index ===
-									initialCertificate.supplier.index
+									certificate.supplier.indexValue ===
+									initialCertificate.supplier.indexValue
 										? 'Select a Supplier'
-										: `${certificate.supplier.name}, ${certificate.supplier.index}, ${certificate.supplier.city}`
+										: `${certificate.supplier.name}, ${certificate.supplier.indexValue}, ${certificate.supplier.city}`
 								}
 								disabled={true}
 								style={{
@@ -180,7 +182,8 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 							{search ? (
 								<SearchItems
 									closeSearch={closeSearch}
-									selectItem={setSupplier}
+									selectItem={selectSupplier as (supplier: SearchType) => void}
+									type="supplier"
 								/>
 							) : null}
 						</div>

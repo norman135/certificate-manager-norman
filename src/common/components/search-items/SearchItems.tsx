@@ -3,78 +3,139 @@ import './SearchItems.css';
 import TextInput from '../input/TextInput';
 import CancelIcon from '../icons/CancelIcon';
 import Button from '../button/Button';
-import Table from '../table/Table';
 import Supplier from '../../models/supplier.model';
 import getAllSuppliers from '../../db/supplier-service';
 import SelectTable from '../select-table/SelectTable';
 import initialCertificate from '../../utils/certificate.utils';
+import User from '../../models/user.model';
+import { initialSupplier } from '../../utils/supplier.utils';
+import { initialUser } from '../../utils/user.utils';
+import getAllUsers from '../../db/user-service';
+
+export type SearchType = Supplier | User;
 
 interface SearchItemsProps {
 	closeSearch: () => void;
-	selectItem: (supplier: Supplier) => void;
+	selectItem: (item: SearchType) => void;
+	type: 'supplier' | 'user';
 }
 
 const SearchItems: FC<SearchItemsProps> = ({
 	closeSearch,
 	selectItem,
+	type,
 }): JSX.Element => {
-	const [suppliersBuffer, setSuppliersBuffer] = useState<Supplier[]>([]);
-	const [name, setName] = useState<string>('');
-	const [index, setIndex] = useState<string>('');
-	const [city, setCity] = useState<string>('');
-	const [selectedSupplier, setSelectedSupplier] = useState<Supplier>(
-		initialCertificate.supplier,
+	const [itemsBuffer, setItemsBuffer] = useState<SearchType[]>([]);
+	const [itemsArray, setItemsArray] = useState<SearchType[]>([]);
+	const [itemInfo, setItemInfo] = useState<SearchType>(
+		type === 'supplier' ? initialSupplier : initialUser,
 	);
-	let suppliersArray: Supplier[] = [];
+	const [selectedItem, setSelectedItem] = useState<SearchType>(
+		type === 'supplier' ? initialSupplier : initialUser,
+	);
 
 	useEffect(() => {
-		const getSuppliers = async () => {
-			suppliersArray = await getAllSuppliers();
-			// setSuppliersBuffer(suppliersArray);
-		};
+		if (type === 'supplier') {
+			getAllSuppliers().then((data) => {
+				setItemsArray(data);
+				setItemsBuffer(data);
+			});
+		} else {
+			getAllUsers().then((data) => {
+				setItemsArray(data);
+				setItemsBuffer(data);
+			});
+		}
+	}, []);
 
-		getSuppliers();
-	}, [suppliersArray]);
+	const searchItems = (): void => {
+		const _items: SearchType[] = [];
 
-	const searchSuppliers = (): void => {
-		const _suppliers: Supplier[] = [];
-
-		for (let i = 0; i < suppliersArray.length; i++) {
-			let supplier = suppliersArray[i];
-			if (
-				supplier.name.includes(name, 0) &&
-				(!index || supplier.index === parseInt(index)) &&
-				supplier.city.includes(city, 0)
-			) {
-				_suppliers.push(supplier);
+		if (type === 'supplier') {
+			for (let i = 0; i < itemsArray.length; i++) {
+				let item = itemsArray[i] as Supplier;
+				let indexx = item.indexValue;
+				if (
+					item.name.includes((itemInfo as Supplier).name, 0) &&
+					item.indexValue.includes((itemInfo as Supplier).indexValue, 0) &&
+					item.city.includes((itemInfo as Supplier).city, 0)
+				) {
+					_items.push(item);
+				}
+			}
+		} else {
+			for (let i = 0; i < itemsArray.length; i++) {
+				let item = itemsArray[i] as User;
+				if (
+					item.name.includes((itemInfo as User).name, 0) &&
+					item.firstName.includes((itemInfo as User).firstName, 0) &&
+					item.userId.includes((itemInfo as User).userId, 0) &&
+					item.department.includes((itemInfo as User).department, 0) &&
+					item.plant.includes((itemInfo as User).plant, 0)
+				) {
+					_items.push(item);
+				}
 			}
 		}
 
-		setSuppliersBuffer(_suppliers);
+		setItemsBuffer(_items);
 	};
 
 	const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setName(e.target.value);
+		setItemInfo((prev) => ({
+			...prev,
+			name: e.target.value,
+		}));
 	};
-
 	const handleIndexChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setIndex(e.target.value);
+		setItemInfo((prev) => ({
+			...prev,
+			indexValue: e.target.value,
+		}));
+	};
+	const handleCityChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setItemInfo((prev) => ({
+			...prev,
+			city: e.target.value,
+		}));
 	};
 
-	const handleCityChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setCity(e.target.value);
+	const handleFirstNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setItemInfo((prev) => ({
+			...prev,
+			firstName: e.target.value,
+		}));
+	};
+
+	const handleDepartmentChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setItemInfo((prev) => ({
+			...prev,
+			department: e.target.value,
+		}));
+	};
+	const handleUserIdChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setItemInfo((prev) => ({
+			...prev,
+			userId: e.target.value,
+		}));
+	};
+	const handlePlantChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setItemInfo((prev) => ({
+			...prev,
+			plant: e.target.value,
+		}));
 	};
 
 	const clearFields = () => {
-		setName('');
-		setIndex('');
-		setCity('');
+		setItemInfo(type === 'supplier' ? initialSupplier : initialUser);
 	};
 
 	return (
 		<div className="search-container">
 			<div className="search-top-bar">
-				<p className="search-top-bar-title">Search for Suppliers</p>
+				<p className="search-top-bar-title">
+					Search for {type === 'supplier' ? 'Suppliers' : 'Persons'}
+				</p>
 				<button
 					className="search-top-bar-close"
 					onClick={closeSearch}
@@ -89,21 +150,53 @@ const SearchItems: FC<SearchItemsProps> = ({
 				<div className="search-criteria">
 					<div className="expand-bar">Search criteria</div>
 					<div className="search-criteria-input-area">
-						<TextInput
-							label="Supplier Name"
-							value={name}
-							onchange={handleNameChange}
-						/>
-						<TextInput
-							label="Supplier Index"
-							value={index}
-							onchange={handleIndexChange}
-						/>
-						<TextInput
-							label="City"
-							value={city}
-							onchange={handleCityChange}
-						/>
+						{type === 'supplier' ? (
+							<>
+								<TextInput
+									label="Supplier Name"
+									value={itemInfo.name}
+									onchange={handleNameChange}
+								/>
+								<TextInput
+									label="Supplier Index"
+									value={(itemInfo as Supplier).indexValue}
+									onchange={handleIndexChange}
+								/>
+								<TextInput
+									label="City"
+									value={(itemInfo as Supplier).city}
+									onchange={handleCityChange}
+								/>
+							</>
+						) : (
+							<>
+								<TextInput
+									label="Name"
+									value={itemInfo.name}
+									onchange={handleNameChange}
+								/>
+								<TextInput
+									label="First Name"
+									value={(itemInfo as User).firstName}
+									onchange={handleFirstNameChange}
+								/>
+								<TextInput
+									label="User ID"
+									value={(itemInfo as User).userId}
+									onchange={handleUserIdChange}
+								/>
+								<TextInput
+									label="Department"
+									value={(itemInfo as User).department}
+									onchange={handleDepartmentChange}
+								/>
+								<TextInput
+									label="Plant"
+									value={(itemInfo as User).plant}
+									onchange={handlePlantChange}
+								/>
+							</>
+						)}
 					</div>
 					<Button
 						name="Search"
@@ -111,7 +204,7 @@ const SearchItems: FC<SearchItemsProps> = ({
 						bg="rgb(0, 44, 57)"
 						type="button"
 						to=""
-						onClick={searchSuppliers}
+						onClick={searchItems}
 					/>
 					<Button
 						name="Reset"
@@ -125,9 +218,14 @@ const SearchItems: FC<SearchItemsProps> = ({
 				<div className="search-list">
 					<div className="expand-bar">Supplier list</div>
 					<SelectTable
-						columns={['Supplier name', 'Supplier index', 'City']}
-						items={suppliersBuffer}
-						onselect={setSelectedSupplier}
+						columns={
+							type === 'supplier'
+								? ['Supplier name', 'Supplier index', 'City']
+								: ['Name', 'First Name', 'User ID', 'Department', 'Plant']
+						}
+						items={itemsBuffer}
+						type={type}
+						onselect={setSelectedItem}
 					/>
 					<Button
 						name="Save"
@@ -136,7 +234,7 @@ const SearchItems: FC<SearchItemsProps> = ({
 						type="button"
 						to=""
 						onClick={() => {
-							selectItem(selectedSupplier);
+							selectItem(selectedItem);
 							closeSearch();
 						}}
 					/>

@@ -4,7 +4,7 @@ export const initialCertificate: Certificate = {
 	id: '',
 	supplier: {
 		id: '',
-		index: 0,
+		indexValue: '',
 		name: '',
 		city: '',
 	},
