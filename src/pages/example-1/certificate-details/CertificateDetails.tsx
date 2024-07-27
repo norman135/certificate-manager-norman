@@ -27,6 +27,10 @@ import {
 	Languages,
 	useLanguageContext,
 } from '../../../common/language/Language';
+import {
+	Languages,
+	useLanguageContext,
+} from '../../../common/language/Language';
 
 interface CertificateDetailsProps {
 	certificateId?: string;

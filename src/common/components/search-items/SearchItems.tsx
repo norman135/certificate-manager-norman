@@ -161,6 +161,11 @@ const SearchItems: FC<SearchItemsProps> = ({
 							? 'Search criteria'
 							: 'Suchkriterium'}
 					</div>
+					<div className="expand-bar">
+						{language === Languages.English
+							? 'Search criteria'
+							: 'Suchkriterium'}
+					</div>
 					<div className="search-criteria-input-area">
 						{type === 'supplier' ? (
 							<>
