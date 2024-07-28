@@ -211,12 +211,14 @@ const SearchItems: FC<SearchItemsProps> = ({
 									onchange={handleUserIdChange}
 								/>
 								<TextInput
-									label="Department"
+									label={
+										language === Languages.English ? 'Department' : 'Abteilung'
+									}
 									value={(itemInfo as User).department}
 									onchange={handleDepartmentChange}
 								/>
 								<TextInput
-									label="Plant"
+									label={language === Languages.English ? 'Plant' : 'Anlage'}
 									value={(itemInfo as User).plant}
 									onchange={handlePlantChange}
 								/>
@@ -252,7 +254,9 @@ const SearchItems: FC<SearchItemsProps> = ({
 								? language === Languages.English
 									? ['Supplier name', 'Supplier index', 'City']
 									: ['Name des Anbieters', 'Lieferantenindex', 'Stadt']
-								: ['Name', 'First Name', 'User ID', 'Department', 'Plant']
+								: language === Languages.English
+									? ['Name', 'First Name', 'User ID', 'Department', 'Plant']
+									: ['Name', 'Vorname', 'Benutzer-ID', 'Abteilung', 'Anlage']
 						}
 						items={itemsBuffer}
 						type={type}
