@@ -43,6 +43,7 @@ const Button: FC<ButtonProps> = ({
 									backgroundColor: bg,
 									color: color,
 									cursor: 'not-allowed',
+									opacity: 0.5,
 								}
 							: {
 									backgroundColor: bg,
