@@ -56,9 +56,13 @@ const SearchItems: FC<SearchItemsProps> = ({
 				let item = itemsArray[i] as Supplier;
 				let indexx = item.indexValue;
 				if (
-					item.name.includes((itemInfo as Supplier).name, 0) &&
+					item.name
+						.toLowerCase()
+						.includes((itemInfo as Supplier).name.toLowerCase(), 0) &&
 					item.indexValue.includes((itemInfo as Supplier).indexValue, 0) &&
-					item.city.includes((itemInfo as Supplier).city, 0)
+					item.city
+						.toLowerCase()
+						.includes((itemInfo as Supplier).city.toLowerCase(), 0)
 				) {
 					_items.push(item);
 				}
@@ -67,11 +71,21 @@ const SearchItems: FC<SearchItemsProps> = ({
 			for (let i = 0; i < itemsArray.length; i++) {
 				let item = itemsArray[i] as User;
 				if (
-					item.name.includes((itemInfo as User).name, 0) &&
-					item.firstName.includes((itemInfo as User).firstName, 0) &&
-					item.userId.includes((itemInfo as User).userId, 0) &&
-					item.department.includes((itemInfo as User).department, 0) &&
-					item.plant.includes((itemInfo as User).plant, 0)
+					item.name
+						.toLowerCase()
+						.includes((itemInfo as User).name.toLowerCase(), 0) &&
+					item.firstName
+						.toLowerCase()
+						.includes((itemInfo as User).firstName.toLowerCase(), 0) &&
+					item.userId
+						.toLowerCase()
+						.includes((itemInfo as User).userId.toLowerCase(), 0) &&
+					item.department
+						.toLowerCase()
+						.includes((itemInfo as User).department.toLowerCase(), 0) &&
+					item.plant
+						.toLowerCase()
+						.includes((itemInfo as User).plant.toLowerCase(), 0)
 				) {
 					_items.push(item);
 				}
@@ -201,7 +215,7 @@ const SearchItems: FC<SearchItemsProps> = ({
 					<Button
 						name="Search"
 						color="white"
-						bg="rgb(0, 44, 57)"
+						bg="#265b7a"
 						type="button"
 						to=""
 						onClick={searchItems}
@@ -209,7 +223,7 @@ const SearchItems: FC<SearchItemsProps> = ({
 					<Button
 						name="Reset"
 						color="black"
-						bg="rgb(226, 226, 226)"
+						bg="#f6f6f6"
 						type="button"
 						to=""
 						onClick={clearFields}
@@ -230,18 +244,21 @@ const SearchItems: FC<SearchItemsProps> = ({
 					<Button
 						name="Save"
 						color="white"
-						bg="rgb(255, 177, 75)"
+						bg="#f0cf93"
 						type="button"
 						to=""
 						onClick={() => {
 							selectItem(selectedItem);
 							closeSearch();
 						}}
+						disabled={
+							selectedItem === initialSupplier || selectedItem === initialUser
+						}
 					/>
 					<Button
 						name="Cancel"
 						color="black"
-						bg="rgb(226, 226, 226)"
+						bg="#f6f6f6"
 						type="button"
 						to=""
 						onClick={closeSearch}
