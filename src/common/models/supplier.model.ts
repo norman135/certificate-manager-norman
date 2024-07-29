@@ -1,7 +1,7 @@
 type Supplier = {
 	id: string;
-	indexValue: string;
 	name: string;
+	indexValue: string;
 	city: string;
 };
 

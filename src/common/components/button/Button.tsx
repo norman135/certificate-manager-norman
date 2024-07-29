@@ -7,8 +7,8 @@ interface ButtonProps {
 	color: string;
 	bg: string;
 	type: 'link' | 'button';
-	to: string;
-	onClick: () => void;
+	to?: string;
+	onClick?: () => void;
 	disabled?: boolean;
 }
 

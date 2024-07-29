@@ -19,10 +19,9 @@ import {
 	updateCertificate,
 } from '../../../common/db/certificate-service';
 import initialCertificate from '../../../common/utils/certificate.utils';
-import SearchItems, {
-	SearchType,
-} from '../../../common/components/search-items/SearchItems';
 import Supplier from '../../../common/models/supplier.model';
+import SupplierLookup from '../../../common/components/supplier-user-lookup/SupplierLookup';
+import { initialSupplier } from '../../../common/utils/supplier.utils';
 
 interface CertificateDetailsProps {
 	certificateId?: string;
@@ -34,7 +33,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	const [certificate, setCertificate] =
 		useState<Certificate>(initialCertificate);
 	const [fileURL, setFileURL] = useState<string>('');
-	const [search, setSearch] = useState<boolean>(false);
+	const [isSearchDialogOpen, setIsSearchDialogOpen] = useState<boolean>(false);
 
 	const navigate = useNavigate();
 
@@ -77,7 +76,6 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 
 			updateCert();
 		} else {
-			console.log(certificate);
 			const addCert = async () => {
 				if (!(await addCertificate(certificate))) {
 					console.log('Error attempting to add certificate');
@@ -97,12 +95,12 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		setCertificate(_cert);
 	};
 
-	const openSearch = () => {
-		setSearch(true);
+	const openSearchDialog = () => {
+		setIsSearchDialogOpen(true);
 	};
 
-	const closeSearch = () => {
-		setSearch(false);
+	const closeSearchDialog = () => {
+		setIsSearchDialogOpen(false);
 	};
 
 	const selectSupplier = (supplier: Supplier) => {
@@ -113,20 +111,20 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	};
 
 	const clearSupplier = () => {
-		selectSupplier(initialCertificate.supplier);
+		selectSupplier(initialSupplier);
 	};
 
 	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setCertificate((prev) => ({
 			...prev,
-			type: e.target.value,
+			type: e.target.value as CertificateType,
 		}));
 	};
 
 	const handleValidFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const validFromDate = new Date(e.target.value);
 
-		if (validFromDate > certificate.validTo) {
+		if (validFromDate > certificate.validTo!) {
 			setCertificate((prev) => ({
 				...prev,
 				validFrom: validFromDate,
@@ -157,17 +155,17 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 							<input
 								type="text"
 								value={
-									certificate.supplier.indexValue ===
-									initialCertificate.supplier.indexValue
+									certificate.supplier!.indexValue ===
+									initialSupplier.indexValue
 										? 'Select a Supplier'
-										: `${certificate.supplier.name}, ${certificate.supplier.indexValue}, ${certificate.supplier.city}`
+										: `${certificate.supplier!.name}, ${certificate.supplier!.indexValue}, ${certificate.supplier!.city}`
 								}
 								disabled={true}
 								style={{
 									cursor: 'not-allowed',
 								}}
 							/>
-							<button onClick={openSearch}>
+							<button onClick={openSearchDialog}>
 								<SearchIcon
 									width={24}
 									height={24}
@@ -179,11 +177,10 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 									height={12}
 								/>
 							</button>
-							{search ? (
-								<SearchItems
-									closeSearch={closeSearch}
-									selectItem={selectSupplier as (supplier: SearchType) => void}
-									type="supplier"
+							{isSearchDialogOpen ? (
+								<SupplierLookup
+									closeSearch={closeSearchDialog}
+									selectSupplier={selectSupplier}
 								/>
 							) : null}
 						</div>
@@ -205,7 +202,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 									text: CertificateType.ohsas,
 								},
 							]}
-							value={certificate.type}
+							value={certificate.type!}
 							onChange={handleTypeChange}
 						/>
 					</div>
@@ -213,7 +210,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<label>Valid from</label>
 						<div className="edit-certificate-input-container">
 							<DatePicker
-								value={toIsoString(certificate.validFrom)}
+								value={toIsoString(certificate.validFrom!)}
 								onChange={handleValidFromChange}
 								min=""
 							/>
@@ -223,9 +220,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<label>Valid to</label>
 						<div className="edit-certificate-input-container">
 							<DatePicker
-								value={toIsoString(certificate.validTo)}
+								value={toIsoString(certificate.validTo!)}
 								onChange={handleValidToChange}
-								min={toIsoString(certificate.validFrom)}
+								min={toIsoString(certificate.validFrom!)}
 							/>
 						</div>
 					</div>

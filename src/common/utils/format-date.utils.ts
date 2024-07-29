@@ -10,4 +10,6 @@ export const toIsoString = (date: Date): string => {
 	return date.toISOString().split('T')[0];
 };
 
+export const initialDate = new Date('2000-01-01');
+
 export default formatDate;

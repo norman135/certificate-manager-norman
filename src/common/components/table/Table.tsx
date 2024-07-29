@@ -3,10 +3,13 @@ import './Table.css';
 
 interface TableProps<T> {
 	columns: string[];
-	data: T[][];
+	data: T[][] | null;
 }
 
-const Table = <T extends {}>({ columns, data }: TableProps<T>): JSX.Element => {
+const Table = <T extends {} | null>({
+	columns,
+	data = [],
+}: TableProps<T>): JSX.Element => {
 	return (
 		<table>
 			<thead>
@@ -17,13 +20,15 @@ const Table = <T extends {}>({ columns, data }: TableProps<T>): JSX.Element => {
 				</tr>
 			</thead>
 			<tbody>
-				{data.map((row, rowIndex) => (
-					<tr key={rowIndex.toString()}>
-						{row.map((column, colIndex) => (
-							<td key={colIndex.toString()}>{column as ReactNode}</td>
-						))}
-					</tr>
-				))}
+				{data
+					? data.map((row, rowIndex) => (
+							<tr key={rowIndex.toString()}>
+								{row.map((column, colIndex) => (
+									<td key={colIndex.toString()}>{column as ReactNode}</td>
+								))}
+							</tr>
+						))
+					: null}
 			</tbody>
 		</table>
 	);

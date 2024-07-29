@@ -18,4 +18,25 @@ const getAllSuppliers = async (): Promise<Supplier[]> => {
 	}
 };
 
+export const searchSuppliers = async (criteria: {
+	name: string;
+	index: string;
+	city: string;
+}): Promise<Supplier[]> => {
+	const allSuppliers = await getAllSuppliers();
+
+	return allSuppliers.filter(
+		(supplier) =>
+			supplier.name
+				.toLocaleUpperCase()
+				.includes(criteria.name.toLocaleUpperCase()) &&
+			supplier.indexValue
+				.toLocaleUpperCase()
+				.includes(criteria.index.toLocaleUpperCase()) &&
+			supplier.city
+				.toLocaleUpperCase()
+				.includes(criteria.city.toLocaleUpperCase()),
+	);
+};
+
 export default getAllSuppliers;

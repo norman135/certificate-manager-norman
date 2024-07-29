@@ -3,7 +3,7 @@ import Supplier from './supplier.model';
 type Certificate = {
 	id: string;
 	supplier: Supplier;
-	type: string;
+	type: CertificateType;
 	validFrom: Date;
 	validTo: Date;
 };
