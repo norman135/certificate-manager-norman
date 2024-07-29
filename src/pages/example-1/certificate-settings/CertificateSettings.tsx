@@ -9,6 +9,7 @@ import SettingsIcon from '../../../common/components/icons/SettingsIcon';
 import { deleteCertificate } from '../../../common/db/certificate-service';
 import {
 	Languages,
+	toSelectedLocale,
 	useLanguageContext,
 } from '../../../common/language/Language';
 
@@ -26,11 +27,7 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 	const navigate = useNavigate();
 
 	const _deleteCertificate = (id: string): void => {
-		if (
-			confirm(
-				language === Languages.English ? 'Are you sure?' : 'Bist du sicher?',
-			)
-		) {
+		if (confirm(toSelectedLocale('sure', language))) {
 			const deleteCert = async () => {
 				if (!(await deleteCertificate(id))) {
 					console.log('Error deleting certificate!');
@@ -53,11 +50,11 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 
 		return [
 			{
-				name: language === Languages.English ? 'Edit' : 'Bearbeiten',
+				name: toSelectedLocale('edit', language),
 				action: handleEdit,
 			},
 			{
-				name: language === Languages.English ? 'Delete' : 'Löschen',
+				name: toSelectedLocale('delete', language),
 				action: handleDelete,
 			},
 		];

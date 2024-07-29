@@ -11,7 +11,11 @@ import User from '../../models/user.model';
 import { initialSupplier } from '../../utils/supplier.utils';
 import { initialUser } from '../../utils/user.utils';
 import getAllUsers from '../../db/user-service';
-import { Languages, useLanguageContext } from '../../language/Language';
+import {
+	Languages,
+	toSelectedLocale,
+	useLanguageContext,
+} from '../../language/Language';
 
 export type SearchType = Supplier | User;
 
@@ -137,12 +141,8 @@ const SearchItems: FC<SearchItemsProps> = ({
 			<div className="search-top-bar">
 				<p className="search-top-bar-title">
 					{type === 'supplier'
-						? language === Languages.English
-							? 'Search for Suppliers'
-							: 'Suche nach Lieferanten'
-						: language === Languages.English
-							? 'Search for Persons'
-							: 'Suche nach Personen'}
+						? toSelectedLocale('searchSuppliers', language)
+						: toSelectedLocale('searchPersons', language)}
 				</p>
 				<button
 					className="search-top-bar-close"
@@ -157,34 +157,23 @@ const SearchItems: FC<SearchItemsProps> = ({
 			<div className="search-main-content">
 				<div className="search-criteria">
 					<div className="expand-bar">
-						{language === Languages.English
-							? 'Search criteria'
-							: 'Suchkriterium'}
-					</div>
-					<div className="expand-bar">
-						{language === Languages.English
-							? 'Search criteria'
-							: 'Suchkriterium'}
+						{toSelectedLocale('searchCriteria', language)}
 					</div>
 					<div className="search-criteria-input-area">
 						{type === 'supplier' ? (
 							<>
 								<TextInput
-									label={
-										language === Languages.English
-											? 'Supplier Name'
-											: 'Name des Anbieters'
-									}
+									label={toSelectedLocale('supplierName', language)}
 									value={itemInfo.name}
 									onchange={handleNameChange}
 								/>
 								<TextInput
-									label="Supplier Index"
+									label={toSelectedLocale('supplierIndex', language)}
 									value={(itemInfo as Supplier).indexValue}
 									onchange={handleIndexChange}
 								/>
 								<TextInput
-									label={language === Languages.English ? 'City' : 'Stadt'}
+									label={toSelectedLocale('city', language)}
 									value={(itemInfo as Supplier).city}
 									onchange={handleCityChange}
 								/>
@@ -197,28 +186,22 @@ const SearchItems: FC<SearchItemsProps> = ({
 									onchange={handleNameChange}
 								/>
 								<TextInput
-									label={
-										language === Languages.English ? 'First Name' : 'Vorname'
-									}
+									label={toSelectedLocale('firstName', language)}
 									value={(itemInfo as User).firstName}
 									onchange={handleFirstNameChange}
 								/>
 								<TextInput
-									label={
-										language === Languages.English ? 'User ID' : 'Benutzer-ID'
-									}
+									label={toSelectedLocale('userId', language)}
 									value={(itemInfo as User).userId}
 									onchange={handleUserIdChange}
 								/>
 								<TextInput
-									label={
-										language === Languages.English ? 'Department' : 'Abteilung'
-									}
+									label={toSelectedLocale('department', language)}
 									value={(itemInfo as User).department}
 									onchange={handleDepartmentChange}
 								/>
 								<TextInput
-									label={language === Languages.English ? 'Plant' : 'Anlage'}
+									label={toSelectedLocale('plant', language)}
 									value={(itemInfo as User).plant}
 									onchange={handlePlantChange}
 								/>
@@ -226,7 +209,7 @@ const SearchItems: FC<SearchItemsProps> = ({
 						)}
 					</div>
 					<Button
-						name={language === Languages.English ? 'Search' : 'Suchen'}
+						name={toSelectedLocale('search', language)}
 						color="white"
 						bg="rgb(0, 44, 57)"
 						type="button"
@@ -234,7 +217,7 @@ const SearchItems: FC<SearchItemsProps> = ({
 						onClick={searchItems}
 					/>
 					<Button
-						name={language === Languages.English ? 'Reset' : 'Zurücksetzen'}
+						name={toSelectedLocale('reset', language)}
 						color="black"
 						bg="rgb(226, 226, 226)"
 						type="button"
@@ -244,26 +227,30 @@ const SearchItems: FC<SearchItemsProps> = ({
 				</div>
 				<div className="search-list">
 					<div className="expand-bar">
-						{language === Languages.English
-							? 'Supplier list'
-							: 'Lieferantenliste'}
+						{toSelectedLocale('supplierList', language)}
 					</div>
 					<SelectTable
 						columns={
 							type === 'supplier'
-								? language === Languages.English
-									? ['Supplier name', 'Supplier index', 'City']
-									: ['Name des Anbieters', 'Lieferantenindex', 'Stadt']
-								: language === Languages.English
-									? ['Name', 'First Name', 'User ID', 'Department', 'Plant']
-									: ['Name', 'Vorname', 'Benutzer-ID', 'Abteilung', 'Anlage']
+								? [
+										toSelectedLocale('supplierName', language),
+										toSelectedLocale('supplierIndex', language),
+										toSelectedLocale('city', language),
+									]
+								: [
+										'Name',
+										toSelectedLocale('firstName', language),
+										toSelectedLocale('userId', language),
+										toSelectedLocale('department', language),
+										toSelectedLocale('plant', language),
+									]
 						}
 						items={itemsBuffer}
 						type={type}
 						onselect={setSelectedItem}
 					/>
 					<Button
-						name={language === Languages.English ? 'Save' : 'Speichern'}
+						name={toSelectedLocale('save', language)}
 						color="white"
 						bg="rgb(255, 177, 75)"
 						type="button"
@@ -274,7 +261,7 @@ const SearchItems: FC<SearchItemsProps> = ({
 						}}
 					/>
 					<Button
-						name={language === Languages.English ? 'Cancel' : 'Stornieren'}
+						name={toSelectedLocale('cancel', language)}
 						color="black"
 						bg="rgb(226, 226, 226)"
 						type="button"

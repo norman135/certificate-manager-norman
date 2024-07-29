@@ -7,7 +7,11 @@ import './Example1.css';
 import CertificateSettings from './certificate-settings/CertificateSettings';
 import Certificate from '../../common/models/certificate.model';
 import { getAllCertificates } from '../../common/db/certificate-service';
-import { Languages, useLanguageContext } from '../../common/language/Language';
+import {
+	Languages,
+	toSelectedLocale,
+	useLanguageContext,
+} from '../../common/language/Language';
 
 const Example1: FC = (): JSX.Element => {
 	const [certificates, setCertificates] = useState<Certificate[]>([]);
@@ -26,11 +30,7 @@ const Example1: FC = (): JSX.Element => {
 	return (
 		<>
 			<Button
-				name={
-					language === Languages.English
-						? 'New Certificate'
-						: 'Neues Zertifikat'
-				}
+				name={toSelectedLocale('newCertificate', language)}
 				bg="#c0cc38"
 				color="white"
 				type="link"
@@ -39,11 +39,13 @@ const Example1: FC = (): JSX.Element => {
 			/>
 			<div className="certificates-table">
 				<Table
-					columns={
-						language === Languages.English
-							? ['', 'Supplier', 'Type', 'Valid from', 'Valid to']
-							: ['', 'Anbieter', 'Typ', 'Gültig ab', 'Gültig bis']
-					}
+					columns={[
+						'',
+						toSelectedLocale('supplier', language),
+						toSelectedLocale('type', language),
+						toSelectedLocale('validFrom', language),
+						toSelectedLocale('validTo', language),
+					]}
 					data={certificates.map((certificate) => [
 						<CertificateSettings
 							certificateId={certificate.id}

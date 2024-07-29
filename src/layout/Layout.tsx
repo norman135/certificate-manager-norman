@@ -2,7 +2,11 @@ import { FC } from 'react';
 import SideBar from './side-bar/SideBar';
 import './Layout.css';
 import Select from '../common/select/Select';
-import { Languages, useLanguageContext } from '../common/language/Language';
+import {
+	Languages,
+	toSelectedLocale,
+	useLanguageContext,
+} from '../common/language/Language';
 
 interface LayoutProps {
 	children: JSX.Element;
@@ -18,7 +22,7 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 					<div className="main-top-bar-options">
 						<div className="main-top-bar-option">
 							<div className="main-top-bar-option-label">
-								{language == Languages.English ? 'Language: ' : 'Sprache: '}
+								{toSelectedLocale('language', language)}
 							</div>
 							<Select
 								options={[
