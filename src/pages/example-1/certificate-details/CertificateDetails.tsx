@@ -17,7 +17,6 @@ import {
 	updateCertificate,
 } from '../../../common/db/certificate-service';
 import initialCertificate from '../../../common/utils/certificate.utils';
-import Supplier from '../../../common/models/supplier.model';
 import {
 	toSelectedLocale,
 	useLanguageContext,

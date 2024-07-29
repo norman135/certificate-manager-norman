@@ -1,12 +1,12 @@
 import { FC } from 'react';
 import SideBar from './side-bar/SideBar';
 import './Layout.css';
+import Select from '../common/select/Select';
 import {
 	Languages,
 	toSelectedLocale,
 	useLanguageContext,
 } from '../common/language/Language';
-import Select from '../common/select/Select';
 
 interface LayoutProps {
 	children: JSX.Element;

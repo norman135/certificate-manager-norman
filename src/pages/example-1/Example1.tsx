@@ -8,10 +8,10 @@ import CertificateSettings from './certificate-settings/CertificateSettings';
 import Certificate from '../../common/models/certificate.model';
 import { getAllCertificates } from '../../common/db/certificate-service';
 import {
+	Languages,
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../common/language/Language';
-import Supplier from '../../common/models/supplier.model';
 
 const Example1: FC = (): JSX.Element => {
 	const [certificates, setCertificates] = useState<Certificate[]>([]);
