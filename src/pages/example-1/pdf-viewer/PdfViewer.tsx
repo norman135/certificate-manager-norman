@@ -2,6 +2,7 @@ import { FC } from 'react';
 import {
 	LanguageContext,
 	Languages,
+	toSelectedLocale,
 	useLanguageContext,
 } from '../../../common/language/Language';
 
@@ -30,7 +31,7 @@ const PdfViewer: FC<PdfViewerProps> = ({
 				className="button"
 				style={{ backgroundColor: '#3f9ac9', color: 'white' }}
 			>
-				{language === Languages.English ? 'Upload' : 'Hochladen'}
+				{toSelectedLocale('upload', language)}
 			</label>
 			<input
 				type="file"

@@ -20,6 +20,7 @@ import initialCertificate from '../../../common/utils/certificate.utils';
 import Supplier from '../../../common/models/supplier.model';
 import {
 	Languages,
+	toSelectedLocale,
 	useLanguageContext,
 } from '../../../common/language/Language';
 import SupplierLookup from '../../../common/components/supplier-user-lookup/SupplierLookup';
@@ -134,26 +135,19 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			<div className="edit-certificate-input-area">
 				<div className="edit-certificate-inputs">
 					<div className="edit-certificate-input">
-						<label>Supplier</label>
+						<label>{toSelectedLocale('supplier', language)}</label>
 						<SupplierInputLookup
 							certificate={certificate}
 							setCertificate={setCertificate}
 						/>
 					</div>
 					<div className="edit-certificate-input">
-						<label>
-							{language === Languages.English
-								? 'Certificate type'
-								: 'Art des Zertifikats'}
-						</label>
+						<label>{toSelectedLocale('certificateType', language)}</label>
 						<Select
 							options={[
 								{
 									value: CertificateType.none,
-									text:
-										language === Languages.English
-											? 'Select Your Option'
-											: 'Wählen Sie Ihre Option',
+									text: toSelectedLocale('selectOption', language),
 								},
 								{
 									value: CertificateType.printingPermission,
@@ -169,9 +163,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						/>
 					</div>
 					<div className="edit-certificate-input">
-						<label>
-							{language === Languages.English ? 'Valid from' : 'Gültig ab'}
-						</label>
+						<label>{toSelectedLocale('validFrom', language)}</label>
 						<div className="edit-certificate-input-container">
 							<DatePicker
 								value={toIsoString(certificate.validFrom!)}
@@ -181,9 +173,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						</div>
 					</div>
 					<div className="edit-certificate-input">
-						<label>
-							{language === Languages.English ? 'Valid to' : 'Gültig bis'}
-						</label>
+						<label>{toSelectedLocale('validTo', language)}</label>
 						<div className="edit-certificate-input-container">
 							<DatePicker
 								value={toIsoString(certificate.validTo!)}
@@ -202,7 +192,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			</div>
 			<div className="edit-certificate-buttons-area">
 				<Button
-					name={language === Languages.English ? 'Save' : 'Speichern'}
+					name={toSelectedLocale('save', language)}
 					color="white"
 					bg="#c0cc38"
 					type="button"
@@ -210,7 +200,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 					to=""
 				/>
 				<Button
-					name={language === Languages.English ? 'Reset' : 'Zurücksetzen'}
+					name={toSelectedLocale('reset', language)}
 					color="black"
 					bg="rgba(0,0,0,0)"
 					type="button"
