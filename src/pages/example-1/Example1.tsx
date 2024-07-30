@@ -12,6 +12,7 @@ import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../common/language/Language';
+import Supplier from '../../common/models/supplier.model';
 
 const Example1: FC = (): JSX.Element => {
 	const [certificates, setCertificates] = useState<Certificate[]>([]);
