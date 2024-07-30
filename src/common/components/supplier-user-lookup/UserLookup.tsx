@@ -6,7 +6,7 @@ import Button from '../button/Button';
 import SelectTable from '../select-table/SelectTable';
 import User from '../../models/user.model';
 import { initialUser } from '../../utils/user.utils';
-import getAllUsers from '../../db/user-service';
+import getAllUsers, { searchInUsers } from '../../db/user-service';
 
 interface UserLookupProps {
 	closeSearch: () => void;
@@ -18,44 +18,12 @@ const UserLookup: FC<UserLookupProps> = ({
 	selectUser,
 }): JSX.Element => {
 	const [usersBuffer, setUsersBuffer] = useState<User[]>([]);
-	const [usersArray, setUsersArray] = useState<User[]>([]);
 	const [userInfo, setuserInfo] = useState<User>(initialUser);
 	const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
 
-	useEffect(() => {
-		getAllUsers().then((data) => {
-			setUsersArray(data);
-			setUsersBuffer(data);
-		});
-	}, []);
-
-	const searchUsers = (): void => {
-		const _users: User[] = [];
-
-		for (let i = 0; i < usersArray.length; i++) {
-			let user = usersArray[i] as User;
-			if (
-				user.name
-					.toLowerCase()
-					.includes((userInfo as User).name.toLowerCase(), 0) &&
-				user.firstName
-					.toLowerCase()
-					.includes((userInfo as User).firstName.toLowerCase(), 0) &&
-				user.userId
-					.toLowerCase()
-					.includes((userInfo as User).userId.toLowerCase(), 0) &&
-				user.department
-					.toLowerCase()
-					.includes((userInfo as User).department.toLowerCase(), 0) &&
-				user.plant
-					.toLowerCase()
-					.includes((userInfo as User).plant.toLowerCase(), 0)
-			) {
-				_users.push(user);
-			}
-		}
-
-		setUsersBuffer(_users);
+	const searchUsers = async () => {
+		const users = await searchInUsers(userInfo);
+		setUsersBuffer(users);
 	};
 
 	const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
