@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { ChangeEvent, FC } from 'react';
 import SideBar from './side-bar/SideBar';
 import './Layout.css';
 import Select from '../common/select/Select';
@@ -13,6 +13,10 @@ interface LayoutProps {
 }
 const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 	const { language, setLanguage } = useLanguageContext();
+
+	const handleLanguageChange = (e: ChangeEvent<HTMLSelectElement>) => {
+		setLanguage(e.target.value);
+	};
 
 	return (
 		<div className="main-container">
@@ -36,9 +40,7 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 									},
 								]}
 								value={language}
-								onChange={(e) => {
-									setLanguage(e.target.value);
-								}}
+								onChange={handleLanguageChange}
 							/>
 						</div>
 					</div>
