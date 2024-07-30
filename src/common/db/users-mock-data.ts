@@ -8,6 +8,7 @@ const users: User[] = [
 		userId: 'ZWOELF',
 		department: 'ITM/FP',
 		plant: '096',
+		email: 'simon@email.com',
 	},
 	{
 		id: '2',
@@ -16,6 +17,7 @@ const users: User[] = [
 		userId: 'WOLFST',
 		department: 'ITM/FP',
 		plant: '094',
+		email: 'wolfgang@email.com',
 	},
 ];
 

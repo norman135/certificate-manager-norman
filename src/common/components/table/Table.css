@@ -2,6 +2,7 @@ table {
 	border-width: 5px;
 	border-collapse: collapse;
 	width: 100%;
+	font-size: 15px;
 }
 table,
 th {
@@ -11,4 +12,10 @@ th,
 td {
 	padding: 10px;
 	text-align: left;
+}
+.table-null-row {
+	padding: 20px;
+	font-size: 12px;
+	text-align: center;
+	width: 100%;
 }

@@ -22,6 +22,8 @@ import {
 	useLanguageContext,
 } from '../../../common/language/Language';
 import SupplierInputLookup from './supplier-lookup-input/SupplierInputLookup';
+import Table from '../../../common/components/table/Table';
+import UserLookup from '../../../common/components/supplier-user-lookup/UserLookup';
 
 interface CertificateDetailsProps {
 	certificateId?: string;
@@ -33,6 +35,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	const [certificate, setCertificate] =
 		useState<Certificate>(initialCertificate);
 	const [fileURL, setFileURL] = useState<string>('');
+	const [isUserDialogOpen, setIsUserDialogOpen] = useState<boolean>(false);
 	const { language } = useLanguageContext();
 
 	const navigate = useNavigate();
@@ -93,6 +96,13 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			_cert.id = certificateId;
 		}
 		setCertificate(_cert);
+	};
+	const openUserDialog = () => {
+		setIsUserDialogOpen(true);
+	};
+
+	const closeUserDialog = () => {
+		setIsUserDialogOpen(false);
 	};
 
 	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -177,6 +187,25 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 								min={toIsoString(certificate.validFrom!)}
 							/>
 						</div>
+					</div>
+					<div className="users-table">
+						<Button
+							name="Add Participant"
+							color="black"
+							bg="white"
+							type="button"
+							onClick={openUserDialog}
+						/>
+						<Table
+							columns={['', 'Name', 'Department', 'E-mail']}
+							data={null}
+						/>
+						{isUserDialogOpen ? (
+							<UserLookup
+								closeSearch={closeUserDialog}
+								selectUser={() => {}}
+							/>
+						) : null}
 					</div>
 				</div>
 				<div className="pdf-preview-area">

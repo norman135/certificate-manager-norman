@@ -20,15 +20,17 @@ const Table = <T extends {} | null>({
 				</tr>
 			</thead>
 			<tbody>
-				{data
-					? data.map((row, rowIndex) => (
-							<tr key={rowIndex.toString()}>
-								{row.map((column, colIndex) => (
-									<td key={colIndex.toString()}>{column as ReactNode}</td>
-								))}
-							</tr>
-						))
-					: null}
+				{data ? (
+					data.map((row, rowIndex) => (
+						<tr key={rowIndex.toString()}>
+							{row.map((column, colIndex) => (
+								<td key={colIndex.toString()}>{column as ReactNode}</td>
+							))}
+						</tr>
+					))
+				) : (
+					<tr className="table-null-row"></tr>
+				)}
 			</tbody>
 		</table>
 	);
