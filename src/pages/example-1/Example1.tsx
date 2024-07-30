@@ -31,6 +31,7 @@ const Example1: FC = (): JSX.Element => {
 	useEffect(() => {
 		fetchCertificates();
 	}, []);
+
 	return (
 		<>
 			<Button
@@ -50,16 +51,18 @@ const Example1: FC = (): JSX.Element => {
 						toSelectedLocale('validFrom', language),
 						toSelectedLocale('validTo', language),
 					]}
-					data={certificates.map((certificate) => [
-						<CertificateSettings
-							certificateId={certificate.id}
-							update={fetchCertificates}
-						/>,
-						supplierNameDisplay(certificate.supplier),
-						certificate.type,
-						formatDate(certificate.validFrom),
-						formatDate(certificate.validTo),
-					])}
+					data={certificates.map((cert) => ({
+						settings: (
+							<CertificateSettings
+								certificateId={cert.id}
+								update={fetchCertificates}
+							/>
+						),
+						supplier: supplierNameDisplay(cert.supplier),
+						type: cert.type,
+						validFrom: formatDate(cert.validFrom),
+						validTo: formatDate(cert.validTo),
+					}))}
 				/>
 			</div>
 		</>

@@ -196,7 +196,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 							/>
 						</div>
 					</div>
-					<div className="edit-certificate-input">
+					<div className="edit-certificate-input-container">
 						{isUserDialogOpen ? (
 							<UserLookup
 								closeSearch={closeUserDialog}
@@ -212,10 +212,10 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 							type="button"
 							onClick={openUserDialog}
 						/>
-						<Table
+						{/* <Table
 							columns={['', 'Name', 'Department', 'E-mail']}
 							data={null}
-						/>
+						/> */}
 					</div>
 				</div>
 				<div className="pdf-preview-area">
