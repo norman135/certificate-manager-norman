@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
-import './Searchusers.css';
+import './Lookup.css';
 import TextInput from '../input/TextInput';
 import CancelIcon from '../icons/CancelIcon';
 import Button from '../button/Button';
@@ -8,12 +8,12 @@ import User from '../../models/user.model';
 import { initialUser } from '../../utils/user.utils';
 import getAllUsers from '../../db/user-service';
 
-interface SearchUsersProps {
+interface UserLookupProps {
 	closeSearch: () => void;
 	selectUser: (user: User) => void;
 }
 
-const Searchusers: FC<SearchUsersProps> = ({
+const UserLookup: FC<UserLookupProps> = ({
 	closeSearch,
 	selectUser,
 }): JSX.Element => {
@@ -29,7 +29,7 @@ const Searchusers: FC<SearchUsersProps> = ({
 		});
 	}, []);
 
-	const searchusers = (): void => {
+	const SearchUser = (): void => {
 		const _users: User[] = [];
 
 		for (let i = 0; i < usersArray.length; i++) {
@@ -144,7 +144,7 @@ const Searchusers: FC<SearchUsersProps> = ({
 						color="white"
 						bg="#265b7a"
 						type="button"
-						onClick={searchusers}
+						onClick={SearchUser}
 					/>
 					<Button
 						name="Reset"
@@ -186,4 +186,4 @@ const Searchusers: FC<SearchUsersProps> = ({
 	);
 };
 
-export default Searchusers;
+export default UserLookup;

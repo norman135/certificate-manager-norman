@@ -21,18 +21,20 @@ const SelectTable = <T extends { [key: string]: any }>({
 			.filter((key) => key !== 'id')
 			.map((key) => (item as any)[key]);
 
+		const handleSelect = () => onSelect(item);
+
 		values.unshift(
 			type === 'single' ? (
 				<input
 					name="select-items"
 					type="radio"
-					onClick={() => onSelect(item)}
+					onClick={handleSelect}
 				/>
 			) : (
 				<input
 					name="select-items"
 					type="select"
-					onClick={() => onSelect(item)}
+					onClick={handleSelect}
 				/>
 			),
 		);
