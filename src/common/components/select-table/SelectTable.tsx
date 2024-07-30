@@ -6,10 +6,10 @@ interface SelectTableProps<T> {
 	columns: string[];
 	items: T[];
 	type: 'single' | 'multi';
-	onSelect: (item: T) => void;
+	onSelect: (arg0: any) => void;
 }
 
-const SelectTable = <T extends { [key: string]: any }>({
+const SelectTable = <T extends {}>({
 	columns,
 	items,
 	type,
@@ -31,7 +31,7 @@ const SelectTable = <T extends { [key: string]: any }>({
 			) : (
 				<input
 					name="select-items"
-					type="select"
+					type="checkbox"
 					onClick={() => onSelect(item)}
 				/>
 			),

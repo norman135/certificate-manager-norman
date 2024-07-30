@@ -28,6 +28,7 @@ import SupplierLookup from '../../../common/components/supplier-user-lookup/Supp
 import { initialSupplier } from '../../../common/utils/supplier.utils';
 import Table from '../../../common/components/table/Table';
 import UserLookup from '../../../common/components/supplier-user-lookup/UserLookup';
+import User from '../../../common/models/user.model';
 
 interface CertificateDetailsProps {
 	certificateId?: string;
@@ -126,6 +127,13 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		}));
 	};
 
+	const selectUsers = (users: User[]) => {
+		setCertificate((prev) => ({
+			...prev,
+			users: users,
+		}));
+	};
+
 	const clearSupplier = () => {
 		selectSupplier(initialSupplier);
 	};
@@ -203,6 +211,12 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 									selectSupplier={selectSupplier}
 								/>
 							) : null}
+							{isUserDialogOpen ? (
+								<UserLookup
+									closeSearch={closeUserDialog}
+									selectUser={selectUsers}
+								/>
+							) : null}
 						</div>
 					</div>
 					<div className="edit-certificate-input">
@@ -258,12 +272,6 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 							columns={['', 'Name', 'Department', 'E-mail']}
 							data={null}
 						/>
-						{isUserDialogOpen ? (
-							<UserLookup
-								closeSearch={closeUserDialog}
-								selectUser={() => {}}
-							/>
-						) : null}
 					</div>
 				</div>
 				<div className="pdf-preview-area">

@@ -7,7 +7,7 @@ type Certificate = {
 	type: CertificateType;
 	validFrom: Date;
 	validTo: Date;
-	user?: User;
+	users?: User[];
 };
 
 export enum CertificateType {
