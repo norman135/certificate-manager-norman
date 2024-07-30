@@ -1,4 +1,8 @@
 import { FC } from 'react';
+import {
+	toSelectedLocale,
+	useLanguageContext,
+} from '../../../common/language/Language';
 
 interface PdfViewerProps {
 	fileUrl: string;
@@ -9,6 +13,7 @@ const PdfViewer: FC<PdfViewerProps> = ({
 	fileUrl,
 	setFileUrl,
 }): JSX.Element => {
+	const { language } = useLanguageContext();
 	const handlePDF = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
 		if (file) {
@@ -24,7 +29,7 @@ const PdfViewer: FC<PdfViewerProps> = ({
 				className="button"
 				style={{ backgroundColor: '#3f9ac9', color: 'white' }}
 			>
-				Upload
+				{toSelectedLocale('upload', language)}
 			</label>
 			<input
 				type="file"

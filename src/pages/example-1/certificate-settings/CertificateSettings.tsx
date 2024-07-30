@@ -7,6 +7,10 @@ import './CertificateSettings.css';
 import AppRoutes from '../../../common/app-routes/AppRoutes';
 import SettingsIcon from '../../../common/components/icons/SettingsIcon';
 import { deleteCertificate } from '../../../common/db/certificate-service';
+import {
+	toSelectedLocale,
+	useLanguageContext,
+} from '../../../common/language/Language';
 
 interface CertificateSettingsProps {
 	certificateId: string;
@@ -17,13 +21,15 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 	certificateId,
 	update,
 }): JSX.Element => {
+	const { language } = useLanguageContext();
+
 	const navigate = useNavigate();
 
 	const _deleteCertificate = (id: string): void => {
-		if (confirm('Are you sure?')) {
+		if (confirm(toSelectedLocale('sure', language))) {
 			const deleteCert = async () => {
 				if (!(await deleteCertificate(id))) {
-					console.log('Error deleting certificate!');
+					console.error('Error deleting certificate!');
 				}
 			};
 
@@ -43,11 +49,11 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 
 		return [
 			{
-				name: 'Edit',
+				name: toSelectedLocale('edit', language),
 				action: handleEdit,
 			},
 			{
-				name: 'Delete',
+				name: toSelectedLocale('delete', language),
 				action: handleDelete,
 			},
 		];

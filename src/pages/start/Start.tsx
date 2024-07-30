@@ -1,7 +1,12 @@
 import { FC } from 'react';
+import {
+	toSelectedLocale,
+	useLanguageContext,
+} from '../../common/language/Language';
 
 const Start: FC = (): JSX.Element => {
-	return <h1>Start</h1>;
+	const { language } = useLanguageContext();
+	return <h1>{toSelectedLocale('start', language)}</h1>;
 };
 
 export default Start;

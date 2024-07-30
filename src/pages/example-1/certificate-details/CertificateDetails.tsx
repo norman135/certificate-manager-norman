@@ -17,6 +17,10 @@ import {
 	updateCertificate,
 } from '../../../common/db/certificate-service';
 import initialCertificate from '../../../common/utils/certificate.utils';
+import {
+	toSelectedLocale,
+	useLanguageContext,
+} from '../../../common/language/Language';
 import SupplierInputLookup from './supplier-lookup-input/SupplierInputLookup';
 
 interface CertificateDetailsProps {
@@ -29,6 +33,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	const [certificate, setCertificate] =
 		useState<Certificate>(initialCertificate);
 	const [fileURL, setFileURL] = useState<string>('');
+	const { language } = useLanguageContext();
 
 	const navigate = useNavigate();
 
@@ -44,7 +49,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 				if (_cert) {
 					setCertificate(_cert);
 				} else {
-					console.log('Error retrieving certificate.');
+					console.error('Error retrieving certificate.');
 				}
 			};
 
@@ -65,7 +70,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		if (certificateId) {
 			const updateCert = async () => {
 				if (!(await updateCertificate(certificate))) {
-					console.log('Error attempting to update certificate.');
+					console.error('Error attempting to update certificate.');
 				}
 			};
 
@@ -73,7 +78,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		} else {
 			const addCert = async () => {
 				if (!(await addCertificate(certificate))) {
-					console.log('Error attempting to add certificate');
+					console.error('Error attempting to add certificate');
 				}
 			};
 
@@ -126,19 +131,19 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			<div className="edit-certificate-input-area">
 				<div className="edit-certificate-inputs">
 					<div className="edit-certificate-input">
-						<label>Supplier</label>
+						<label>{toSelectedLocale('supplier', language)}</label>
 						<SupplierInputLookup
 							certificate={certificate}
 							setCertificate={setCertificate}
 						/>
 					</div>
 					<div className="edit-certificate-input">
-						<label>Certificate type</label>
+						<label>{toSelectedLocale('certificateType', language)}</label>
 						<Select
 							options={[
 								{
 									value: CertificateType.none,
-									text: 'Select Your Option',
+									text: toSelectedLocale('selectOption', language),
 								},
 								{
 									value: CertificateType.printingPermission,
@@ -154,7 +159,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						/>
 					</div>
 					<div className="edit-certificate-input">
-						<label>Valid from</label>
+						<label>{toSelectedLocale('validFrom', language)}</label>
 						<div className="edit-certificate-input-container">
 							<DatePicker
 								value={toIsoString(certificate.validFrom!)}
@@ -164,7 +169,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						</div>
 					</div>
 					<div className="edit-certificate-input">
-						<label>Valid to</label>
+						<label>{toSelectedLocale('validTo', language)}</label>
 						<div className="edit-certificate-input-container">
 							<DatePicker
 								value={toIsoString(certificate.validTo!)}
@@ -183,7 +188,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			</div>
 			<div className="edit-certificate-buttons-area">
 				<Button
-					name="Save"
+					name={toSelectedLocale('save', language)}
 					color="white"
 					bg="#c0cc38"
 					type="button"
@@ -191,7 +196,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 					to=""
 				/>
 				<Button
-					name="Reset"
+					name={toSelectedLocale('reset', language)}
 					color="black"
 					bg="rgba(0,0,0,0)"
 					type="button"
