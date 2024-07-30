@@ -4,8 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import './CertificateDetails.css';
 import AppRoutes from '../../../common/app-routes/AppRoutes';
 import Button from '../../../common/components/button/Button';
-import CancelIcon from '../../../common/components/icons/CancelIcon';
-import SearchIcon from '../../../common/components/icons/SearchIcon';
 import Certificate, {
 	CertificateType,
 } from '../../../common/models/certificate.model';
@@ -19,9 +17,7 @@ import {
 	updateCertificate,
 } from '../../../common/db/certificate-service';
 import initialCertificate from '../../../common/utils/certificate.utils';
-import Supplier from '../../../common/models/supplier.model';
-import SupplierLookup from '../../../common/components/supplier-user-lookup/SupplierLookup';
-import { initialSupplier } from '../../../common/utils/supplier.utils';
+import SupplierInputLookup from './supplier-lookup-input/SupplierInputLookup';
 
 interface CertificateDetailsProps {
 	certificateId?: string;
@@ -33,7 +29,6 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	const [certificate, setCertificate] =
 		useState<Certificate>(initialCertificate);
 	const [fileURL, setFileURL] = useState<string>('');
-	const [isSearchDialogOpen, setIsSearchDialogOpen] = useState<boolean>(false);
 
 	const navigate = useNavigate();
 
@@ -95,25 +90,6 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		setCertificate(_cert);
 	};
 
-	const openSearchDialog = () => {
-		setIsSearchDialogOpen(true);
-	};
-
-	const closeSearchDialog = () => {
-		setIsSearchDialogOpen(false);
-	};
-
-	const selectSupplier = (supplier: Supplier) => {
-		setCertificate((prev) => ({
-			...prev,
-			supplier: supplier as Supplier,
-		}));
-	};
-
-	const clearSupplier = () => {
-		selectSupplier(initialSupplier);
-	};
-
 	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setCertificate((prev) => ({
 			...prev,
@@ -151,39 +127,10 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 				<div className="edit-certificate-inputs">
 					<div className="edit-certificate-input">
 						<label>Supplier</label>
-						<div className="edit-certificate-input-container">
-							<input
-								type="text"
-								value={
-									certificate.supplier!.indexValue ===
-									initialSupplier.indexValue
-										? 'Select a Supplier'
-										: `${certificate.supplier!.name}, ${certificate.supplier!.indexValue}, ${certificate.supplier!.city}`
-								}
-								disabled={true}
-								style={{
-									cursor: 'not-allowed',
-								}}
-							/>
-							<button onClick={openSearchDialog}>
-								<SearchIcon
-									width={24}
-									height={24}
-								/>
-							</button>
-							<button onClick={clearSupplier}>
-								<CancelIcon
-									width={12}
-									height={12}
-								/>
-							</button>
-							{isSearchDialogOpen ? (
-								<SupplierLookup
-									closeSearch={closeSearchDialog}
-									selectSupplier={selectSupplier}
-								/>
-							) : null}
-						</div>
+						<SupplierInputLookup
+							certificate={certificate}
+							setCertificate={setCertificate}
+						/>
 					</div>
 					<div className="edit-certificate-input">
 						<label>Certificate type</label>
