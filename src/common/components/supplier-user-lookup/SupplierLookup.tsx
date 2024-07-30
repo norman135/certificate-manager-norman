@@ -7,6 +7,7 @@ import Supplier from '../../models/supplier.model';
 import getAllSuppliers, { searchSuppliers } from '../../db/supplier-service';
 import SelectTable from '../select-table/SelectTable';
 import { initialSupplier } from '../../utils/supplier.utils';
+import { toSelectedLocale, useLanguageContext } from '../../language/Language';
 
 interface SupplierLookupProps {
 	closeSearch: () => void;
@@ -27,6 +28,8 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 			setSuppliersBuffer(data);
 		});
 	}, []);
+
+	const { language } = useLanguageContext();
 
 	const SupplierSearch = async (): Promise<void> => {
 		const result = await searchSuppliers({
@@ -64,7 +67,9 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 	return (
 		<div className="search-container">
 			<div className="search-top-bar">
-				<p className="search-top-bar-title">Search for Suppliers</p>
+				<p className="search-top-bar-title">
+					{toSelectedLocale('searchSuppliers', language)}
+				</p>
 				<button
 					className="search-top-bar-close"
 					onClick={closeSearch}
@@ -77,26 +82,28 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 			</div>
 			<div className="search-main-content">
 				<div className="search-criteria">
-					<div className="expand-bar">Search criteria</div>
+					<div className="expand-bar">
+						{toSelectedLocale('searchCriteria', language)}
+					</div>
 					<div className="search-criteria-input-area">
 						<TextInput
-							label="Supplier Name"
+							label={toSelectedLocale('supplierName', language)}
 							value={supplierInfo.name}
 							onchange={handleNameChange}
 						/>
 						<TextInput
-							label="Supplier Index"
-							value={(supplierInfo as Supplier).indexValue}
+							label={toSelectedLocale('supplierIndex', language)}
+							value={supplierInfo.indexValue}
 							onchange={handleIndexChange}
 						/>
 						<TextInput
-							label="City"
-							value={(supplierInfo as Supplier).city}
+							label={toSelectedLocale('city', language)}
+							value={supplierInfo.city}
 							onchange={handleCityChange}
 						/>
 					</div>
 					<Button
-						name="Search"
+						name={toSelectedLocale('search', language)}
 						color="white"
 						bg="#265b7a"
 						type="button"
@@ -104,7 +111,7 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 						onClick={SupplierSearch}
 					/>
 					<Button
-						name="Reset"
+						name={toSelectedLocale('reset', language)}
 						color="black"
 						bg="#f6f6f6"
 						type="button"
@@ -113,15 +120,22 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 					/>
 				</div>
 				<div className="search-list">
-					<div className="expand-bar">Supplier list</div>
+					<div className="expand-bar">
+						{toSelectedLocale('supplierList', language)}
+					</div>
 					<SelectTable
-						columns={['Supplier name', 'Supplier index', 'City']}
+						columns={[
+							toSelectedLocale('supplierName', language),
+							toSelectedLocale('supplierIndex', language),
+							toSelectedLocale('supplierIndex', language),
+							toSelectedLocale('city', language),
+						]}
 						items={suppliersBuffer}
 						type="single"
 						onSelect={setSelectedSupplier}
 					/>
 					<Button
-						name="Save"
+						name={toSelectedLocale('save', language)}
 						color="white"
 						bg="#f0cf93"
 						type="button"
@@ -133,7 +147,7 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 						disabled={selectedSupplier === initialSupplier}
 					/>
 					<Button
-						name="Cancel"
+						name={toSelectedLocale('cancel', language)}
 						color="black"
 						bg="#f6f6f6"
 						type="button"
