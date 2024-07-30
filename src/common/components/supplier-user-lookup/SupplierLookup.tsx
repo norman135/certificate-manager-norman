@@ -23,15 +23,9 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 	const [selectedSupplier, setSelectedSupplier] =
 		useState<Supplier>(initialSupplier);
 
-	useEffect(() => {
-		getAllSuppliers().then((data) => {
-			setSuppliersBuffer(data);
-		});
-	}, []);
-
 	const { language } = useLanguageContext();
 
-	const SupplierSearch = async (): Promise<void> => {
+	const supplierSearch = async (): Promise<void> => {
 		const result = await searchSuppliers({
 			name: supplierInfo.name,
 			index: supplierInfo.indexValue,
@@ -108,7 +102,7 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 						bg="#265b7a"
 						type="button"
 						to=""
-						onClick={SupplierSearch}
+						onClick={supplierSearch}
 					/>
 					<Button
 						name={toSelectedLocale('reset', language)}
