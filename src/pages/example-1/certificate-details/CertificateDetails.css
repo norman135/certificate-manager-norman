@@ -36,6 +36,7 @@
 	border-radius: 0;
 	border: solid 1px grey;
 	min-width: 40px;
+	cursor: pointer;
 }
 .pdf-preview-area {
 	flex-basis: 50%;

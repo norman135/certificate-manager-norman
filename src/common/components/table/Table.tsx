@@ -1,12 +1,15 @@
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import './Table.css';
 
-interface TableProps {
+interface TableProps<T> {
 	columns: string[];
-	data: ReactNode[][];
+	data: T[][] | null;
 }
 
-const Table: FC<TableProps> = ({ columns, data }): JSX.Element => {
+const Table = <T extends {} | null>({
+	columns,
+	data = [],
+}: TableProps<T>): JSX.Element => {
 	return (
 		<table>
 			<thead>
@@ -17,13 +20,15 @@ const Table: FC<TableProps> = ({ columns, data }): JSX.Element => {
 				</tr>
 			</thead>
 			<tbody>
-				{data.map((row, index) => (
-					<tr key={index.toString()}>
-						{row.map((column, index) => (
-							<td key={index.toString()}>{column}</td>
-						))}
-					</tr>
-				))}
+				{data
+					? data.map((row, rowIndex) => (
+							<tr key={rowIndex.toString()}>
+								{row.map((column, colIndex) => (
+									<td key={colIndex.toString()}>{column as ReactNode}</td>
+								))}
+							</tr>
+						))
+					: null}
 			</tbody>
 		</table>
 	);

@@ -7,6 +7,7 @@ import './Example1.css';
 import CertificateSettings from './certificate-settings/CertificateSettings';
 import Certificate from '../../common/models/certificate.model';
 import { getAllCertificates } from '../../common/db/certificate-service';
+import Supplier from '../../common/models/supplier.model';
 
 const Example1: FC = (): JSX.Element => {
 	const [certificates, setCertificates] = useState<Certificate[]>([]);
@@ -17,10 +18,13 @@ const Example1: FC = (): JSX.Element => {
 		setCertificates(_certs);
 	};
 
+	const supplierNameDisplay = (supplier: Supplier): string => {
+		return `${supplier.name}, ${supplier.indexValue}, ${supplier.city}`;
+	};
+
 	useEffect(() => {
 		fetchCertificates();
 	}, []);
-
 	return (
 		<>
 			<Button
@@ -39,7 +43,7 @@ const Example1: FC = (): JSX.Element => {
 							certificateId={certificate.id}
 							update={fetchCertificates}
 						/>,
-						certificate.supplier,
+						supplierNameDisplay(certificate.supplier),
 						certificate.type,
 						formatDate(certificate.validFrom),
 						formatDate(certificate.validTo),

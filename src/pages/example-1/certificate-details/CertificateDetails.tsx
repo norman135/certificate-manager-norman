@@ -4,8 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import './CertificateDetails.css';
 import AppRoutes from '../../../common/app-routes/AppRoutes';
 import Button from '../../../common/components/button/Button';
-import CancelIcon from '../../../common/components/icons/CancelIcon';
-import SearchIcon from '../../../common/components/icons/SearchIcon';
 import Certificate, {
 	CertificateType,
 } from '../../../common/models/certificate.model';
@@ -19,6 +17,7 @@ import {
 	updateCertificate,
 } from '../../../common/db/certificate-service';
 import initialCertificate from '../../../common/utils/certificate.utils';
+import SupplierInputLookup from './supplier-lookup-input/SupplierInputLookup';
 
 interface CertificateDetailsProps {
 	certificateId?: string;
@@ -84,28 +83,35 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	};
 
 	const resetInput = (): void => {
-		setCertificate(initialCertificate);
-	};
-
-	const handleSupplierChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setCertificate((prev) => ({
-			...prev,
-			supplier: e.target.value,
-		}));
+		const _cert = initialCertificate;
+		if (certificateId) {
+			_cert.id = certificateId;
+		}
+		setCertificate(_cert);
 	};
 
 	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setCertificate((prev) => ({
 			...prev,
-			type: e.target.value,
+			type: e.target.value as CertificateType,
 		}));
 	};
 
 	const handleValidFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setCertificate((prev) => ({
-			...prev,
-			validFrom: new Date(e.target.value),
-		}));
+		const validFromDate = new Date(e.target.value);
+
+		if (validFromDate > certificate.validTo!) {
+			setCertificate((prev) => ({
+				...prev,
+				validFrom: validFromDate,
+				validTo: validFromDate,
+			}));
+		} else {
+			setCertificate((prev) => ({
+				...prev,
+				validFrom: validFromDate,
+			}));
+		}
 	};
 
 	const handleValidToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,25 +127,10 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 				<div className="edit-certificate-inputs">
 					<div className="edit-certificate-input">
 						<label>Supplier</label>
-						<div className="edit-certificate-input-container">
-							<input
-								type="text"
-								value={certificate.supplier}
-								onChange={handleSupplierChange}
-							/>
-							<button>
-								<SearchIcon
-									width={24}
-									height={24}
-								/>
-							</button>
-							<button>
-								<CancelIcon
-									width={12}
-									height={12}
-								/>
-							</button>
-						</div>
+						<SupplierInputLookup
+							certificate={certificate}
+							setCertificate={setCertificate}
+						/>
 					</div>
 					<div className="edit-certificate-input">
 						<label>Certificate type</label>
@@ -158,7 +149,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 									text: CertificateType.ohsas,
 								},
 							]}
-							value={certificate.type}
+							value={certificate.type!}
 							onChange={handleTypeChange}
 						/>
 					</div>
@@ -166,7 +157,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<label>Valid from</label>
 						<div className="edit-certificate-input-container">
 							<DatePicker
-								value={toIsoString(certificate.validFrom)}
+								value={toIsoString(certificate.validFrom!)}
 								onChange={handleValidFromChange}
 								min=""
 							/>
@@ -176,9 +167,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<label>Valid to</label>
 						<div className="edit-certificate-input-container">
 							<DatePicker
-								value={toIsoString(certificate.validTo)}
+								value={toIsoString(certificate.validTo!)}
 								onChange={handleValidToChange}
-								min={toIsoString(certificate.validFrom)}
+								min={toIsoString(certificate.validFrom!)}
 							/>
 						</div>
 					</div>

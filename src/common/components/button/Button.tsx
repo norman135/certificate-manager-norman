@@ -7,8 +7,9 @@ interface ButtonProps {
 	color: string;
 	bg: string;
 	type: 'link' | 'button';
-	to: string;
-	onClick: () => void;
+	to?: string;
+	onClick?: () => void;
+	disabled?: boolean;
 }
 
 const Button: FC<ButtonProps> = ({
@@ -18,6 +19,7 @@ const Button: FC<ButtonProps> = ({
 	type,
 	to = '',
 	onClick = (): void => {},
+	disabled = false,
 }) => {
 	return (
 		<>
@@ -35,11 +37,21 @@ const Button: FC<ButtonProps> = ({
 			) : (
 				<button
 					className="button"
-					style={{
-						backgroundColor: bg,
-						color: color,
-					}}
+					style={
+						disabled
+							? {
+									backgroundColor: bg,
+									color: color,
+									cursor: 'not-allowed',
+									opacity: 0.5,
+								}
+							: {
+									backgroundColor: bg,
+									color: color,
+								}
+					}
 					onClick={onClick}
+					disabled={disabled}
 				>
 					{name}
 				</button>
