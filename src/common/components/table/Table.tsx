@@ -1,13 +1,14 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import './Table.css';
 import CertificateSettings from '../../../pages/example-1/certificate-settings/CertificateSettings';
+import CancelIcon from '../icons/CancelIcon';
 
 interface TableProps<T> {
 	columns: string[];
 	data: T[];
 	selectable?: boolean;
-	type?: 'single' | 'multi';
-	onSelect?: () => void;
+	type?: 'single' | 'multi' | 'delete';
+	onSelect?: (selected: number | number[]) => void;
 }
 
 const Table = <T extends {} | null>({
@@ -17,23 +18,21 @@ const Table = <T extends {} | null>({
 	type = 'single',
 	onSelect = () => {},
 }: TableProps<T>): JSX.Element => {
-	const checkMark = (
+	let selectedItem: number | null;
+	let selectedItems: number[] | null;
+
+	const checkMarkAll = (
 		<input
 			type="checkbox"
 			name="select-table"
-		/>
-	);
-	const radio = (
-		<input
-			type="radio"
-			name="select-table"
+			onChange={() => {}}
 		/>
 	);
 
 	let columnData: ReactNode[] = [];
 
 	if (selectable) {
-		columnData = type === 'single' ? [''] : [checkMark];
+		columnData = type === 'single' ? [''] : [checkMarkAll];
 		columns.forEach((column) => columnData.push(column));
 	} else {
 		columns.forEach((column) => columnData.push(column));
@@ -42,8 +41,41 @@ const Table = <T extends {} | null>({
 	const generateRows = (): ReactNode[][] => {
 		let rows: ReactNode[][] = [[]];
 
-		data.forEach((obj: T) => {
+		data.forEach((obj: T, index) => {
+			const checkMark = (
+				<input
+					type="checkbox"
+					name="select-table"
+					onChange={() => {}}
+				/>
+			);
+
+			const radio = (
+				<input
+					type="radio"
+					name="select-table"
+					onChange={() => {
+						onSelect(index);
+					}}
+				/>
+			);
+
+			const cancel = (
+				<div onClick={() => {}}>
+					<CancelIcon
+						width={12}
+						height={12}
+					/>
+				</div>
+			);
+
 			let cells: ReactNode[] = [];
+
+			if (selectable) {
+				cells.push(
+					type === 'single' ? radio : type === 'multi' ? [checkMark] : [cancel],
+				);
+			}
 
 			const row = Object.values(obj!);
 			row.forEach((cell) => {

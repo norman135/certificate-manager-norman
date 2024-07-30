@@ -144,6 +144,14 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		}));
 	};
 
+	const userTableData = certificate.users
+		? certificate.users.map((user) => ({
+				name: user.name,
+				department: user.department,
+				email: user.email,
+			}))
+		: [];
+
 	return (
 		<div className="edit-certificate">
 			<div className="edit-certificate-input-area">
@@ -212,10 +220,10 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 							type="button"
 							onClick={openUserDialog}
 						/>
-						{/* <Table
-							columns={['', 'Name', 'Department', 'E-mail']}
-							data={null}
-						/> */}
+						<Table
+							columns={['Name', 'Department', 'E-mail']}
+							data={userTableData}
+						/>
 					</div>
 				</div>
 				<div className="pdf-preview-area">

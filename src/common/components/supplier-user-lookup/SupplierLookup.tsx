@@ -8,6 +8,7 @@ import getAllSuppliers, { searchSuppliers } from '../../db/supplier-service';
 import SelectTable from '../select-table/SelectTable';
 import { initialSupplier } from '../../utils/supplier.utils';
 import { toSelectedLocale, useLanguageContext } from '../../language/Language';
+import Table from '../table/Table';
 
 interface SupplierLookupProps {
 	closeSearch: () => void;
@@ -117,16 +118,22 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 					<div className="expand-bar">
 						{toSelectedLocale('supplierList', language)}
 					</div>
-					<SelectTable
+					<Table
 						columns={[
 							toSelectedLocale('supplierName', language),
 							toSelectedLocale('supplierIndex', language),
-							toSelectedLocale('supplierIndex', language),
 							toSelectedLocale('city', language),
 						]}
-						items={suppliersBuffer}
+						data={suppliersBuffer.map((supplier) => ({
+							name: supplier.name,
+							index: supplier.indexValue,
+							city: supplier.city,
+						}))}
+						selectable={true}
 						type="single"
-						onSelect={setSelectedSupplier}
+						onSelect={(index) => {
+							setSelectedSupplier(suppliersBuffer[index as number]);
+						}}
 					/>
 					<Button
 						name={toSelectedLocale('save', language)}
