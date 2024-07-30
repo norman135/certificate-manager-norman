@@ -24,6 +24,7 @@ import {
 import SupplierInputLookup from './supplier-lookup-input/SupplierInputLookup';
 import Table from '../../../common/components/table/Table';
 import UserLookup from '../../../common/components/supplier-user-lookup/UserLookup';
+import User from '../../../common/models/user.model';
 
 interface CertificateDetailsProps {
 	certificateId?: string;
@@ -103,6 +104,13 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 
 	const closeUserDialog = () => {
 		setIsUserDialogOpen(false);
+	};
+
+	const selectUsers = (users: User[]) => {
+		setCertificate((prev) => ({
+			...prev,
+			users: users,
+		}));
 	};
 
 	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -188,6 +196,14 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 							/>
 						</div>
 					</div>
+					<div className="edit-certificate-input">
+						{isUserDialogOpen ? (
+							<UserLookup
+								closeSearch={closeUserDialog}
+								selectUser={selectUsers}
+							/>
+						) : null}
+					</div>
 					<div className="users-table">
 						<Button
 							name="Add Participant"
@@ -200,12 +216,6 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 							columns={['', 'Name', 'Department', 'E-mail']}
 							data={null}
 						/>
-						{isUserDialogOpen ? (
-							<UserLookup
-								closeSearch={closeUserDialog}
-								selectUser={() => {}}
-							/>
-						) : null}
 					</div>
 				</div>
 				<div className="pdf-preview-area">

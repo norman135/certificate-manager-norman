@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, SetStateAction, useEffect, useState } from 'react';
 import './Lookup.css';
 import TextInput from '../input/TextInput';
 import CancelIcon from '../icons/CancelIcon';
@@ -10,26 +10,19 @@ import getAllUsers from '../../db/user-service';
 
 interface UserLookupProps {
 	closeSearch: () => void;
-	selectUser: (user: User) => void;
+	selectUser: (user: User[]) => void;
 }
 
 const UserLookup: FC<UserLookupProps> = ({
 	closeSearch,
 	selectUser,
 }): JSX.Element => {
-	const [usersBuffer, setusersBuffer] = useState<User[]>([]);
-	const [usersArray, setusersArray] = useState<User[]>([]);
+	const [usersBuffer, setUsersBuffer] = useState<User[]>([]);
+	const [usersArray, setUsersArray] = useState<User[]>([]);
 	const [userInfo, setuserInfo] = useState<User>(initialUser);
-	const [selecteduser, setSelectedUser] = useState<User>(initialUser);
+	const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
 
-	useEffect(() => {
-		getAllUsers().then((data) => {
-			setusersArray(data);
-			setusersBuffer(data);
-		});
-	}, []);
-
-	const SearchUser = (): void => {
+	const SearchUsers = (): void => {
 		const _users: User[] = [];
 
 		for (let i = 0; i < usersArray.length; i++) {
@@ -55,7 +48,7 @@ const UserLookup: FC<UserLookupProps> = ({
 			}
 		}
 
-		setusersBuffer(_users);
+		setUsersBuffer(_users);
 	};
 
 	const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -144,7 +137,7 @@ const UserLookup: FC<UserLookupProps> = ({
 						color="white"
 						bg="#265b7a"
 						type="button"
-						onClick={SearchUser}
+						onClick={SearchUsers}
 					/>
 					<Button
 						name="Reset"
@@ -156,11 +149,11 @@ const UserLookup: FC<UserLookupProps> = ({
 				</div>
 				<div className="search-list">
 					<div className="expand-bar">Supplier list</div>
-					<SelectTable
+					<SelectTable<User>
 						columns={['Name', 'First Name', 'User ID', 'Department', 'Plant']}
 						items={usersBuffer}
 						type={'multi'}
-						onSelect={setSelectedUser}
+						onSelect={setSelectedUsers}
 					/>
 					<Button
 						name="Save"
@@ -168,10 +161,10 @@ const UserLookup: FC<UserLookupProps> = ({
 						bg="#f0cf93"
 						type="button"
 						onClick={() => {
-							selectUser(selecteduser);
+							selectUser(selectedUsers);
 							closeSearch();
 						}}
-						disabled={selecteduser === initialUser}
+						disabled={selectedUsers.length < 1}
 					/>
 					<Button
 						name="Cancel"
