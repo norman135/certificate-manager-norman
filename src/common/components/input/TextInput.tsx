@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import './TextInput.css';
+import '../../../pages/example-1/certificate-details/CertificateDetails.css';
 
 interface TextInputProps {
 	label: string;

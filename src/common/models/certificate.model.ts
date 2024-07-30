@@ -1,4 +1,5 @@
 import Supplier from './supplier.model';
+import User from './user.model';
 
 type Certificate = {
 	id: string;
@@ -6,6 +7,7 @@ type Certificate = {
 	type: CertificateType;
 	validFrom: Date;
 	validTo: Date;
+	user?: User;
 };
 
 export enum CertificateType {

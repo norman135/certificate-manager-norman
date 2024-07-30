@@ -21,12 +21,13 @@ import {
 import initialCertificate from '../../../common/utils/certificate.utils';
 import Supplier from '../../../common/models/supplier.model';
 import {
-	Languages,
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../../common/language/Language';
 import SupplierLookup from '../../../common/components/supplier-user-lookup/SupplierLookup';
 import { initialSupplier } from '../../../common/utils/supplier.utils';
+import Table from '../../../common/components/table/Table';
+import UserLookup from '../../../common/components/supplier-user-lookup/UserLookup';
 
 interface CertificateDetailsProps {
 	certificateId?: string;
@@ -39,6 +40,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		useState<Certificate>(initialCertificate);
 	const [fileURL, setFileURL] = useState<string>('');
 	const [isSearchDialogOpen, setIsSearchDialogOpen] = useState<boolean>(false);
+	const [isUserDialogOpen, setIsUserDialogOpen] = useState<boolean>(false);
 	const { language } = useLanguageContext();
 
 	const navigate = useNavigate();
@@ -107,6 +109,14 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 
 	const closeSearchDialog = () => {
 		setIsSearchDialogOpen(false);
+	};
+
+	const openUserDialog = () => {
+		setIsUserDialogOpen(true);
+	};
+
+	const closeUserDialog = () => {
+		setIsUserDialogOpen(false);
 	};
 
 	const selectSupplier = (supplier: Supplier) => {
@@ -235,6 +245,25 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 								min={toIsoString(certificate.validFrom!)}
 							/>
 						</div>
+					</div>
+					<div className="users-table">
+						<Button
+							name="Add Participant"
+							color="black"
+							bg="white"
+							type="button"
+							onClick={openUserDialog}
+						/>
+						<Table
+							columns={['', 'Name', 'Department', 'E-mail']}
+							data={null}
+						/>
+						{isUserDialogOpen ? (
+							<UserLookup
+								closeSearch={closeUserDialog}
+								selectUser={() => {}}
+							/>
+						) : null}
 					</div>
 				</div>
 				<div className="pdf-preview-area">
