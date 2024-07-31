@@ -6,7 +6,7 @@ import User from '../../../../common/models/user.model';
 import {
 	toSelectedLocale,
 	useLanguageContext,
-} from '../../../../common/language/Language';
+} from '../../../../common/contexts/language/Language';
 
 interface CommentSectionProps {
 	comments: UserComment[];

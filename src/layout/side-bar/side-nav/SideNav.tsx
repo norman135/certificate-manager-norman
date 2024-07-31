@@ -6,7 +6,7 @@ import {
 	Languages,
 	toSelectedLocale,
 	useLanguageContext,
-} from '../../../common/language/Language';
+} from '../../../common/contexts/language/Language';
 
 const SideNav: React.FC = (): JSX.Element => {
 	const [selectedItem, setSelectedItem] = useState(0);

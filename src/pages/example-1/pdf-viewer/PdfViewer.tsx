@@ -2,7 +2,7 @@ import { FC } from 'react';
 import {
 	toSelectedLocale,
 	useLanguageContext,
-} from '../../../common/language/Language';
+} from '../../../common/contexts/language/Language';
 
 interface PdfViewerProps {
 	fileUrl?: string;

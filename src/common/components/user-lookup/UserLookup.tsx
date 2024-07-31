@@ -7,7 +7,10 @@ import User from '../../models/user.model';
 import { initialUser } from '../../utils/user.utils';
 import { searchInUsers } from '../../db/user-service';
 import Table from '../table/Table';
-import { toSelectedLocale, useLanguageContext } from '../../language/Language';
+import {
+	toSelectedLocale,
+	useLanguageContext,
+} from '../../contexts/language/Language';
 
 interface UserLookupProps {
 	closeSearch: () => void;
