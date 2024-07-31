@@ -64,7 +64,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 			<div className="comment-section-button">
 				<Button
 					color="white"
-					bg="blue"
+					bg="#3f9ac9"
 					type="button"
 					onClick={openNewComment}
 					name="New Comment"
@@ -91,7 +91,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 					/>
 					<Button
 						color="white"
-						bg="red"
+						bg="#9f1924"
 						type="button"
 						onClick={handleSend}
 						name="Send"
