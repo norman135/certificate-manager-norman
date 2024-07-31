@@ -33,5 +33,6 @@
 	"cancel": ["Cancel", "Stornieren"],
 	"assignedUsers": ["Assigned Users", "Zugewiesene Benutzer"],
 	"email": ["Email", "E-Mail-Adresse"],
-	"addParticipants": ["Add Participants", "Teilnehmer Hinzufügen"]
+	"addParticipants": ["Add Participants", "Teilnehmer Hinzufügen"],
+	"user": ["User", "Benutzer"]
 }
