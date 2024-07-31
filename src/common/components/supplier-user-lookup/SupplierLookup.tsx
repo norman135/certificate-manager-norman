@@ -58,6 +58,15 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 		setSupplierInfo(initialSupplier);
 	};
 
+	const handleSelect = (index: number | number[]) => {
+		setSelectedSupplier(suppliersBuffer[index as number]);
+	};
+
+	const handleSave = () => {
+		selectSupplier(selectedSupplier);
+		closeSearch();
+	};
+
 	return (
 		<div className="search-container">
 			<div className="search-top-bar">
@@ -130,9 +139,7 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 						}))}
 						selectable={true}
 						type="single"
-						onSelect={(index) => {
-							setSelectedSupplier(suppliersBuffer[index as number]);
-						}}
+						onSelect={handleSelect}
 					/>
 					<Button
 						name={toSelectedLocale('save', language)}
@@ -140,10 +147,7 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 						bg="#f0cf93"
 						type="button"
 						to=""
-						onClick={() => {
-							selectSupplier(selectedSupplier);
-							closeSearch();
-						}}
+						onClick={handleSave}
 						disabled={selectedSupplier === initialSupplier}
 					/>
 					<Button

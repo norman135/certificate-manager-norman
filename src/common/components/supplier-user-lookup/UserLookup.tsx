@@ -66,6 +66,19 @@ const UserLookup: FC<UserLookupProps> = ({
 		setuserInfo(initialUser);
 	};
 
+	const handleSelect = (selected: number | number[]) => {
+		setSelectedUsers(
+			usersBuffer.filter((user, index) =>
+				(selected as number[]).includes(index) ? user : null,
+			),
+		);
+	};
+
+	const handleSave = () => {
+		selectUsers(selectedUsers);
+		closeSearch();
+	};
+
 	return (
 		<div className="search-container">
 			<div className="search-top-bar">
@@ -150,23 +163,14 @@ const UserLookup: FC<UserLookupProps> = ({
 						}))}
 						selectable={true}
 						type="multi"
-						onSelect={(selected) => {
-							setSelectedUsers(
-								usersBuffer.filter((user, index) =>
-									(selected as number[]).includes(index) ? user : null,
-								),
-							);
-						}}
+						onSelect={handleSelect}
 					/>
 					<Button
 						name={toSelectedLocale('save', language)}
 						color="white"
 						bg="#f0cf93"
 						type="button"
-						onClick={() => {
-							selectUsers(selectedUsers);
-							closeSearch();
-						}}
+						onClick={handleSave}
 						disabled={selectedUsers.length < 1}
 					/>
 					<Button

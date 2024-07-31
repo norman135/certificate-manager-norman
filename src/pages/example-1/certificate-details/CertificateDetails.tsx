@@ -7,7 +7,7 @@ import Button from '../../../common/components/button/Button';
 import Certificate, {
 	CertificateType,
 } from '../../../common/models/certificate.model';
-import DatePicker from '../../../common/date-picker/DatePicker';
+import DatePicker from '../../../common/components/date-picker/DatePicker';
 import Select from '../../../common/select/Select';
 import PdfViewer from '../pdf-viewer/PdfViewer';
 import { toIsoString } from '../../../common/utils/format-date.utils';
