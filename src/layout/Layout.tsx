@@ -45,7 +45,7 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 		users.forEach((user) => {
 			options.push({
 				value: user.id,
-				text: user.firstName,
+				text: user.name,
 			});
 		});
 

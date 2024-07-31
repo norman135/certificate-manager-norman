@@ -1,3 +1,4 @@
+import UserComment from './comment.model';
 import Supplier from './supplier.model';
 import User from './user.model';
 
@@ -9,7 +10,7 @@ type Certificate = {
 	validTo: Date;
 	users?: User[];
 	pdf: string;
-	comment?: Comment;
+	comments: UserComment[];
 };
 
 export enum CertificateType {

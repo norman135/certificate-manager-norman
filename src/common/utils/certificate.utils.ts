@@ -11,6 +11,7 @@ export const initialCertificate: Certificate = {
 	validTo: initialDate,
 	pdf: '',
 	users: [],
+	comments: [],
 };
 
 export default initialCertificate;

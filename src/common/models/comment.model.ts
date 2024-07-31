@@ -1,8 +1,8 @@
 import User from './user.model';
 
-type Comment = {
+type UserComment = {
 	user: User;
 	comment: string;
 };
 
-export default Comment;
+export default UserComment;

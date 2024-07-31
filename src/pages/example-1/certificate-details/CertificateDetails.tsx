@@ -26,6 +26,9 @@ import Table from '../../../common/components/table/Table';
 import UserLookup from '../../../common/components/user-lookup/UserLookup';
 import User from '../../../common/models/user.model';
 import SearchIcon from '../../../common/components/icons/SearchIcon';
+import CommentSection from './comment-section/CommentSection';
+import { useCurrentUserContext } from '../../../common/user/User';
+import UserComment from '../../../common/models/comment.model';
 
 interface CertificateDetailsProps {
 	certificateId?: string;
@@ -38,6 +41,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		useState<Certificate>(initialCertificate);
 	const [isUserDialogOpen, setIsUserDialogOpen] = useState<boolean>(false);
 	const { language } = useLanguageContext();
+	const { user } = useCurrentUserContext();
 
 	const navigate = useNavigate();
 
@@ -163,8 +167,8 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			pdf: file,
 		}));
 	};
+
 	const validateForm = (): boolean => {
-		console.log(certificate.pdf);
 		if (certificate.supplier === initialCertificate.supplier) {
 			alert('Please choose a supplier!');
 			return false;
@@ -177,6 +181,17 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		} else {
 			return true;
 		}
+	};
+
+	const addComment = (comment: UserComment) => {
+		const _comments = certificate.comments;
+
+		_comments?.push(comment);
+
+		setCertificate((prev) => ({
+			...prev,
+			comments: _comments,
+		}));
 	};
 
 	const userTableData = certificate.users
@@ -281,6 +296,13 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 							onSelect={removeUser}
 						/>
 					</div>
+					{certificateId ? (
+						<CommentSection
+							comments={certificate.comments}
+							user={user}
+							addComment={addComment}
+						/>
+					) : null}
 				</div>
 				<div className="pdf-preview-area">
 					<PdfViewer
