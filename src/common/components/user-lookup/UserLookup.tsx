@@ -26,6 +26,7 @@ const UserLookup: FC<UserLookupProps> = ({
 
 	const searchUsers = async () => {
 		const users = await searchInUsers(userInfo);
+
 		setUsersBuffer(users);
 	};
 
@@ -67,11 +68,11 @@ const UserLookup: FC<UserLookupProps> = ({
 	};
 
 	const handleSelect = (selected: number | number[]) => {
-		setSelectedUsers(
-			usersBuffer.filter((user, index) =>
-				(selected as number[]).includes(index) ? user : null,
-			),
+		const _selectedUsers = usersBuffer.filter((user, index) =>
+			(selected as number[]).includes(index) ? user : null,
 		);
+
+		setSelectedUsers(_selectedUsers);
 	};
 
 	const handleSave = () => {
