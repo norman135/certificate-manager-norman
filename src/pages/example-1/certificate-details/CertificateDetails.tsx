@@ -7,8 +7,8 @@ import Button from '../../../common/components/button/Button';
 import Certificate, {
 	CertificateType,
 } from '../../../common/models/certificate.model';
-import DatePicker from '../../../common/date-picker/DatePicker';
-import Select from '../../../common/select/Select';
+import DatePicker from '../../../common/components/date-picker/DatePicker';
+import Select from '../../../common/components/select/Select';
 import PdfViewer from '../pdf-viewer/PdfViewer';
 import { toIsoString } from '../../../common/utils/format-date.utils';
 import {
@@ -21,7 +21,11 @@ import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../../common/language/Language';
-import SupplierInputLookup from './supplier-lookup-input/SupplierInputLookup';
+import SupplierInputLookup from './supplier-lookup/SupplierInputLookup';
+import Table from '../../../common/components/table/Table';
+import UserLookup from '../../../common/components/user-lookup/UserLookup';
+import User from '../../../common/models/user.model';
+import SearchIcon from '../../../common/components/icons/SearchIcon';
 
 interface CertificateDetailsProps {
 	certificateId?: string;
@@ -33,6 +37,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	const [certificate, setCertificate] =
 		useState<Certificate>(initialCertificate);
 	const [fileURL, setFileURL] = useState<string>('');
+	const [isUserDialogOpen, setIsUserDialogOpen] = useState<boolean>(false);
 	const { language } = useLanguageContext();
 
 	const navigate = useNavigate();
@@ -94,6 +99,29 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		}
 		setCertificate(_cert);
 	};
+	const openUserDialog = () => {
+		setIsUserDialogOpen(true);
+	};
+
+	const closeUserDialog = () => {
+		setIsUserDialogOpen(false);
+	};
+
+	const selectUsers = (users: User[]) => {
+		setCertificate((prev) => ({
+			...prev,
+			users: users,
+		}));
+	};
+
+	const removeUser = (position: number | number[]) => {
+		const users = certificate.users;
+		if (users) {
+			selectUsers(
+				users.filter((user, index) => (index != position ? user : null)),
+			);
+		}
+	};
 
 	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setCertificate((prev) => ({
@@ -125,6 +153,14 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			validTo: new Date(e.target.value),
 		}));
 	};
+
+	const userTableData = certificate.users
+		? certificate.users.map((user) => ({
+				name: user.name,
+				department: user.department,
+				email: user.email,
+			}))
+		: [];
 
 	return (
 		<div className="edit-certificate">
@@ -177,6 +213,48 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 								min={toIsoString(certificate.validFrom!)}
 							/>
 						</div>
+					</div>
+					<div className="edit-certificate-input-container">
+						<div className="edit-certificate-input">
+							{isUserDialogOpen ? (
+								<UserLookup
+									closeSearch={closeUserDialog}
+									selectUsers={selectUsers}
+								/>
+							) : null}
+						</div>
+					</div>
+					<div className="users-table">
+						<div className="edit-certificate-input">
+							<label>{toSelectedLocale('assignedUsers', language)}</label>
+							<Button
+								name={
+									<>
+										<SearchIcon
+											width={24}
+											height={24}
+										/>
+										{toSelectedLocale('addParticipants', language)}
+									</>
+								}
+								color="black"
+								bg="white"
+								type="button"
+								onClick={openUserDialog}
+							/>
+						</div>
+						<Table
+							columns={[
+								'',
+								'Name',
+								toSelectedLocale('department', language),
+								toSelectedLocale('email', language),
+							]}
+							data={userTableData}
+							type="delete"
+							selectable={true}
+							onSelect={removeUser}
+						/>
 					</div>
 				</div>
 				<div className="pdf-preview-area">

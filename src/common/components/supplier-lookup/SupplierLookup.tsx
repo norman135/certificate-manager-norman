@@ -4,10 +4,10 @@ import TextInput from '../input/TextInput';
 import CancelIcon from '../icons/CancelIcon';
 import Button from '../button/Button';
 import Supplier from '../../models/supplier.model';
-import getAllSuppliers, { searchSuppliers } from '../../db/supplier-service';
-import SelectTable from '../select-table/SelectTable';
+import { searchSuppliers } from '../../db/supplier-service';
 import { initialSupplier } from '../../utils/supplier.utils';
 import { toSelectedLocale, useLanguageContext } from '../../language/Language';
+import Table from '../table/Table';
 
 interface SupplierLookupProps {
 	closeSearch: () => void;
@@ -41,12 +41,14 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 			name: e.target.value,
 		}));
 	};
+
 	const handleIndexChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setSupplierInfo((prev) => ({
 			...prev,
 			indexValue: e.target.value,
 		}));
 	};
+
 	const handleCityChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setSupplierInfo((prev) => ({
 			...prev,
@@ -56,6 +58,15 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 
 	const clearFields = () => {
 		setSupplierInfo(initialSupplier);
+	};
+
+	const handleSelect = (index: number | number[]) => {
+		setSelectedSupplier(suppliersBuffer[index as number]);
+	};
+
+	const handleSave = () => {
+		selectSupplier(selectedSupplier);
+		closeSearch();
 	};
 
 	return (
@@ -117,16 +128,20 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 					<div className="expand-bar">
 						{toSelectedLocale('supplierList', language)}
 					</div>
-					<SelectTable
+					<Table
 						columns={[
 							toSelectedLocale('supplierName', language),
 							toSelectedLocale('supplierIndex', language),
-							toSelectedLocale('supplierIndex', language),
 							toSelectedLocale('city', language),
 						]}
-						items={suppliersBuffer}
+						data={suppliersBuffer.map((supplier) => ({
+							name: supplier.name,
+							index: supplier.indexValue,
+							city: supplier.city,
+						}))}
+						selectable={true}
 						type="single"
-						onSelect={setSelectedSupplier}
+						onSelect={handleSelect}
 					/>
 					<Button
 						name={toSelectedLocale('save', language)}
@@ -134,10 +149,7 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 						bg="#f0cf93"
 						type="button"
 						to=""
-						onClick={() => {
-							selectSupplier(selectedSupplier);
-							closeSearch();
-						}}
+						onClick={handleSave}
 						disabled={selectedSupplier === initialSupplier}
 					/>
 					<Button

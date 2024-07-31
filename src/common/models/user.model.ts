@@ -5,6 +5,7 @@ type User = {
 	userId: string;
 	department: string;
 	plant: string;
+	email?: string;
 };
 
 export default User;

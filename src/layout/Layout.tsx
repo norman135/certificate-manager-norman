@@ -1,7 +1,7 @@
 import { ChangeEvent, FC } from 'react';
 import SideBar from './side-bar/SideBar';
 import './Layout.css';
-import Select from '../common/select/Select';
+import Select from '../common/components/select/Select';
 import {
 	Languages,
 	toSelectedLocale,

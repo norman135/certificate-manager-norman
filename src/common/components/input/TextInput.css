@@ -14,3 +14,8 @@
 	flex: 1;
 	border: solid 1px grey;
 }
+.text-input-container label {
+	display: block;
+	font-size: 12px;
+	font-style: italic;
+}
