@@ -50,12 +50,14 @@ const UserLookup: FC<UserLookupProps> = ({
 			department: e.target.value,
 		}));
 	};
+
 	const handleUserIdChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setuserInfo((prev) => ({
 			...prev,
 			userId: e.target.value,
 		}));
 	};
+
 	const handlePlantChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setuserInfo((prev) => ({
 			...prev,
