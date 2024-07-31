@@ -23,7 +23,7 @@ import {
 } from '../../../common/language/Language';
 import SupplierInputLookup from './supplier-lookup/SupplierInputLookup';
 import Table from '../../../common/components/table/Table';
-import UserLookup from '../../../common/components/supplier-user-lookup/UserLookup';
+import UserLookup from '../../../common/components/user-lookup/UserLookup';
 import User from '../../../common/models/user.model';
 import SearchIcon from '../../../common/components/icons/SearchIcon';
 

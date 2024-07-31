@@ -3,7 +3,7 @@ import Certificate from '../../../../common/models/certificate.model';
 import { initialSupplier } from '../../../../common/utils/supplier.utils';
 import SearchIcon from '../../../../common/components/icons/SearchIcon';
 import CancelIcon from '../../../../common/components/icons/CancelIcon';
-import SupplierLookup from '../../../../common/components/supplier-user-lookup/SupplierLookup';
+import SupplierLookup from '../../../../common/components/supplier-lookup/SupplierLookup';
 import Supplier from '../../../../common/models/supplier.model';
 
 interface SupplierInputLookupProps {

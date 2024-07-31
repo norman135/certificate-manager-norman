@@ -1,6 +1,8 @@
 import { ChangeEvent, ReactNode, useState } from 'react';
 import './Table.css';
 import CancelIcon from '../icons/CancelIcon';
+import CheckMark from './checkmark/CheckMark';
+import Radio from './radio/Radio';
 
 interface TableProps<T> {
 	columns: string[];
@@ -25,6 +27,7 @@ const Table = <T extends {} | null>({
 			selectedItems.forEach((index) => {
 				sel.push(index);
 			});
+
 			setSelectedItems(sel);
 			onSelect(sel);
 		}
@@ -33,23 +36,17 @@ const Table = <T extends {} | null>({
 	const removeIfExists = (index: number) => {
 		if (selectedItems.includes(index)) {
 			const selected = selectedItems.filter((item) => item != index);
+
 			setSelectedItems(selected);
 			onSelect(selected);
 		}
 	};
 
 	const selectAll = (e: ChangeEvent<HTMLInputElement>) => {
-		const checkboxes = document.querySelectorAll<HTMLInputElement>(
-			'input[name=select-table]',
-		);
-
 		const checked = e.target.checked;
 
-		checkboxes.forEach((checkbox) => {
-			checkbox.checked = checked;
-		});
-
 		const selected = checked ? data.map((item, index) => index) : [];
+
 		setSelectedItems(selected);
 		onSelect(selected);
 	};
@@ -58,6 +55,7 @@ const Table = <T extends {} | null>({
 		<input
 			type="checkbox"
 			onChange={selectAll}
+			checked={selectedItems.length > 0 && selectedItems.length === data.length}
 		/>
 	);
 
@@ -66,6 +64,7 @@ const Table = <T extends {} | null>({
 	if (selectable) {
 		columnData =
 			type === 'single' ? [''] : type === 'multi' ? [checkMarkAll] : [];
+
 		columns.forEach((column) => columnData.push(column));
 	} else {
 		columns.forEach((column) => columnData.push(column));
@@ -75,25 +74,26 @@ const Table = <T extends {} | null>({
 		let rows: ReactNode[][] = [[]];
 
 		data.forEach((obj: T, index) => {
+			const handleCheckMarkChange = (e: ChangeEvent<HTMLInputElement>) => {
+				e.target.checked ? addIfNotExist(index) : removeIfExists(index);
+			};
+
+			const handleRadioSelect = () => {
+				onSelect(index);
+			};
+
 			const checkMark = (
-				<input
+				<CheckMark
 					key={index.toString()}
-					type="checkbox"
-					name="select-table"
-					onChange={(e) => {
-						e.target.checked ? addIfNotExist(index) : removeIfExists(index);
-					}}
+					onChange={handleCheckMarkChange}
+					checked={selectedItems.includes(index)}
 				/>
 			);
 
 			const radio = (
-				<input
+				<Radio
 					key={index.toString()}
-					type="radio"
-					name="select-table"
-					onChange={() => {
-						onSelect(index);
-					}}
+					onChange={handleRadioSelect}
 				/>
 			);
 
@@ -121,9 +121,11 @@ const Table = <T extends {} | null>({
 			}
 
 			const row = Object.values(obj!);
+
 			row.forEach((cell) => {
 				cells.push(cell as ReactNode);
 			});
+
 			rows.push(cells);
 		});
 
