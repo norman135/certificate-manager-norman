@@ -31,13 +31,13 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 			setUsers(allUsers);
 		};
 
-		getUsers;
+		getUsers();
 	}, []);
 
 	const getUserOptions = () => {
 		const options = [
 			{
-				value: initialUser.id,
+				value: '',
 				text: 'Choose User',
 			},
 		];
@@ -53,7 +53,13 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 	};
 
 	const handleUserChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		setUser(users.filter((user) => user.id === e.target.value)[0]);
+		const value = e.target.value;
+
+		const _user = value
+			? users.filter((user) => user.id === e.target.value)[0]
+			: initialUser;
+
+		setUser(_user);
 	};
 
 	return (

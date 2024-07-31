@@ -8,6 +8,8 @@ export const initialCertificate: Certificate = {
 	type: CertificateType.none,
 	validFrom: initialDate,
 	validTo: initialDate,
+	pdf: '',
+	users: [],
 };
 
 export default initialCertificate;

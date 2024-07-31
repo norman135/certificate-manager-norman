@@ -1,11 +1,11 @@
 import { ChangeEvent, FC } from 'react';
 
 interface RadioProps {
-	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	key: string;
+	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Radio: FC<RadioProps> = ({ onChange, key }) => {
+const Radio: FC<RadioProps> = ({ key, onChange }) => {
 	return (
 		<input
 			key={key}

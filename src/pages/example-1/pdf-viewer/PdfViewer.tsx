@@ -5,8 +5,8 @@ import {
 } from '../../../common/language/Language';
 
 interface PdfViewerProps {
-	fileUrl: string;
-	setFileUrl: React.Dispatch<React.SetStateAction<string>>;
+	fileUrl?: string;
+	setFileUrl: (file: string) => void;
 }
 
 const PdfViewer: FC<PdfViewerProps> = ({
@@ -14,11 +14,25 @@ const PdfViewer: FC<PdfViewerProps> = ({
 	setFileUrl,
 }): JSX.Element => {
 	const { language } = useLanguageContext();
+
 	const handlePDF = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
+
 		if (file) {
-			const url = URL.createObjectURL(file);
-			setFileUrl(url);
+			const isPDF = file.name.toLowerCase().endsWith('.pdf');
+
+			if (isPDF) {
+				const reader = new FileReader();
+
+				reader.onloadend = () => {
+					const dataUrl = reader.result as string;
+					setFileUrl(dataUrl);
+				};
+
+				reader.readAsDataURL(file);
+			} else {
+				alert('Please select a PDF file!');
+			}
 		}
 	};
 
@@ -38,7 +52,7 @@ const PdfViewer: FC<PdfViewerProps> = ({
 				onChange={handlePDF}
 			/>
 			<iframe
-				title={fileUrl}
+				title={'Pdf Viewer'}
 				src={fileUrl}
 				className="pdf-preview-iframe"
 			/>
