@@ -41,7 +41,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 	};
 
 	const handleSend = () => {
-		if (!validateComment) {
+		if (!validateComment()) {
 			return;
 		}
 		addComment(newComment);
@@ -57,7 +57,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 	};
 
 	const validateComment = (): boolean => {
-		if (!newComment.comment) {
+		if (!newComment.comment.trim()) {
 			alert(toSelectedLocale('addComment', language));
 			return false;
 		}
@@ -76,8 +76,11 @@ const CommentSection: FC<CommentSectionProps> = ({
 				/>
 			</div>
 			<div className="comments-list">
-				{comments?.map((comment) => (
-					<div className="comment">
+				{comments?.map((comment, index) => (
+					<div
+						key={index.toString()}
+						className="comment"
+					>
 						<div className="comment-user">
 							<span>{toSelectedLocale('user', language)}:</span>{' '}
 							{comment.user.name}
