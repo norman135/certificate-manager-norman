@@ -164,7 +164,6 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		}));
 	};
 	const validateForm = (): boolean => {
-		console.log(certificate.pdf);
 		if (certificate.supplier === initialCertificate.supplier) {
 			alert('Please choose a supplier!');
 			return false;
