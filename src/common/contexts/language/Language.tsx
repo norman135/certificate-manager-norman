@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { Children, createContext, FC, useContext, useState } from 'react';
 import * as dictionary from './lang.dict.json';
 
 export type Language = {
@@ -27,3 +27,28 @@ export const LanguageContext = createContext<Language>({
 export const useLanguageContext = () => {
 	return useContext(LanguageContext);
 };
+
+interface LanguageContextProviderProps {
+	children: JSX.Element;
+}
+
+const LanguageContextProvider: FC<LanguageContextProviderProps> = ({
+	children,
+}): JSX.Element => {
+	const [language, setLanguage] = useState<string>(Languages.English);
+
+	return (
+		<LanguageContext.Provider
+			value={{
+				language,
+				setLanguage(lang: string) {
+					setLanguage(lang);
+				},
+			}}
+		>
+			{children}
+		</LanguageContext.Provider>
+	);
+};
+
+export default LanguageContextProvider;

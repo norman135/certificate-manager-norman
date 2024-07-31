@@ -6,11 +6,11 @@ import {
 	Languages,
 	toSelectedLocale,
 	useLanguageContext,
-} from '../common/language/Language';
+} from '../common/contexts/language/Language';
 import { initialUser } from '../common/utils/user.utils';
 import User from '../common/models/user.model';
 import getAllUsers from '../common/db/user-service';
-import { useCurrentUserContext } from '../common/user/User';
+import { useCurrentUserContext } from '../common/contexts/user/User';
 
 interface LayoutProps {
 	children: JSX.Element;

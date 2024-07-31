@@ -10,7 +10,7 @@ import { deleteCertificate } from '../../../common/db/certificate-service';
 import {
 	toSelectedLocale,
 	useLanguageContext,
-} from '../../../common/language/Language';
+} from '../../../common/contexts/language/Language';
 
 interface CertificateSettingsProps {
 	certificateId: string;

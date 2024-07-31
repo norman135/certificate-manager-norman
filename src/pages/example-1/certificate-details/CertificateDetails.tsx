@@ -20,14 +20,14 @@ import initialCertificate from '../../../common/utils/certificate.utils';
 import {
 	toSelectedLocale,
 	useLanguageContext,
-} from '../../../common/language/Language';
+} from '../../../common/contexts/language/Language';
 import SupplierInputLookup from './supplier-lookup/SupplierInputLookup';
 import Table from '../../../common/components/table/Table';
 import UserLookup from '../../../common/components/user-lookup/UserLookup';
 import User from '../../../common/models/user.model';
 import SearchIcon from '../../../common/components/icons/SearchIcon';
 import CommentSection from './comment-section/CommentSection';
-import { useCurrentUserContext } from '../../../common/user/User';
+import { useCurrentUserContext } from '../../../common/contexts/user/User';
 import UserComment from '../../../common/models/comment.model';
 
 interface CertificateDetailsProps {

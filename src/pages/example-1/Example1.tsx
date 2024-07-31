@@ -11,7 +11,7 @@ import {
 	Languages,
 	toSelectedLocale,
 	useLanguageContext,
-} from '../../common/language/Language';
+} from '../../common/contexts/language/Language';
 import Supplier from '../../common/models/supplier.model';
 
 const Example1: FC = (): JSX.Element => {

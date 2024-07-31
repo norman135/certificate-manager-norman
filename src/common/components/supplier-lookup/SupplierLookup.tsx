@@ -6,7 +6,10 @@ import Button from '../button/Button';
 import Supplier from '../../models/supplier.model';
 import { searchSuppliers } from '../../db/supplier-service';
 import { initialSupplier } from '../../utils/supplier.utils';
-import { toSelectedLocale, useLanguageContext } from '../../language/Language';
+import {
+	toSelectedLocale,
+	useLanguageContext,
+} from '../../contexts/language/Language';
 import Table from '../table/Table';
 
 interface SupplierLookupProps {
