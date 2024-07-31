@@ -1,21 +1,21 @@
-import { ChangeEvent, FC, SetStateAction, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import './Lookup.css';
 import TextInput from '../input/TextInput';
 import CancelIcon from '../icons/CancelIcon';
 import Button from '../button/Button';
-import SelectTable from '../select-table/SelectTable';
 import User from '../../models/user.model';
 import { initialUser } from '../../utils/user.utils';
-import getAllUsers, { searchInUsers } from '../../db/user-service';
+import { searchInUsers } from '../../db/user-service';
+import Table from '../table/Table';
 
 interface UserLookupProps {
 	closeSearch: () => void;
-	selectUser: (user: User[]) => void;
+	selectUsers: (user: User[]) => void;
 }
 
 const UserLookup: FC<UserLookupProps> = ({
 	closeSearch,
-	selectUser,
+	selectUsers,
 }): JSX.Element => {
 	const [usersBuffer, setUsersBuffer] = useState<User[]>([]);
 	const [userInfo, setuserInfo] = useState<User>(initialUser);
@@ -124,11 +124,24 @@ const UserLookup: FC<UserLookupProps> = ({
 				</div>
 				<div className="search-list">
 					<div className="expand-bar">Supplier list</div>
-					<SelectTable<User>
+					<Table
 						columns={['Name', 'First Name', 'User ID', 'Department', 'Plant']}
-						items={usersBuffer}
-						type={'multi'}
-						onSelect={setSelectedUsers}
+						data={usersBuffer.map((user) => ({
+							name: user.name,
+							firstName: user.firstName,
+							userId: user.userId,
+							department: user.department,
+							plant: user.plant,
+						}))}
+						selectable={true}
+						type="multi"
+						onSelect={(selected) => {
+							setSelectedUsers(
+								usersBuffer.filter((user, index) =>
+									(selected as number[]).includes(index) ? user : null,
+								),
+							);
+						}}
 					/>
 					<Button
 						name="Save"
@@ -136,7 +149,7 @@ const UserLookup: FC<UserLookupProps> = ({
 						bg="#f0cf93"
 						type="button"
 						onClick={() => {
-							selectUser(selectedUsers);
+							selectUsers(selectedUsers);
 							closeSearch();
 						}}
 						disabled={selectedUsers.length < 1}

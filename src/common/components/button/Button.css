@@ -1,12 +1,14 @@
 .button {
-	display: inline-block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	border: solid 1px grey !important;
 	width: fit-content;
 	min-width: 150px !important;
 	padding: 5px;
 	margin: 10px 0;
 	margin-right: 10px;
-	font-size: 12px;
+	font-size: 13px;
 	text-align: center;
 	cursor: pointer;
 }

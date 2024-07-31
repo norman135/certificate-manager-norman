@@ -1,6 +1,5 @@
-import { ReactNode, useState } from 'react';
+import { ChangeEvent, ReactNode, useState } from 'react';
 import './Table.css';
-import CertificateSettings from '../../../pages/example-1/certificate-settings/CertificateSettings';
 import CancelIcon from '../icons/CancelIcon';
 
 interface TableProps<T> {
@@ -18,21 +17,55 @@ const Table = <T extends {} | null>({
 	type = 'single',
 	onSelect = () => {},
 }: TableProps<T>): JSX.Element => {
-	let selectedItem: number | null;
-	let selectedItems: number[] | null;
+	const [selectedItems, setSelectedItems] = useState<number[]>([]);
+
+	const addIfNotExist = (index: number) => {
+		if (!selectedItems.includes(index)) {
+			let sel = [index];
+			selectedItems.forEach((index) => {
+				sel.push(index);
+			});
+			setSelectedItems(sel);
+			onSelect(sel);
+		}
+	};
+
+	const removeIfExists = (index: number) => {
+		if (selectedItems.includes(index)) {
+			const selected = selectedItems.filter((item) => item != index);
+			setSelectedItems(selected);
+			onSelect(selected);
+		}
+	};
+
+	const selectAll = (e: ChangeEvent<HTMLInputElement>) => {
+		const checkboxes = document.querySelectorAll<HTMLInputElement>(
+			'input[name=select-table]',
+		);
+
+		const checked = e.target.checked;
+
+		checkboxes.forEach((checkbox) => {
+			checkbox.checked = checked;
+		});
+
+		const selected = checked ? data.map((item, index) => index) : [];
+		setSelectedItems(selected);
+		onSelect(selected);
+	};
 
 	const checkMarkAll = (
 		<input
 			type="checkbox"
-			name="select-table"
-			onChange={() => {}}
+			onChange={selectAll}
 		/>
 	);
 
 	let columnData: ReactNode[] = [];
 
 	if (selectable) {
-		columnData = type === 'single' ? [''] : [checkMarkAll];
+		columnData =
+			type === 'single' ? [''] : type === 'multi' ? [checkMarkAll] : [];
 		columns.forEach((column) => columnData.push(column));
 	} else {
 		columns.forEach((column) => columnData.push(column));
@@ -44,14 +77,18 @@ const Table = <T extends {} | null>({
 		data.forEach((obj: T, index) => {
 			const checkMark = (
 				<input
+					key={index.toString()}
 					type="checkbox"
 					name="select-table"
-					onChange={() => {}}
+					onChange={(e) => {
+						e.target.checked ? addIfNotExist(index) : removeIfExists(index);
+					}}
 				/>
 			);
 
 			const radio = (
 				<input
+					key={index.toString()}
 					type="radio"
 					name="select-table"
 					onChange={() => {
@@ -61,7 +98,13 @@ const Table = <T extends {} | null>({
 			);
 
 			const cancel = (
-				<div onClick={() => {}}>
+				<div
+					key={index.toString()}
+					onClick={() => {
+						onSelect(index);
+					}}
+					style={{ cursor: 'pointer' }}
+				>
 					<CancelIcon
 						width={12}
 						height={12}
@@ -97,8 +140,12 @@ const Table = <T extends {} | null>({
 				</tr>
 			</thead>
 			<tbody>
-				{generateRows().map((row) => (
-					<tr>{row ? row.map((node) => <td>{node}</td>) : null}</tr>
+				{generateRows().map((row, index) => (
+					<tr key={index.toString()}>
+						{row
+							? row.map((node, index) => <td key={index.toString()}>{node}</td>)
+							: null}
+					</tr>
 				))}
 			</tbody>
 		</table>

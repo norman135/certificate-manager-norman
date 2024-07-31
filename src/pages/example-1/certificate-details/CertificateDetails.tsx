@@ -25,6 +25,7 @@ import SupplierInputLookup from './supplier-lookup-input/SupplierInputLookup';
 import Table from '../../../common/components/table/Table';
 import UserLookup from '../../../common/components/supplier-user-lookup/UserLookup';
 import User from '../../../common/models/user.model';
+import SearchIcon from '../../../common/components/icons/SearchIcon';
 
 interface CertificateDetailsProps {
 	certificateId?: string;
@@ -111,6 +112,15 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			...prev,
 			users: users,
 		}));
+	};
+
+	const removeUser = (position: number | number[]) => {
+		const users = certificate.users;
+		if (users) {
+			selectUsers(
+				users.filter((user, index) => (index != position ? user : null)),
+			);
+		}
 	};
 
 	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -208,21 +218,35 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						{isUserDialogOpen ? (
 							<UserLookup
 								closeSearch={closeUserDialog}
-								selectUser={selectUsers}
+								selectUsers={selectUsers}
 							/>
 						) : null}
 					</div>
 					<div className="users-table">
-						<Button
-							name="Add Participant"
-							color="black"
-							bg="white"
-							type="button"
-							onClick={openUserDialog}
-						/>
+						<div className="edit-certificate-input">
+							<label>Assigned Users</label>
+							<Button
+								name={
+									<>
+										<SearchIcon
+											width={24}
+											height={24}
+										/>
+										Add Participant
+									</>
+								}
+								color="black"
+								bg="white"
+								type="button"
+								onClick={openUserDialog}
+							/>
+						</div>
 						<Table
-							columns={['Name', 'Department', 'E-mail']}
+							columns={['', 'Name', 'Department', 'E-mail']}
 							data={userTableData}
+							type="delete"
+							selectable={true}
+							onSelect={removeUser}
 						/>
 					</div>
 				</div>

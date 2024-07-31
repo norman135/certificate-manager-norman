@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import './Button.css';
 import { Link } from 'react-router-dom';
 
 interface ButtonProps {
-	name: string;
+	name: ReactNode;
 	color: string;
 	bg: string;
 	type: 'link' | 'button';
