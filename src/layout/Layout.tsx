@@ -38,14 +38,14 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 		const options = [
 			{
 				value: '',
-				text: 'Choose User',
+				text: toSelectedLocale('chooseUser', language),
 			},
 		];
 
 		users.forEach((user) => {
 			options.push({
 				value: user.id,
-				text: user.firstName,
+				text: user.name,
 			});
 		});
 

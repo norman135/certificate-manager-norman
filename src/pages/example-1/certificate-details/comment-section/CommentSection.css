@@ -1,0 +1,33 @@
+.comment-section {
+	margin: 50px 0;
+	width: 100%;
+}
+.comment-section-button {
+	display: flex;
+	justify-content: right;
+}
+.comment {
+	font-size: 15px;
+	margin-bottom: 30px;
+}
+.comment span {
+	font-weight: bold;
+}
+
+.comment-input-section {
+	background-color: rgb(230, 230, 230);
+	border: solid grey 1px;
+	padding: 10px 5px;
+}
+.comment-input-section label {
+	font-size: 12px;
+	display: block;
+	font-style: italic;
+}
+.comment-input-section textarea {
+	width: 90%;
+	height: 100px;
+	padding: 10px;
+	margin-bottom: 10px;
+	display: block;
+}
