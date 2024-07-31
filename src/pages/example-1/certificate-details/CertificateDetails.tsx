@@ -21,7 +21,7 @@ import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../../common/language/Language';
-import SupplierInputLookup from './supplier-lookup-input/SupplierInputLookup';
+import SupplierInputLookup from './supplier-lookup/SupplierInputLookup';
 import Table from '../../../common/components/table/Table';
 import UserLookup from '../../../common/components/supplier-user-lookup/UserLookup';
 import User from '../../../common/models/user.model';
@@ -215,16 +215,18 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						</div>
 					</div>
 					<div className="edit-certificate-input-container">
-						{isUserDialogOpen ? (
-							<UserLookup
-								closeSearch={closeUserDialog}
-								selectUsers={selectUsers}
-							/>
-						) : null}
+						<div className="edit-certificate-input">
+							{isUserDialogOpen ? (
+								<UserLookup
+									closeSearch={closeUserDialog}
+									selectUsers={selectUsers}
+								/>
+							) : null}
+						</div>
 					</div>
 					<div className="users-table">
 						<div className="edit-certificate-input">
-							<label>Assigned Users</label>
+							<label>{toSelectedLocale('assignedUsers', language)}</label>
 							<Button
 								name={
 									<>
@@ -232,7 +234,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 											width={24}
 											height={24}
 										/>
-										Add Participant
+										{toSelectedLocale('addParticipants', language)}
 									</>
 								}
 								color="black"
@@ -242,7 +244,12 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 							/>
 						</div>
 						<Table
-							columns={['', 'Name', 'Department', 'E-mail']}
+							columns={[
+								'',
+								'Name',
+								toSelectedLocale('department', language),
+								toSelectedLocale('email', language),
+							]}
 							data={userTableData}
 							type="delete"
 							selectable={true}

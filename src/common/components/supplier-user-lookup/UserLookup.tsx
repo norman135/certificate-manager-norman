@@ -7,6 +7,7 @@ import User from '../../models/user.model';
 import { initialUser } from '../../utils/user.utils';
 import { searchInUsers } from '../../db/user-service';
 import Table from '../table/Table';
+import { toSelectedLocale, useLanguageContext } from '../../language/Language';
 
 interface UserLookupProps {
 	closeSearch: () => void;
@@ -20,6 +21,8 @@ const UserLookup: FC<UserLookupProps> = ({
 	const [usersBuffer, setUsersBuffer] = useState<User[]>([]);
 	const [userInfo, setuserInfo] = useState<User>(initialUser);
 	const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+
+	const { language } = useLanguageContext();
 
 	const searchUsers = async () => {
 		const users = await searchInUsers(userInfo);
@@ -66,7 +69,9 @@ const UserLookup: FC<UserLookupProps> = ({
 	return (
 		<div className="search-container">
 			<div className="search-top-bar">
-				<p className="search-top-bar-title">Search for Persons</p>
+				<p className="search-top-bar-title">
+					{toSelectedLocale('searchPersons', language)}
+				</p>
 				<button
 					className="search-top-bar-close"
 					onClick={closeSearch}
@@ -79,7 +84,9 @@ const UserLookup: FC<UserLookupProps> = ({
 			</div>
 			<div className="search-main-content">
 				<div className="search-criteria">
-					<div className="expand-bar">Search criteria</div>
+					<div className="expand-bar">
+						{toSelectedLocale('searchCriteria', language)}
+					</div>
 					<div className="search-criteria-input-area">
 						<TextInput
 							label="Name"
@@ -87,35 +94,35 @@ const UserLookup: FC<UserLookupProps> = ({
 							onchange={handleNameChange}
 						/>
 						<TextInput
-							label="First Name"
+							label={toSelectedLocale('firstName', language)}
 							value={userInfo.firstName}
 							onchange={handleFirstNameChange}
 						/>
 						<TextInput
-							label="User ID"
+							label={toSelectedLocale('userId', language)}
 							value={userInfo.userId}
 							onchange={handleUserIdChange}
 						/>
 						<TextInput
-							label="Department"
+							label={toSelectedLocale('department', language)}
 							value={userInfo.department}
 							onchange={handleDepartmentChange}
 						/>
 						<TextInput
-							label="Plant"
+							label={toSelectedLocale('plant', language)}
 							value={userInfo.plant}
 							onchange={handlePlantChange}
 						/>
 					</div>
 					<Button
-						name="Search"
+						name={toSelectedLocale('search', language)}
 						color="white"
 						bg="#265b7a"
 						type="button"
 						onClick={searchUsers}
 					/>
 					<Button
-						name="Reset"
+						name={toSelectedLocale('reset', language)}
 						color="black"
 						bg="#f6f6f6"
 						type="button"
@@ -123,9 +130,17 @@ const UserLookup: FC<UserLookupProps> = ({
 					/>
 				</div>
 				<div className="search-list">
-					<div className="expand-bar">Supplier list</div>
+					<div className="expand-bar">
+						{toSelectedLocale('userList', language)}
+					</div>
 					<Table
-						columns={['Name', 'First Name', 'User ID', 'Department', 'Plant']}
+						columns={[
+							'Name',
+							toSelectedLocale('firstName', language),
+							toSelectedLocale('userId', language),
+							toSelectedLocale('department', language),
+							toSelectedLocale('plant', language),
+						]}
 						data={usersBuffer.map((user) => ({
 							name: user.name,
 							firstName: user.firstName,
@@ -144,7 +159,7 @@ const UserLookup: FC<UserLookupProps> = ({
 						}}
 					/>
 					<Button
-						name="Save"
+						name={toSelectedLocale('save', language)}
 						color="white"
 						bg="#f0cf93"
 						type="button"
@@ -155,7 +170,7 @@ const UserLookup: FC<UserLookupProps> = ({
 						disabled={selectedUsers.length < 1}
 					/>
 					<Button
-						name="Cancel"
+						name={toSelectedLocale('cancel', language)}
 						color="black"
 						bg="#f6f6f6"
 						type="button"

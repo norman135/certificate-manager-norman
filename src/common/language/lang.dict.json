@@ -29,5 +29,9 @@
 	"plant": ["Plant", "Anlage"],
 	"search": ["Search", "Suchen"],
 	"supplierList": ["Supplier List", "Lieferantenliste"],
-	"cancel": ["Cancel", "Stornieren"]
+	"userList": ["User List", "Benutzerliste"],
+	"cancel": ["Cancel", "Stornieren"],
+	"assignedUsers": ["Assigned Users", "Zugewiesene Benutzer"],
+	"email": ["Email", "E-Mail-Adresse"],
+	"addParticipants": ["Add Participants", "Teilnehmer Hinzufügen"]
 }
