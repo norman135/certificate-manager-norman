@@ -1,4 +1,5 @@
 import Certificate, { CertificateType } from '../models/certificate.model';
+import User from '../models/user.model';
 import { initialDate } from './format-date.utils';
 import { initialSupplier } from './supplier.utils';
 
