@@ -36,7 +36,6 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 }): JSX.Element => {
 	const [certificate, setCertificate] =
 		useState<Certificate>(initialCertificate);
-	const [fileURL, setFileURL] = useState<string>('');
 	const [isUserDialogOpen, setIsUserDialogOpen] = useState<boolean>(false);
 	const { language } = useLanguageContext();
 
@@ -72,6 +71,10 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	}, [certificateId]);
 
 	const handleSave = (): void => {
+		if (!validateForm()) {
+			return;
+		}
+
 		if (certificateId) {
 			const updateCert = async () => {
 				if (!(await updateCertificate(certificate))) {
@@ -152,6 +155,27 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			...prev,
 			validTo: new Date(e.target.value),
 		}));
+	};
+
+	const handlePdfChange = (file: string) => {
+		setCertificate((prev) => ({
+			...prev,
+			pdf: file,
+		}));
+	};
+	const validateForm = (): boolean => {
+		if (certificate.supplier === initialCertificate.supplier) {
+			alert('Please choose a supplier!');
+			return false;
+		} else if (certificate.type === initialCertificate.type) {
+			alert('Please choose a certificate type!');
+			return false;
+		} else if (certificate.pdf === initialCertificate.pdf) {
+			alert('Please add a PDF!');
+			return false;
+		} else {
+			return true;
+		}
 	};
 
 	const userTableData = certificate.users
@@ -259,8 +283,8 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 				</div>
 				<div className="pdf-preview-area">
 					<PdfViewer
-						fileUrl={fileURL}
-						setFileUrl={setFileURL}
+						fileUrl={certificate.pdf}
+						setFileUrl={handlePdfChange}
 					/>
 				</div>
 			</div>

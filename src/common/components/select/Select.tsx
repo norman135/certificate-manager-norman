@@ -17,9 +17,9 @@ const Select: FC<SelectProps> = ({ options, value, onChange }): JSX.Element => {
 			onChange={onChange}
 			value={value}
 		>
-			{options.map((option) => (
+			{options.map((option, index) => (
 				<option
-					key={option.value}
+					key={index.toString()}
 					value={option.value}
 				>
 					{option.text}
