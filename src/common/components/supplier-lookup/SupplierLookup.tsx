@@ -41,12 +41,14 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 			name: e.target.value,
 		}));
 	};
+
 	const handleIndexChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setSupplierInfo((prev) => ({
 			...prev,
 			indexValue: e.target.value,
 		}));
 	};
+
 	const handleCityChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setSupplierInfo((prev) => ({
 			...prev,
