@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { CertificateType } from '../models/certificate.model';
 
 type Option = {
 	value: string;

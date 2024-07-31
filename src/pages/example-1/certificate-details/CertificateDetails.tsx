@@ -8,7 +8,7 @@ import Certificate, {
 	CertificateType,
 } from '../../../common/models/certificate.model';
 import DatePicker from '../../../common/components/date-picker/DatePicker';
-import Select from '../../../common/select/Select';
+import Select from '../../../common/components/select/Select';
 import PdfViewer from '../pdf-viewer/PdfViewer';
 import { toIsoString } from '../../../common/utils/format-date.utils';
 import {
