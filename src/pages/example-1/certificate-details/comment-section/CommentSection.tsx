@@ -3,6 +3,10 @@ import Button from '../../../../common/components/button/Button';
 import './CommentSection.css';
 import UserComment from '../../../../common/models/comment.model';
 import User from '../../../../common/models/user.model';
+import {
+	toSelectedLocale,
+	useLanguageContext,
+} from '../../../../common/language/Language';
 
 interface CommentSectionProps {
 	comments: UserComment[];
@@ -20,6 +24,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 		user: user,
 		comment: '',
 	});
+	const { language } = useLanguageContext();
 
 	const openNewComment = () => {
 		if (!validateUser()) {
@@ -45,7 +50,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 
 	const validateUser = (): boolean => {
 		if (!user.id) {
-			alert('Please select a valid user!');
+			alert(toSelectedLocale('selectUser', language));
 			return false;
 		}
 		return true;
@@ -53,7 +58,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 
 	const validateComment = (): boolean => {
 		if (!newComment.comment) {
-			alert('Please add a comment!');
+			alert(toSelectedLocale('addComment', language));
 			return false;
 		}
 		return true;
@@ -67,17 +72,19 @@ const CommentSection: FC<CommentSectionProps> = ({
 					bg="#3f9ac9"
 					type="button"
 					onClick={openNewComment}
-					name="New Comment"
+					name={toSelectedLocale('newComment', language)}
 				/>
 			</div>
 			<div className="comments-list">
 				{comments?.map((comment) => (
 					<div className="comment">
 						<div className="comment-user">
-							<span>User:</span> {comment.user.name}
+							<span>{toSelectedLocale('user', language)}:</span>{' '}
+							{comment.user.name}
 						</div>
 						<div className="comment-text">
-							<span>Comment:</span> {comment.comment}
+							<span>{toSelectedLocale('comment', language)}:</span>{' '}
+							{comment.comment}
 						</div>
 					</div>
 				))}
@@ -86,7 +93,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 				<div className="comment-input-section">
 					<label className="comment-label">{user.name} *</label>
 					<textarea
-						placeholder="Comment"
+						placeholder={toSelectedLocale('comment', language)}
 						onChange={handleChange}
 					/>
 					<Button
@@ -94,7 +101,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 						bg="#9f1924"
 						type="button"
 						onClick={handleSend}
-						name="Send"
+						name={toSelectedLocale('send', language)}
 					/>
 				</div>
 			) : null}

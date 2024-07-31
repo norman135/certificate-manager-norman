@@ -170,13 +170,13 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 
 	const validateForm = (): boolean => {
 		if (certificate.supplier === initialCertificate.supplier) {
-			alert('Please choose a supplier!');
+			alert(toSelectedLocale('chooseSupplier', language));
 			return false;
 		} else if (certificate.type === initialCertificate.type) {
-			alert('Please choose a certificate type!');
+			alert(toSelectedLocale('chooseType', language));
 			return false;
 		} else if (certificate.pdf === initialCertificate.pdf) {
-			alert('Please add a PDF!');
+			alert(toSelectedLocale('addPdf', language));
 			return false;
 		} else {
 			return true;

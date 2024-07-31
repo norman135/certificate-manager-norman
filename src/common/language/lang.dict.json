@@ -33,6 +33,27 @@
 	"cancel": ["Cancel", "Stornieren"],
 	"assignedUsers": ["Assigned Users", "Zugewiesene Benutzer"],
 	"email": ["Email", "E-Mail-Adresse"],
+	"chooseUser": ["Choose User", "Wählen Sie Benutzer"],
 	"addParticipants": ["Add Participants", "Teilnehmer Hinzufügen"],
-	"user": ["User", "Benutzer"]
+	"user": ["User", "Benutzer"],
+	"comment": ["Commnet", "Kommentar"],
+	"newComment": ["New Comment", "Neuer Kommentar"],
+	"send": ["Send", "Schicken"],
+	"chooseSupplier": [
+		"Please choose a supplier!",
+		"Bitte wählen Sie einen Lieferanten!"
+	],
+	"chooseType": [
+		"Please choose a certificate type!",
+		"Bitte wählen Sie einen Zertifikatstyp!"
+	],
+	"addPdf": ["Please add a PDF!", "Bitte fügen Sie ein PDF hinzu!"],
+	"selectUser": [
+		"Please select a valid user!",
+		"Bitte wählen Sie einen gültigen Benutzer aus!"
+	],
+	"addComment": [
+		"Please add a comment!",
+		"Bitte fügen Sie einen Kommentar hinzu!"
+	]
 }

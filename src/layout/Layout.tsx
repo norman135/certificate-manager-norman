@@ -38,7 +38,7 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 		const options = [
 			{
 				value: '',
-				text: 'Choose User',
+				text: toSelectedLocale('chooseUser', language),
 			},
 		];
 
