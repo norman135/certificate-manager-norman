@@ -52,8 +52,8 @@ const Table = <T extends {} | null>({
 	};
 
 	const checkMarkAll = (
-		<input
-			type="checkbox"
+		<CheckMark
+			key="select-all-checkmark"
 			onChange={selectAll}
 			checked={selectedItems.length > 0 && selectedItems.length === data.length}
 		/>
