@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CertificatesManagerApi.Models;
+namespace CertificatesManagerApi.Entities;
 
 public partial class Type
 {

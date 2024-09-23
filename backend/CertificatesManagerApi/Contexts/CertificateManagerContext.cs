@@ -1,4 +1,4 @@
-﻿using CertificatesManagerApi.Models;
+﻿using CertificatesManagerApi.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CertificatesManagerApi.Contexts;
@@ -22,7 +22,7 @@ public partial class CertificateManagerContext : DbContext
 
     public virtual DbSet<Supplier> Suppliers { get; set; }
 
-    public virtual DbSet<Models.Type> Types { get; set; }
+    public virtual DbSet<Entities.Type> Types { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -147,7 +147,7 @@ public partial class CertificateManagerContext : DbContext
                 .HasColumnName("updatedat");
         });
 
-        modelBuilder.Entity<Models.Type>(entity =>
+        modelBuilder.Entity<Entities.Type>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("types_pkey");
 
