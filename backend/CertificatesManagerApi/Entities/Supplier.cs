@@ -12,12 +12,12 @@ public partial class Supplier
 
     public string City { get; set; } = null!;
 
-    public DateTime? Createdat { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
-    public DateTime? Updatedat { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     [Timestamp]
-    public byte[]? Rowversion { get; set; }
+    public byte[]? RowVersion { get; set; }
 
     public virtual ICollection<Certificate> Certificates { get; set; } = new List<Certificate>();
 }

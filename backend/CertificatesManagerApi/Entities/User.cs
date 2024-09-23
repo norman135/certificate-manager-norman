@@ -8,20 +8,20 @@ public partial class User
 
     public string Name { get; set; } = null!;
 
-    public string Firstname { get; set; } = null!;
+    public string FirstName { get; set; } = null!;
 
-    public string Userid { get; set; } = null!;
+    public string UserId { get; set; } = null!;
 
     public string Department { get; set; } = null!;
 
     public string Plant { get; set; } = null!;
 
-    public DateTime? Createdat { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
-    public DateTime? Updatedat { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     [Timestamp]
-    public byte[]? Rowversion { get; set; }
+    public byte[]? RowVersion { get; set; }
 
     public virtual ICollection<CertificateUser> CertificateUsers { get; set; } = new List<CertificateUser>();
 

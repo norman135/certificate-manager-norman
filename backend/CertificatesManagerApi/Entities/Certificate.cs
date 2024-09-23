@@ -6,19 +6,22 @@ public partial class Certificate
 {
     public int Id { get; set; }
 
-    public int? Supplierid { get; set; }
+    public int? SupplierId { get; set; }
 
-    public int? Typeid { get; set; }
+    public int? TypeId { get; set; }
 
-    public DateTime Validfrom { get; set; }
+    public DateTime ValidFrom { get; set; }
 
-    public DateTime Validto { get; set; }
+    public DateTime ValidTo { get; set; }
 
-    public byte[]? Certificate1 { get; set; }
+    public byte[]? CertificateDocument { get; set; }
 
-    public DateTime? Createdat { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
-    public DateTime? Updatedat { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+
+    [Timestamp]
+    public byte[]? RowVersion { get; set; }
 
     public virtual ICollection<CertificateUser> CertificateUsers { get; set; } = new List<CertificateUser>();
 
@@ -26,8 +29,5 @@ public partial class Certificate
 
     public virtual Supplier? Supplier { get; set; }
 
-    public virtual Type? Type { get; set; }
-
-    [Timestamp]
-    public byte[]? Rowversion { get; set; }
+    public virtual CertificateType? Type { get; set; }
 }
