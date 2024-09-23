@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CertificatesManagerApi.Models;
 
@@ -21,8 +20,6 @@ public partial class Certificate
 
     public DateTime? Updatedat { get; set; }
 
-    public byte[]? Rowversion { get; set; }
-
     public virtual ICollection<CertificateUser> CertificateUsers { get; set; } = new List<CertificateUser>();
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
@@ -30,4 +27,7 @@ public partial class Certificate
     public virtual Supplier? Supplier { get; set; }
 
     public virtual Type? Type { get; set; }
+
+    [Timestamp]
+    public byte[]? Rowversion { get; set; }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CertificatesManagerApi.Models;
 
@@ -17,6 +16,7 @@ public partial class Comment
 
     public DateTime? Updatedat { get; set; }
 
+    [Timestamp]
     public byte[]? Rowversion { get; set; }
 
     public virtual Certificate? Certificate { get; set; }
