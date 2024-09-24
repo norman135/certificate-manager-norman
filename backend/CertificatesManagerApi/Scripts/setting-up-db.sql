@@ -1,71 +1,66 @@
-CREATE DATABASE CertificateManager;
-
-USE CertificateManager;
-
-
 CREATE TABLE Suppliers (
     Id SERIAL PRIMARY KEY,
     Name VARCHAR(255) NOT NULL,
     Index INT NOT NULL,
     City VARCHAR(255) NOT NULL,
-    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Row_Version BYTEA
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    RowVersion BYTEA
 );
 
 CREATE TABLE Users (
     Id SERIAL PRIMARY KEY,
     Name VARCHAR(255) NOT NULL,
-    First_Name VARCHAR(255) NOT NULL,
-    User_Id VARCHAR(10) NOT NULL,
+    FirstName VARCHAR(255) NOT NULL,
+    UserId VARCHAR(10) NOT NULL,
     Department VARCHAR(10) NOT NULL,
     Plant VARCHAR(3) NOT NULL,
-    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Row_Version BYTEA 
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    RowVersion BYTEA 
 );
 
-CREATE TABLE Certificate_Types (
+CREATE TABLE CertificateTypes (
     Id SERIAL PRIMARY KEY,
     Type VARCHAR(255) NOT NULL,
-    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Row_Version BYTEA 
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    RowVersion BYTEA 
 );
 
 CREATE TABLE Certificates (
     Id SERIAL PRIMARY KEY,
-    Supplier_Id INT,
-    Type_Id INT,
-    Valid_From TIMESTAMP NOT NULL,
-    Valid_To TIMESTAMP NOT NULL,
-    Certificate_Document BYTEA,
-    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Row_Version BYTEA,
-    FOREIGN KEY (Supplier_Id) REFERENCES Suppliers(Id),
-    FOREIGN KEY (Type_Id) REFERENCES Certificate_Types(Id)
+    SupplierId INT,
+    TypeId INT,
+    ValidFrom TIMESTAMP NOT NULL,
+    ValidTo TIMESTAMP NOT NULL,
+    CertificateDocument BYTEA,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    RowVersion BYTEA,
+    FOREIGN KEY (SupplierId) REFERENCES Suppliers(Id),
+    FOREIGN KEY (TypeId) REFERENCES CertificateTypes(Id)
 );
 
 CREATE TABLE Comments (
     Id SERIAL PRIMARY KEY,
-    Comment_Text VARCHAR(255) NOT NULL,
-    User_Id INT,
-    Certificate_Id INT,
-    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Row_Version BYTEA,
-    FOREIGN KEY (User_Id) REFERENCES Users(Id),
-    FOREIGN KEY (Certificate_Id) REFERENCES Certificates(Id)
+    CommentText VARCHAR(255) NOT NULL,
+    UserId INT,
+    CertificateId INT,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    RowVersion BYTEA,
+    FOREIGN KEY (UserId) REFERENCES Users(Id),
+    FOREIGN KEY (CertificateId) REFERENCES Certificates(Id)
 );
 
-CREATE TABLE Certificate_Users (
+CREATE TABLE CertificateUsers (
     Id SERIAL PRIMARY KEY,
-    User_Id INT,
-    Certificate_Id INT,
-    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Row_Version BYTEA,
-    FOREIGN KEY (User_Id) REFERENCES Users(Id),
-    FOREIGN KEY (Certificate_Id) REFERENCES Certificates(Id)
+    UserId INT,
+    CertificateId INT,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    RowVersion BYTEA,
+    FOREIGN KEY (UserId) REFERENCES Users(Id),
+    FOREIGN KEY (CertificateId) REFERENCES Certificates(Id)
 );
