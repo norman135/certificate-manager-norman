@@ -1,21 +1,20 @@
 ﻿using CertificatesManagerApi.DTOs;
-using CertificatesManagerApi.Entities;
+using CertificatesManagerApi.Repository;
 
 namespace CertificatesManagerApi.Services
 {
     public class UserService
     {
-        public static UserDTO UserToDto(User user)
-        {
-            UserDTO userDto = new(
-                user.Name,
-                user.FirstName,
-                user.UserId,
-                user.Department,
-                user.Plant
-            );
+        UserRepository _userRepository;
 
-            return userDto;
+        public UserService(UserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
+        public IEnumerable<UserDTO> GetUsers()
+        {
+            return _userRepository.GetUsers();
         }
     }
 }

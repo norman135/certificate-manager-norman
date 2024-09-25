@@ -1,4 +1,3 @@
-using CertificatesManagerApi.Contexts;
 using CertificatesManagerApi.DTOs;
 using CertificatesManagerApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -9,88 +8,26 @@ namespace CertificatesManagerApi.Controllers
     [Route("[controller]")]
     public class CertificateController : ControllerBase
     {
-        private readonly CertificateManagerContext _context;
-        public CertificateController(CertificateManagerContext context)
+        private readonly CertificateService _certificateService;
+
+        public CertificateController(CertificateService certificateService)
         {
-            _context = context;
+            _certificateService = certificateService;
         }
 
         [HttpGet("/certificates")]
         public ActionResult GetCertificates()
         {
-            ICollection<CertificatesDTO> certificatesDtos = _context.Certificates
-                .Select(certificate => CertificateService.CertificatesToDto(certificate))
-                .ToList();
+            IEnumerable<CertificatesDTO> certificatesDtos = _certificateService.GetCertificates();
 
             return Ok(certificatesDtos);
         }
 
-        [HttpGet("/certificates/{id}")]
+        [HttpGet("/certificate/{id}")]
         public ActionResult GetCertificate(int id)
         {
-            var certificate = _context.Certificates
-                .Where(certificate => certificate.Id == id)
-                .FirstOrDefault();
-
-            if (certificate == null)
-            {
-                return NotFound();
-            }
-
-            var certificateDto = CertificateService.CertificateToDto(certificate);
-
+            CertificateDTO certificateDto = _certificateService.GetCertificate(id);
             return Ok(certificateDto);
-        }
-
-        [HttpGet("/suppliers")]
-        public ActionResult GetSuppliers()
-        {
-            var suppliers = _context.Suppliers
-                .Select(supplier => SupplierService.SupplierToDto(supplier))
-                .ToList();
-
-            if (suppliers.Count != 0)
-            {
-                return Ok(suppliers);
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
-
-        [HttpGet("/users")]
-        public ActionResult GetUsers()
-        {
-            var users = _context.Users
-                .Select(user => UserService.UserToDto(user))
-                .ToList();
-
-            if (users.Count != 0)
-            {
-                return Ok(users);
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
-
-        [HttpGet("/certificate-types")]
-        public ActionResult GetCertificateTypes()
-        {
-            var certificateTypes = _context.CertificateTypes
-                .Select(certificateType => CertificateTypeService.CertificateTypeToDto(certificateType))
-                .ToList();
-
-            if (certificateTypes.Count != 0)
-            {
-                return Ok(certificateTypes);
-            }
-            else
-            {
-                return NotFound();
-            }
         }
     }
 }

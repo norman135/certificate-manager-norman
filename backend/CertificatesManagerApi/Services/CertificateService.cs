@@ -1,42 +1,27 @@
 ﻿using CertificatesManagerApi.DTOs;
-using CertificatesManagerApi.Entities;
+using CertificatesManagerApi.Repository;
 
 namespace CertificatesManagerApi.Services
 {
+
     public class CertificateService
     {
-        public static CertificateDTO CertificateToDto(Certificate certificate)
+        CertificateRepository _certificateRepository;
+
+        public CertificateService(CertificateRepository certificateRepository)
         {
-            CertificateDTO certificateDto = new(
-                SupplierService.SupplierToDto(certificate.Supplier),
-                certificate.Type.Type,
-                certificate.ValidFrom,
-                certificate.ValidTo,
-                certificate.CertificateDocument,
-                certificate.Comments
-                .Select(comment => CommentService.CommentToDto(comment)).ToList(),
-                certificate.CertificateUsers
-                .Select(
-                    certificateUser => UserService.UserToDto(certificateUser.User)
-                )
-                .ToList()
-            );
-            return certificateDto;
+            _certificateRepository = certificateRepository;
         }
 
-        public static CertificatesDTO CertificatesToDto(Certificate certificate)
+        public IEnumerable<CertificatesDTO> GetCertificates()
         {
-            CertificatesDTO certificatesDto = new(
-                new SupplierDTO(
-                    certificate.Supplier.Name,
-                    certificate.Supplier.Index,
-                    certificate.Supplier.City
-                ),
-                certificate.Type.Type,
-                certificate.ValidFrom,
-                certificate.ValidTo
-            );
-            return certificatesDto;
+            return _certificateRepository.GetCertificates();
         }
+
+        public CertificateDTO GetCertificate(int id)
+        {
+            return _certificateRepository.GetCertificate(id);
+        }
+
     }
 }

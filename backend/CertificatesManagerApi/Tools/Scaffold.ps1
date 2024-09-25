@@ -1,4 +1,4 @@
-﻿$appSettingsFile = "appsettings.json"
+﻿$appSettingsFile = "appsettings.Development.json"
 
 $appSettings = Get-Content $appSettingsFile -Raw | ConvertFrom-Json
 

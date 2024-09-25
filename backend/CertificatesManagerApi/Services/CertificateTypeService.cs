@@ -1,15 +1,20 @@
 ﻿using CertificatesManagerApi.DTOs;
-using CertificatesManagerApi.Entities;
+using CertificatesManagerApi.Repository;
 
 namespace CertificatesManagerApi.Services
 {
     public class CertificateTypeService
     {
-        public static CertificateTypeDTO CertificateTypeToDto(CertificateType certificateType)
-        {
-            CertificateTypeDTO certificateTypeDto = new(certificateType.Type);
+        CertificateTypeRepository _certificateTypeRepository;
 
-            return certificateTypeDto;
+        public CertificateTypeService(CertificateTypeRepository certificateTypeRepository)
+        {
+            _certificateTypeRepository = certificateTypeRepository;
+        }
+
+        public IEnumerable<CertificateTypeDTO> GetCertificateTypes()
+        {
+            return _certificateTypeRepository.GetCertificateTypes();
         }
     }
 }

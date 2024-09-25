@@ -1,9 +1,9 @@
 ﻿using CertificatesManagerApi.DTOs;
 using CertificatesManagerApi.Entities;
 
-namespace CertificatesManagerApi.Services
+namespace CertificatesManagerApi.Mappers
 {
-    public class CommentService
+    public class CommentMapper
     {
         public static CommentDTO CommentToDto(Comment comment)
         {
