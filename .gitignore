@@ -252,3 +252,6 @@ src/.vs/config/applicationhost.config
 
 # JetBrains Rider's auto generated files
 .idea/
+
+# App Settings
+appsettings.Development.json
