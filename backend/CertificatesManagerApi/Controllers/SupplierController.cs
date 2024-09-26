@@ -1,4 +1,3 @@
-using CertificatesManagerApi.DTOs;
 using CertificatesManagerApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +17,7 @@ namespace CertificatesManagerApi.Controllers
         [HttpGet("/suppliers")]
         public async Task<IActionResult> GetSuppliers()
         {
-            IEnumerable<SupplierDTO> supplierDto = await _supplierService.GetSuppliers();
+            var supplierDto = await _supplierService.GetSuppliers();
             return Ok(supplierDto);
         }
     }

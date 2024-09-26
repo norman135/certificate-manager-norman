@@ -1,4 +1,3 @@
-using CertificatesManagerApi.DTOs;
 using CertificatesManagerApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +17,7 @@ namespace CertificatesManagerApi.Controllers
         [HttpGet("/certificates")]
         public async Task<ActionResult> GetCertificates()
         {
-            IEnumerable<CertificatesDTO> certificatesDtos = await _certificateService.GetCertificates();
+            var certificatesDtos = await _certificateService.GetCertificates();
 
             return Ok(certificatesDtos);
         }
@@ -26,7 +25,8 @@ namespace CertificatesManagerApi.Controllers
         [HttpGet("/certificate/{id}")]
         public async Task<ActionResult> GetCertificate(int id)
         {
-            CertificateDTO certificateDto = await _certificateService.GetCertificate(id);
+            var certificateDto = await _certificateService.GetCertificate(id);
+
             return Ok(certificateDto);
         }
     }

@@ -1,4 +1,3 @@
-using CertificatesManagerApi.DTOs;
 using CertificatesManagerApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +17,7 @@ namespace CertificatesManagerApi.Controllers
         [HttpGet("/certificate-types")]
         public async Task<IActionResult> GetCertificateTypes()
         {
-            IEnumerable<CertificateTypeDTO> certificateTypeDto = await _certificateTypeService.GetCertificateTypes();
+            var certificateTypeDto = await _certificateTypeService.GetCertificateTypes();
             return Ok(certificateTypeDto);
         }
     }
