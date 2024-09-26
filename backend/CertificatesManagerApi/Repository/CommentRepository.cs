@@ -1,6 +1,7 @@
 ﻿using CertificatesManagerApi.Contexts;
 using CertificatesManagerApi.DTOs;
 using CertificatesManagerApi.Mappers;
+using Microsoft.EntityFrameworkCore;
 
 namespace CertificatesManagerApi.Repository
 {
@@ -13,9 +14,9 @@ namespace CertificatesManagerApi.Repository
             _context = context;
         }
 
-        public IEnumerable<CommentDTO> GetComments()
+        public async Task<IEnumerable<CommentDTO>> GetComments()
         {
-            return _context.Comments.Select(comment => CommentMapper.CommentToDto(comment)).ToList();
+            return await _context.Comments.Select(comment => CommentMapper.ToDto(comment)).ToListAsync();
         }
     }
 }

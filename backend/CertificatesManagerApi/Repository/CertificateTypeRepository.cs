@@ -1,7 +1,7 @@
 ﻿using CertificatesManagerApi.Contexts;
 using CertificatesManagerApi.DTOs;
-
 using CertificatesManagerApi.Mappers;
+using Microsoft.EntityFrameworkCore;
 namespace CertificatesManagerApi.Repository
 {
     public class CertificateTypeRepository
@@ -13,9 +13,9 @@ namespace CertificatesManagerApi.Repository
             _context = context;
         }
 
-        public IEnumerable<CertificateTypeDTO> GetCertificateTypes()
+        public async Task<IEnumerable<CertificateTypeDTO>> GetCertificateTypes()
         {
-            return _context.CertificateTypes.Select(type => CertificateTypeMapper.CertificateTypeToDto(type)).ToList();
+            return await _context.CertificateTypes.Select(type => CertificateTypeMapper.ToDto(type)).ToListAsync();
         }
     }
 }

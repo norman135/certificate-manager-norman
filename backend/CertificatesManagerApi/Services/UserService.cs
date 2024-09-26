@@ -12,9 +12,9 @@ namespace CertificatesManagerApi.Services
             _userRepository = userRepository;
         }
 
-        public IEnumerable<UserDTO> GetUsers()
+        public async Task<IEnumerable<UserDTO>> GetUsers()
         {
-            return _userRepository.GetUsers();
+            return await _userRepository.GetUsers();
         }
     }
 }

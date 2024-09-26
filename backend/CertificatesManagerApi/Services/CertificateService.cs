@@ -13,14 +13,14 @@ namespace CertificatesManagerApi.Services
             _certificateRepository = certificateRepository;
         }
 
-        public IEnumerable<CertificatesDTO> GetCertificates()
+        public async Task<IEnumerable<CertificatesDTO>> GetCertificates()
         {
-            return _certificateRepository.GetCertificates();
+            return await _certificateRepository.GetCertificates();
         }
 
-        public CertificateDTO GetCertificate(int id)
+        public async Task<CertificateDTO> GetCertificate(int id)
         {
-            return _certificateRepository.GetCertificate(id);
+            return await _certificateRepository.GetCertificate(id);
         }
 
     }

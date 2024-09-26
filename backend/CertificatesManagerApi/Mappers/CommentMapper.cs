@@ -5,7 +5,7 @@ namespace CertificatesManagerApi.Mappers
 {
     public class CommentMapper
     {
-        public static CommentDTO CommentToDto(Comment comment)
+        public static CommentDTO ToDto(Comment comment)
         {
             CommentDTO commentDto = new(comment.User.Name, comment.CommentText);
 

@@ -12,9 +12,9 @@ namespace CertificatesManagerApi.Services
             _certificateTypeRepository = certificateTypeRepository;
         }
 
-        public IEnumerable<CertificateTypeDTO> GetCertificateTypes()
+        public async Task<IEnumerable<CertificateTypeDTO>> GetCertificateTypes()
         {
-            return _certificateTypeRepository.GetCertificateTypes();
+            return await _certificateTypeRepository.GetCertificateTypes();
         }
     }
 }

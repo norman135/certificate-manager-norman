@@ -5,26 +5,26 @@ namespace CertificatesManagerApi.Mappers
 {
     public class CertificateMapper
     {
-        public static CertificateDTO CertificateToDto(Certificate certificate)
+        public static CertificateDTO ToDto(Certificate certificate)
         {
             CertificateDTO certificateDto = new(
-                SupplierMapper.SupplierToDto(certificate.Supplier),
+                SupplierMapper.ToDto(certificate.Supplier),
                 certificate.Type.Type,
                 certificate.ValidFrom,
                 certificate.ValidTo,
                 certificate.CertificateDocument,
                 certificate.Comments
-                .Select(comment => CommentMapper.CommentToDto(comment)).ToList(),
+                .Select(comment => CommentMapper.ToDto(comment)).ToList(),
                 certificate.CertificateUsers
                 .Select(
-                    certificateUser => UserMapper.UserToDto(certificateUser.User)
+                    certificateUser => UserMapper.ToDto(certificateUser.User)
                 )
                 .ToList()
             );
             return certificateDto;
         }
 
-        public static CertificatesDTO CertificatesToDto(Certificate certificate)
+        public static CertificatesDTO ToMultipleDto(Certificate certificate)
         {
             CertificatesDTO certificatesDto = new(
                 new SupplierDTO(

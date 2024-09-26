@@ -5,7 +5,7 @@ namespace CertificatesManagerApi.Mappers
 {
     public class UserMapper
     {
-        public static UserDTO UserToDto(User user)
+        public static UserDTO ToDto(User user)
         {
             UserDTO userDto = new(
                 user.Name,

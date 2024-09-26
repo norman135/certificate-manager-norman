@@ -16,17 +16,17 @@ namespace CertificatesManagerApi.Controllers
         }
 
         [HttpGet("/certificates")]
-        public ActionResult GetCertificates()
+        public async Task<ActionResult> GetCertificates()
         {
-            IEnumerable<CertificatesDTO> certificatesDtos = _certificateService.GetCertificates();
+            IEnumerable<CertificatesDTO> certificatesDtos = await _certificateService.GetCertificates();
 
             return Ok(certificatesDtos);
         }
 
         [HttpGet("/certificate/{id}")]
-        public ActionResult GetCertificate(int id)
+        public async Task<ActionResult> GetCertificate(int id)
         {
-            CertificateDTO certificateDto = _certificateService.GetCertificate(id);
+            CertificateDTO certificateDto = await _certificateService.GetCertificate(id);
             return Ok(certificateDto);
         }
     }

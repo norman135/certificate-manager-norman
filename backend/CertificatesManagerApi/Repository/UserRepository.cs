@@ -1,6 +1,7 @@
 ﻿using CertificatesManagerApi.Contexts;
 using CertificatesManagerApi.DTOs;
 using CertificatesManagerApi.Mappers;
+using Microsoft.EntityFrameworkCore;
 
 namespace CertificatesManagerApi.Repository
 {
@@ -13,9 +14,9 @@ namespace CertificatesManagerApi.Repository
             _context = context;
         }
 
-        public IEnumerable<UserDTO> GetUsers()
+        public async Task<IEnumerable<UserDTO>> GetUsers()
         {
-            return _context.Users.Select(user => UserMapper.UserToDto(user)).ToList();
+            return await _context.Users.Select(user => UserMapper.ToDto(user)).ToListAsync();
         }
     }
 }

@@ -16,9 +16,9 @@ namespace CertificatesManagerApi.Controllers
         }
 
         [HttpGet("/users")]
-        public IActionResult GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            IEnumerable<UserDTO> userDto = _userService.GetUsers();
+            IEnumerable<UserDTO> userDto = await _userService.GetUsers();
             return Ok(userDto);
         }
     }

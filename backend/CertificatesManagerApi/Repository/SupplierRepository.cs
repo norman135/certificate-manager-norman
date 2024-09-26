@@ -1,6 +1,7 @@
 ﻿using CertificatesManagerApi.Contexts;
 using CertificatesManagerApi.DTOs;
 using CertificatesManagerApi.Mappers;
+using Microsoft.EntityFrameworkCore;
 
 namespace CertificatesManagerApi.Repository
 {
@@ -13,9 +14,9 @@ namespace CertificatesManagerApi.Repository
             _context = context;
         }
 
-        public IEnumerable<SupplierDTO> GetSuppliers()
+        public async Task<IEnumerable<SupplierDTO>> GetSuppliers()
         {
-            return _context.Suppliers.Select(supplier => SupplierMapper.SupplierToDto(supplier)).ToList();
+            return await _context.Suppliers.Select(supplier => SupplierMapper.ToDto(supplier)).ToListAsync();
         }
     }
 }

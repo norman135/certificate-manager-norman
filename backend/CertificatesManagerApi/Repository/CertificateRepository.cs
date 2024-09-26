@@ -1,6 +1,7 @@
 ﻿using CertificatesManagerApi.Contexts;
 using CertificatesManagerApi.DTOs;
 using CertificatesManagerApi.Mappers;
+using Microsoft.EntityFrameworkCore;
 
 namespace CertificatesManagerApi.Repository
 {
@@ -13,17 +14,17 @@ namespace CertificatesManagerApi.Repository
             _context = context;
         }
 
-        public IEnumerable<CertificatesDTO> GetCertificates()
+        public async Task<IEnumerable<CertificatesDTO>> GetCertificates()
         {
-            return _context.Certificates.Select(certificate => CertificateMapper.CertificatesToDto(certificate)).ToList();
+            return await _context.Certificates.Select(certificate => CertificateMapper.ToMultipleDto(certificate)).ToListAsync();
         }
 
-        public CertificateDTO GetCertificate(int id)
+        public async Task<CertificateDTO> GetCertificate(int id)
         {
-            return _context.Certificates
+            return await _context.Certificates
                 .Where(certificate => certificate.Id == id)
-                .Select(certificate => CertificateMapper.CertificateToDto(certificate))
-                .FirstOrDefault();
+                .Select(certificate => CertificateMapper.ToDto(certificate))
+                .FirstOrDefaultAsync();
         }
     }
 }

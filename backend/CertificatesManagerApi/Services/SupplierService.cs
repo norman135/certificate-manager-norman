@@ -12,9 +12,9 @@ namespace CertificatesManagerApi.Services
             _supplierRepository = supplierRepository;
         }
 
-        public IEnumerable<SupplierDTO> GetSuppliers()
+        public async Task<IEnumerable<SupplierDTO>> GetSuppliers()
         {
-            return _supplierRepository.GetSuppliers();
+            return await _supplierRepository.GetSuppliers();
         }
     }
 }
