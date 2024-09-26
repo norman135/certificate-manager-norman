@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CertificatesManagerApi.Entities;
+﻿namespace CertificatesManagerApi.Entities;
 
 public partial class Comment
 {
@@ -16,7 +14,6 @@ public partial class Comment
 
     public DateTime? UpdatedAt { get; set; }
 
-    [Timestamp]
     public byte[]? RowVersion { get; set; }
 
     public virtual Certificate? Certificate { get; set; }

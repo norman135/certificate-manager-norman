@@ -1,4 +1,6 @@
 using CertificatesManagerApi.Contexts;
+using CertificatesManagerApi.Repository;
+using CertificatesManagerApi.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<CertificateManagerContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
+
+builder.Services.AddScoped<CertificateRepository>();
+builder.Services.AddScoped<CertificateTypeRepository>();
+builder.Services.AddScoped<SupplierRepository>();
+builder.Services.AddScoped<UserRepository>();
+
+builder.Services.AddScoped<CertificateService>();
+builder.Services.AddScoped<CertificateTypeService>();
+builder.Services.AddScoped<SupplierService>();
+builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
 

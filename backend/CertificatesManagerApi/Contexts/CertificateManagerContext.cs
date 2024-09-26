@@ -26,6 +26,7 @@ public partial class CertificateManagerContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Certificate>(entity =>
@@ -35,81 +36,81 @@ public partial class CertificateManagerContext : DbContext
             entity.ToTable("certificates");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CertificateDocument).HasColumnName("certificate_document");
+            entity.Property(e => e.CertificateDocument).HasColumnName("certificatedocument");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("created_at");
-            entity.Property(e => e.RowVersion).HasColumnName("row_version");
-            entity.Property(e => e.SupplierId).HasColumnName("supplier_id");
-            entity.Property(e => e.TypeId).HasColumnName("type_id");
+                .HasColumnName("createdat");
+            entity.Property(e => e.RowVersion).HasColumnName("rowversion");
+            entity.Property(e => e.SupplierId).HasColumnName("supplierid");
+            entity.Property(e => e.TypeId).HasColumnName("typeid");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updated_at");
+                .HasColumnName("updatedat");
             entity.Property(e => e.ValidFrom)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("valid_from");
+                .HasColumnName("validfrom");
             entity.Property(e => e.ValidTo)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("valid_to");
+                .HasColumnName("validto");
 
             entity.HasOne(d => d.Supplier).WithMany(p => p.Certificates)
                 .HasForeignKey(d => d.SupplierId)
-                .HasConstraintName("certificates_supplier_id_fkey");
+                .HasConstraintName("certificates_supplierid_fkey");
 
             entity.HasOne(d => d.Type).WithMany(p => p.Certificates)
                 .HasForeignKey(d => d.TypeId)
-                .HasConstraintName("certificates_type_id_fkey");
+                .HasConstraintName("certificates_typeid_fkey");
         });
 
         modelBuilder.Entity<CertificateType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("certificate_types_pkey");
+            entity.HasKey(e => e.Id).HasName("certificatetypes_pkey");
 
-            entity.ToTable("certificate_types");
+            entity.ToTable("certificatetypes");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("created_at");
-            entity.Property(e => e.RowVersion).HasColumnName("row_version");
+                .HasColumnName("createdat");
+            entity.Property(e => e.RowVersion).HasColumnName("rowversion");
             entity.Property(e => e.Type)
                 .HasMaxLength(255)
                 .HasColumnName("type");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updated_at");
+                .HasColumnName("updatedat");
         });
 
         modelBuilder.Entity<CertificateUser>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("certificate_users_pkey");
+            entity.HasKey(e => e.Id).HasName("certificateusers_pkey");
 
-            entity.ToTable("certificate_users");
+            entity.ToTable("certificateusers");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CertificateId).HasColumnName("certificate_id");
+            entity.Property(e => e.CertificateId).HasColumnName("certificateid");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("created_at");
-            entity.Property(e => e.RowVersion).HasColumnName("row_version");
+                .HasColumnName("createdat");
+            entity.Property(e => e.RowVersion).HasColumnName("rowversion");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updated_at");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
+                .HasColumnName("updatedat");
+            entity.Property(e => e.UserId).HasColumnName("userid");
 
             entity.HasOne(d => d.Certificate).WithMany(p => p.CertificateUsers)
                 .HasForeignKey(d => d.CertificateId)
-                .HasConstraintName("certificate_users_certificate_id_fkey");
+                .HasConstraintName("certificateusers_certificateid_fkey");
 
             entity.HasOne(d => d.User).WithMany(p => p.CertificateUsers)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("certificate_users_user_id_fkey");
+                .HasConstraintName("certificateusers_userid_fkey");
         });
 
         modelBuilder.Entity<Comment>(entity =>
@@ -119,28 +120,28 @@ public partial class CertificateManagerContext : DbContext
             entity.ToTable("comments");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CertificateId).HasColumnName("certificate_id");
+            entity.Property(e => e.CertificateId).HasColumnName("certificateid");
             entity.Property(e => e.CommentText)
                 .HasMaxLength(255)
-                .HasColumnName("comment_text");
+                .HasColumnName("commenttext");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("created_at");
-            entity.Property(e => e.RowVersion).HasColumnName("row_version");
+                .HasColumnName("createdat");
+            entity.Property(e => e.RowVersion).HasColumnName("rowversion");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updated_at");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
+                .HasColumnName("updatedat");
+            entity.Property(e => e.UserId).HasColumnName("userid");
 
             entity.HasOne(d => d.Certificate).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.CertificateId)
-                .HasConstraintName("comments_certificate_id_fkey");
+                .HasConstraintName("comments_certificateid_fkey");
 
             entity.HasOne(d => d.User).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("comments_user_id_fkey");
+                .HasConstraintName("comments_userid_fkey");
         });
 
         modelBuilder.Entity<Supplier>(entity =>
@@ -156,16 +157,16 @@ public partial class CertificateManagerContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("created_at");
+                .HasColumnName("createdat");
             entity.Property(e => e.Index).HasColumnName("index");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("name");
-            entity.Property(e => e.RowVersion).HasColumnName("row_version");
+            entity.Property(e => e.RowVersion).HasColumnName("rowversion");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updated_at");
+                .HasColumnName("updatedat");
         });
 
         modelBuilder.Entity<User>(entity =>
@@ -178,27 +179,27 @@ public partial class CertificateManagerContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("created_at");
+                .HasColumnName("createdat");
             entity.Property(e => e.Department)
                 .HasMaxLength(10)
                 .HasColumnName("department");
             entity.Property(e => e.FirstName)
                 .HasMaxLength(255)
-                .HasColumnName("first_name");
+                .HasColumnName("firstname");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("name");
             entity.Property(e => e.Plant)
                 .HasMaxLength(3)
                 .HasColumnName("plant");
-            entity.Property(e => e.RowVersion).HasColumnName("row_version");
+            entity.Property(e => e.RowVersion).HasColumnName("rowversion");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("updated_at");
+                .HasColumnName("updatedat");
             entity.Property(e => e.UserId)
                 .HasMaxLength(10)
-                .HasColumnName("user_id");
+                .HasColumnName("userid");
         });
 
         OnModelCreatingPartial(modelBuilder);

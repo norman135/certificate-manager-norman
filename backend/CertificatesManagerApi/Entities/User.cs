@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CertificatesManagerApi.Entities;
+﻿namespace CertificatesManagerApi.Entities;
 
 public partial class User
 {
@@ -20,7 +18,6 @@ public partial class User
 
     public DateTime? UpdatedAt { get; set; }
 
-    [Timestamp]
     public byte[]? RowVersion { get; set; }
 
     public virtual ICollection<CertificateUser> CertificateUsers { get; set; } = new List<CertificateUser>();
