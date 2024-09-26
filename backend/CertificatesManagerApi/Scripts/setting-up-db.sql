@@ -1,5 +1,6 @@
 CREATE TABLE Suppliers (
     Id SERIAL PRIMARY KEY,
+    Handle UUID DEFAULT uuid_generate_v4(),
     Name VARCHAR(255) NOT NULL,
     Index INT NOT NULL,
     City VARCHAR(255) NOT NULL,
@@ -10,8 +11,10 @@ CREATE TABLE Suppliers (
 
 CREATE TABLE Users (
     Id SERIAL PRIMARY KEY,
+    Handle UUID DEFAULT uuid_generate_v4(),
     Name VARCHAR(255) NOT NULL,
     FirstName VARCHAR(255) NOT NULL,
+    Email VARCHAR(255),
     UserId VARCHAR(10) NOT NULL,
     Department VARCHAR(10) NOT NULL,
     Plant VARCHAR(3) NOT NULL,
@@ -22,6 +25,7 @@ CREATE TABLE Users (
 
 CREATE TABLE CertificateTypes (
     Id SERIAL PRIMARY KEY,
+    Handle UUID DEFAULT uuid_generate_v4(),
     Type VARCHAR(255) NOT NULL,
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -30,6 +34,7 @@ CREATE TABLE CertificateTypes (
 
 CREATE TABLE Certificates (
     Id SERIAL PRIMARY KEY,
+    Handle UUID DEFAULT uuid_generate_v4(),
     SupplierId INT,
     TypeId INT,
     ValidFrom TIMESTAMP NOT NULL,
@@ -44,6 +49,7 @@ CREATE TABLE Certificates (
 
 CREATE TABLE Comments (
     Id SERIAL PRIMARY KEY,
+    Handle UUID DEFAULT uuid_generate_v4(),
     CommentText VARCHAR(255) NOT NULL,
     UserId INT,
     CertificateId INT,

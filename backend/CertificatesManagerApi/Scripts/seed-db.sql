@@ -30,6 +30,7 @@ INSERT INTO Users
 (
 	Name,
 	FirstName,
+	Email,
 	UserId,
 	Department,
 	Plant
@@ -37,6 +38,7 @@ INSERT INTO Users
 (
 	'Simon',
 	'Zwolfer',
+	'simonz@mail.com',
 	'ZWOELF',
 	'ITM/FP',
 	'096'
@@ -44,6 +46,7 @@ INSERT INTO Users
 (
 	'Wolfgang',
 	'Stark',
+	'wolfgangs@mail.com',
 	'WOLFST',
 	'ITM/FP',
 	'094'
