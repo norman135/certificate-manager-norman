@@ -18,10 +18,14 @@ namespace CertificatesManagerApi.Services
             return await _certificateRepository.GetCertificates();
         }
 
-        public async Task<CertificateDTO> GetCertificate(int id)
+        public async Task<CertificateDTO> GetCertificate(string handle)
         {
-            return await _certificateRepository.GetCertificate(id);
+            return await _certificateRepository.GetCertificate(handle);
         }
 
+        public async Task<CertificateDTO> PostCertificate(CreateCertificateDTO certificateDTO)
+        {
+            return await _certificateRepository.PostCertificate(certificateDTO);
+        }
     }
 }

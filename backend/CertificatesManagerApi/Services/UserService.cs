@@ -1,5 +1,6 @@
 ﻿using CertificatesManagerApi.DTOs;
 using CertificatesManagerApi.Repository;
+using CertificatesManagerApi.SearchParameters;
 
 namespace CertificatesManagerApi.Services
 {
@@ -12,9 +13,9 @@ namespace CertificatesManagerApi.Services
             _userRepository = userRepository;
         }
 
-        public async Task<IEnumerable<UserDTO>> GetUsers()
+        public async Task<IEnumerable<UserDTO>> GetUsers(UserSearchParameters searchParameters)
         {
-            return await _userRepository.GetUsers();
+            return await _userRepository.GetUsers(searchParameters);
         }
     }
 }

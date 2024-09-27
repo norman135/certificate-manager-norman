@@ -11,5 +11,15 @@ namespace CertificatesManagerApi.Mappers
 
             return certificateTypeDto;
         }
+
+        public static CertificateType ToEntity(CertificateTypeDTO certificateTypeDTO)
+        {
+            CertificateType certificateType = new();
+
+            certificateType.Handle = certificateTypeDTO.Handle;
+            certificateType.Type = certificateTypeDTO.Name;
+
+            return certificateType;
+        }
     }
 }

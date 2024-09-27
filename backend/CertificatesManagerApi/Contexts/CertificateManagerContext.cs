@@ -52,12 +52,8 @@ public partial class CertificateManagerContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("updatedat");
-            entity.Property(e => e.ValidFrom)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("validfrom");
-            entity.Property(e => e.ValidTo)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("validto");
+            entity.Property(e => e.ValidFrom).HasColumnName("validfrom");
+            entity.Property(e => e.ValidTo).HasColumnName("validto");
 
             entity.HasOne(d => d.Supplier).WithMany(p => p.Certificates)
                 .HasForeignKey(d => d.SupplierId)

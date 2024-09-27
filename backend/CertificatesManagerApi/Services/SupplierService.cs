@@ -1,5 +1,6 @@
 ﻿using CertificatesManagerApi.DTOs;
 using CertificatesManagerApi.Repository;
+using CertificatesManagerApi.SearchParameters;
 
 namespace CertificatesManagerApi.Services
 {
@@ -12,9 +13,9 @@ namespace CertificatesManagerApi.Services
             _supplierRepository = supplierRepository;
         }
 
-        public async Task<IEnumerable<SupplierDTO>> GetSuppliers(string? name, int? index, string? city)
+        public async Task<IEnumerable<SupplierDTO>> GetSuppliers(SupplierSearchParameters searchParameters)
         {
-            return await _supplierRepository.GetSuppliers(name, index, city);
+            return await _supplierRepository.GetSuppliers(searchParameters);
         }
     }
 }

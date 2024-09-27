@@ -14,7 +14,7 @@ namespace CertificatesManagerApi.Controllers
             _certificateTypeService = certificateTypeService;
         }
 
-        [HttpGet("/certificate-types")]
+        [HttpGet("/certificates/types")]
         public async Task<IActionResult> GetCertificateTypes()
         {
             var certificateTypeDto = await _certificateTypeService.GetCertificateTypes();

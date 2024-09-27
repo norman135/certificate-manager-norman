@@ -10,9 +10,9 @@ public partial class Certificate
 
     public int? TypeId { get; set; }
 
-    public DateTime ValidFrom { get; set; }
+    public DateOnly ValidFrom { get; set; }
 
-    public DateTime ValidTo { get; set; }
+    public DateOnly ValidTo { get; set; }
 
     public byte[]? CertificateDocument { get; set; }
 

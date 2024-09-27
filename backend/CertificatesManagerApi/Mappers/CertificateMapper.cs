@@ -1,5 +1,6 @@
 ﻿using CertificatesManagerApi.DTOs;
 using CertificatesManagerApi.Entities;
+using CertificatesManagerApi.Utils;
 
 namespace CertificatesManagerApi.Mappers
 {
@@ -10,9 +11,9 @@ namespace CertificatesManagerApi.Mappers
             CertificateDTO certificateDto = new(
                 certificate.Handle,
                 SupplierMapper.ToDto(certificate.Supplier),
-                certificate.Type.Type,
-                certificate.ValidFrom,
-                certificate.ValidTo,
+                CertificateTypeMapper.ToDto(certificate.Type),
+                DateConvert.DateToString(certificate.ValidFrom),
+                DateConvert.DateToString(certificate.ValidTo),
                 certificate.CertificateDocument,
                 certificate.Comments
                 .Select(comment => CommentMapper.ToDto(comment)).ToList(),
@@ -36,10 +37,24 @@ namespace CertificatesManagerApi.Mappers
                     certificate.Supplier.City
                 ),
                 certificate.Type.Type,
-                certificate.ValidFrom,
-                certificate.ValidTo
+                DateConvert.DateToString(certificate.ValidFrom),
+                DateConvert.DateToString(certificate.ValidTo)
             );
             return certificatesDto;
+        }
+
+        public static Certificate ToEntity(CreateCertificateDTO certificateDTO)
+        {
+            Certificate certificate = new()
+            {
+                ValidFrom = DateConvert.StringToDate(certificateDTO.ValidFrom),
+                ValidTo = DateConvert.StringToDate(certificateDTO.ValidTo),
+                CertificateDocument = certificateDTO.Document,
+                Supplier = SupplierMapper.ToEntity(certificateDTO.Supplier),
+                Type = CertificateTypeMapper.ToEntity(certificateDTO.CertificateType)
+            };
+
+            return certificate;
         }
     }
 }

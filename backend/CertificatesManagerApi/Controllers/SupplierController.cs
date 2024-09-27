@@ -1,3 +1,4 @@
+using CertificatesManagerApi.SearchParameters;
 using CertificatesManagerApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,9 +16,9 @@ namespace CertificatesManagerApi.Controllers
         }
 
         [HttpGet("/suppliers")]
-        public async Task<IActionResult> GetSuppliers([FromQuery] string? name, [FromQuery] int? index, [FromQuery] string? city)
+        public async Task<IActionResult> GetSuppliers([FromQuery] SupplierSearchParameters searchParameters)
         {
-            var supplierDto = await _supplierService.GetSuppliers(name, index, city);
+            var supplierDto = await _supplierService.GetSuppliers(searchParameters);
             return Ok(supplierDto);
         }
     }

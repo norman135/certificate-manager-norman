@@ -1,3 +1,4 @@
+using CertificatesManagerApi.SearchParameters;
 using CertificatesManagerApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,9 +16,9 @@ namespace CertificatesManagerApi.Controllers
         }
 
         [HttpGet("/users")]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers([FromQuery] UserSearchParameters searchParameters)
         {
-            var userDto = await _userService.GetUsers();
+            var userDto = await _userService.GetUsers(searchParameters);
             return Ok(userDto);
         }
     }
