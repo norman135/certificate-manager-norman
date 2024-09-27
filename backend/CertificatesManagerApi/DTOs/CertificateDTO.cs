@@ -1,7 +1,8 @@
 ﻿namespace CertificatesManagerApi.DTOs
 {
-    public class CertificateDTO(SupplierDTO supplier, string certificateType, DateTime validFrom, DateTime validTo, byte[] document, ICollection<CommentDTO> comments, ICollection<UserDTO> users)
+    public class CertificateDTO(Guid handle, SupplierDTO supplier, string certificateType, DateTime validFrom, DateTime validTo, byte[] document, ICollection<CommentDTO> comments, ICollection<UserDTO> users)
     {
+        public Guid Handle { get; set; } = handle;
         public SupplierDTO Supplier { get; set; } = supplier;
         public string CertificateType { get; set; } = certificateType;
         public DateTime ValidFrom { get; set; } = validFrom;

@@ -8,6 +8,7 @@ namespace CertificatesManagerApi.Mappers
         public static CertificateDTO ToDto(Certificate certificate)
         {
             CertificateDTO certificateDto = new(
+                certificate.Handle,
                 SupplierMapper.ToDto(certificate.Supplier),
                 certificate.Type.Type,
                 certificate.ValidFrom,
@@ -27,7 +28,9 @@ namespace CertificatesManagerApi.Mappers
         public static CertificatesDTO ToMultipleDto(Certificate certificate)
         {
             CertificatesDTO certificatesDto = new(
+                certificate.Handle,
                 new SupplierDTO(
+                    certificate.Supplier.Handle,
                     certificate.Supplier.Name,
                     certificate.Supplier.Index,
                     certificate.Supplier.City

@@ -15,9 +15,9 @@ namespace CertificatesManagerApi.Controllers
         }
 
         [HttpGet("/suppliers")]
-        public async Task<IActionResult> GetSuppliers()
+        public async Task<IActionResult> GetSuppliers([FromQuery] string? name, [FromQuery] int? index, [FromQuery] string? city)
         {
-            var supplierDto = await _supplierService.GetSuppliers();
+            var supplierDto = await _supplierService.GetSuppliers(name, index, city);
             return Ok(supplierDto);
         }
     }

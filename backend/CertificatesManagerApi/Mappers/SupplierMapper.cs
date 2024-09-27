@@ -7,7 +7,7 @@ namespace CertificatesManagerApi.Mappers
     {
         public static SupplierDTO ToDto(Supplier supplier)
         {
-            SupplierDTO supplierDTO = new(supplier.Name, supplier.Index, supplier.City);
+            SupplierDTO supplierDTO = new(supplier.Handle, supplier.Name, supplier.Index, supplier.City);
             return supplierDTO;
         }
     }

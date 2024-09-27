@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE Suppliers (
     Id SERIAL PRIMARY KEY,
     Handle UUID DEFAULT uuid_generate_v4(),

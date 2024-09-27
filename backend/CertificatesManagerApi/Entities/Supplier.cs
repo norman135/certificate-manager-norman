@@ -4,6 +4,8 @@ public partial class Supplier
 {
     public int Id { get; set; }
 
+    public Guid Handle { get; set; }
+
     public string Name { get; set; } = null!;
 
     public int Index { get; set; }

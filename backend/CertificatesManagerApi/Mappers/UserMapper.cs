@@ -8,8 +8,10 @@ namespace CertificatesManagerApi.Mappers
         public static UserDTO ToDto(User user)
         {
             UserDTO userDto = new(
+                user.Handle,
                 user.Name,
                 user.FirstName,
+                user.Email,
                 user.UserId,
                 user.Department,
                 user.Plant
