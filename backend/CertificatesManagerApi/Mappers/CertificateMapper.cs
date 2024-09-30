@@ -49,9 +49,20 @@ namespace CertificatesManagerApi.Mappers
             {
                 ValidFrom = DateConvert.StringToDate(certificateDTO.ValidFrom),
                 ValidTo = DateConvert.StringToDate(certificateDTO.ValidTo),
-                CertificateDocument = certificateDTO.Document,
-                Supplier = SupplierMapper.ToEntity(certificateDTO.Supplier),
-                Type = CertificateTypeMapper.ToEntity(certificateDTO.CertificateType)
+                CertificateDocument = certificateDTO.Document
+            };
+
+            return certificate;
+        }
+
+        public static Certificate ToUpdateEntity(UpdateCertificateDTO certificateDTO)
+        {
+
+            Certificate certificate = new()
+            {
+                ValidFrom = DateConvert.StringToDate(certificateDTO.ValidFrom),
+                ValidTo = DateConvert.StringToDate(certificateDTO.ValidTo),
+                CertificateDocument = certificateDTO.Document
             };
 
             return certificate;

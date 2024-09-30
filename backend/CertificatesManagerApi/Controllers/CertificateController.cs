@@ -38,5 +38,13 @@ namespace CertificatesManagerApi.Controllers
 
             return Created($"/certificates/{certificateDto.Handle}", certificateDto);
         }
+
+        [HttpPut("/certificates/{handle}")]
+        public async Task<ActionResult> UpdateCertificate([FromBody] UpdateCertificateDTO updateCertificateDTO, string handle)
+        {
+            var certificateDto = await _certificateService.UpdateCertificate(handle, updateCertificateDTO);
+
+            return Ok(certificateDto);
+        }
     }
 }

@@ -27,5 +27,12 @@ namespace CertificatesManagerApi.Services
         {
             return await _certificateRepository.PostCertificate(certificateDTO);
         }
+
+        public async Task<CertificateDTO> UpdateCertificate(string handle, UpdateCertificateDTO updateCertificateDTO)
+        {
+            Guid certificateHandle = Guid.Parse(handle);
+
+            return await _certificateRepository.UpdateCertificate(certificateHandle, updateCertificateDTO);
+        }
     }
 }

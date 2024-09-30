@@ -11,5 +11,17 @@ namespace CertificatesManagerApi.Mappers
 
             return commentDto;
         }
+
+        public static Comment ToEntity(CreateCommentDTO createCommentDTO, Certificate commentCertificate, User commentUser)
+        {
+            Comment comment = new()
+            {
+                CommentText = createCommentDTO.CommentText,
+                Certificate = commentCertificate,
+                User = commentUser
+            };
+
+            return comment;
+        }
     }
 }
