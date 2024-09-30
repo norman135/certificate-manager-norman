@@ -7,18 +7,26 @@ namespace CertificatesManagerApi.Mappers
     {
         public static SupplierDTO ToDto(Supplier supplier)
         {
-            SupplierDTO supplierDTO = new(supplier.Handle, supplier.Name, supplier.Index, supplier.City);
+            SupplierDTO supplierDTO = new()
+            {
+                Handle = supplier.Handle,
+                Name = supplier.Name,
+                Index = supplier.Index,
+                City = supplier.City
+            };
+
             return supplierDTO;
         }
 
         public static Supplier ToEntity(SupplierDTO supplierDTO)
         {
-            Supplier supplier = new();
-
-            supplier.Handle = supplierDTO.Handle;
-            supplier.Name = supplierDTO.Name;
-            supplier.Index = supplierDTO.Index;
-            supplier.City = supplierDTO.City;
+            Supplier supplier = new()
+            {
+                Handle = supplierDTO.Handle,
+                Name = supplierDTO.Name,
+                Index = supplierDTO.Index,
+                City = supplierDTO.City
+            };
 
             return supplier;
         }

@@ -46,5 +46,20 @@ namespace CertificatesManagerApi.Controllers
 
             return Ok(certificateDto);
         }
+
+        [HttpDelete("/certificates/{handle}")]
+        public async Task<ActionResult> DeleteCertificate(string handle)
+        {
+            bool result = await _certificateService.DeleteCertificate(handle);
+
+            if (result)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return StatusCode(500, "An error occured while attempting to delete.");
+            }
+        }
     }
 }

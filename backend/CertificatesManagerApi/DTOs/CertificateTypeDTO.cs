@@ -1,8 +1,8 @@
 ﻿namespace CertificatesManagerApi.DTOs
 {
-    public class CertificateTypeDTO(Guid handle, string name)
+    public class CertificateTypeDTO()
     {
-        public Guid Handle { get; set; } = handle;
-        public string Name { get; set; } = name;
+        public Guid Handle { get; set; }
+        public string Name { get; set; }
     }
 }

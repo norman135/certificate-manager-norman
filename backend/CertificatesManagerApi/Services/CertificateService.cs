@@ -13,7 +13,7 @@ namespace CertificatesManagerApi.Services
             _certificateRepository = certificateRepository;
         }
 
-        public async Task<IEnumerable<CertificatesDTO>> GetCertificates()
+        public async Task<IEnumerable<TableCertificatesDTO>> GetCertificates()
         {
             return await _certificateRepository.GetCertificates();
         }
@@ -33,6 +33,13 @@ namespace CertificatesManagerApi.Services
             Guid certificateHandle = Guid.Parse(handle);
 
             return await _certificateRepository.UpdateCertificate(certificateHandle, updateCertificateDTO);
+        }
+
+        public async Task<bool> DeleteCertificate(string handle)
+        {
+            Guid certificateHandle = Guid.Parse(handle);
+
+            return await _certificateRepository.DeleteCertificate(certificateHandle);
         }
     }
 }

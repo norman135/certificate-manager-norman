@@ -7,15 +7,16 @@ namespace CertificatesManagerApi.Mappers
     {
         public static UserDTO ToDto(User user)
         {
-            UserDTO userDto = new(
-                user.Handle,
-                user.Name,
-                user.FirstName,
-                user.Email,
-                user.UserId,
-                user.Department,
-                user.Plant
-            );
+            UserDTO userDto = new()
+            {
+                Handle = user.Handle,
+                Name = user.Name,
+                FirstName = user.FirstName,
+                Email = user.Email,
+                UserId = user.UserId,
+                Department = user.Department,
+                Plant = user.Plant
+            };
 
             return userDto;
         }

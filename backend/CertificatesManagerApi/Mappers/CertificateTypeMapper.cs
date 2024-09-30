@@ -7,17 +7,22 @@ namespace CertificatesManagerApi.Mappers
     {
         public static CertificateTypeDTO ToDto(CertificateType certificateType)
         {
-            CertificateTypeDTO certificateTypeDto = new(certificateType.Handle, certificateType.Type);
+            CertificateTypeDTO certificateTypeDto = new CertificateTypeDTO
+            {
+                Handle = certificateType.Handle,
+                Name = certificateType.Type
+            };
 
             return certificateTypeDto;
         }
 
         public static CertificateType ToEntity(CertificateTypeDTO certificateTypeDTO)
         {
-            CertificateType certificateType = new();
-
-            certificateType.Handle = certificateTypeDTO.Handle;
-            certificateType.Type = certificateTypeDTO.Name;
+            CertificateType certificateType = new CertificateType
+            {
+                Handle = certificateTypeDTO.Handle,
+                Type = certificateTypeDTO.Name
+            };
 
             return certificateType;
         }

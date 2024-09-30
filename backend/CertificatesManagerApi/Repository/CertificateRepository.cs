@@ -15,7 +15,7 @@ namespace CertificatesManagerApi.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<CertificatesDTO>> GetCertificates()
+        public async Task<IEnumerable<TableCertificatesDTO>> GetCertificates()
         {
             return await _context.Certificates
                 .Include(c => c.Supplier)
@@ -91,6 +91,25 @@ namespace CertificatesManagerApi.Repository
             await _context.SaveChangesAsync();
 
             return CertificateMapper.ToDto(certificate);
+        }
+
+        public async Task<bool> DeleteCertificate(Guid handle)
+        {
+            Certificate certificate = await _context
+                .Certificates
+                .FirstOrDefaultAsync(c => c.Handle == handle);
+
+            try
+            {
+                _context.Certificates.Remove(certificate);
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

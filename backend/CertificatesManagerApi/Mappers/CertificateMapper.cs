@@ -8,38 +8,35 @@ namespace CertificatesManagerApi.Mappers
     {
         public static CertificateDTO ToDto(Certificate certificate)
         {
-            CertificateDTO certificateDto = new(
-                certificate.Handle,
-                SupplierMapper.ToDto(certificate.Supplier),
-                CertificateTypeMapper.ToDto(certificate.Type),
-                DateConvert.DateToString(certificate.ValidFrom),
-                DateConvert.DateToString(certificate.ValidTo),
-                certificate.CertificateDocument,
-                certificate.Comments
+            CertificateDTO certificateDto = new CertificateDTO
+            {
+                Handle = certificate.Handle,
+                Supplier = SupplierMapper.ToDto(certificate.Supplier),
+                CertificateType = CertificateTypeMapper.ToDto(certificate.Type),
+                ValidFrom = DateConvert.DateToString(certificate.ValidFrom),
+                ValidTo = DateConvert.DateToString(certificate.ValidTo),
+                Document = certificate.CertificateDocument,
+                Comments = certificate.Comments
                 .Select(comment => CommentMapper.ToDto(comment)).ToList(),
-                certificate.CertificateUsers
+                Participants = certificate.CertificateUsers
                 .Select(
                     certificateUser => UserMapper.ToDto(certificateUser.User)
                 )
                 .ToList()
-            );
+            };
             return certificateDto;
         }
 
-        public static CertificatesDTO ToMultipleDto(Certificate certificate)
+        public static TableCertificatesDTO ToMultipleDto(Certificate certificate)
         {
-            CertificatesDTO certificatesDto = new(
-                certificate.Handle,
-                new SupplierDTO(
-                    certificate.Supplier.Handle,
-                    certificate.Supplier.Name,
-                    certificate.Supplier.Index,
-                    certificate.Supplier.City
-                ),
-                certificate.Type.Type,
-                DateConvert.DateToString(certificate.ValidFrom),
-                DateConvert.DateToString(certificate.ValidTo)
-            );
+            TableCertificatesDTO certificatesDto = new TableCertificatesDTO
+            {
+                Handle = certificate.Handle,
+                Supplier = @$"{certificate.Supplier.Name}, {certificate.Supplier.Index}, {certificate.Supplier.City}",
+                CertificateType = certificate.Type.Type,
+                ValidFrom = DateConvert.DateToString(certificate.ValidFrom),
+                ValidTo = DateConvert.DateToString(certificate.ValidTo)
+            };
             return certificatesDto;
         }
 

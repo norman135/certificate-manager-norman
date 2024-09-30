@@ -7,7 +7,11 @@ namespace CertificatesManagerApi.Mappers
     {
         public static CommentDTO ToDto(Comment comment)
         {
-            CommentDTO commentDto = new(comment.User.Name, comment.CommentText);
+            CommentDTO commentDto = new()
+            {
+                UserName = comment.User.Name,
+                Comment = comment.CommentText
+            };
 
             return commentDto;
         }
