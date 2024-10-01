@@ -20,55 +20,91 @@ namespace CertificatesManagerApi.Controllers
         [HttpGet("/certificates")]
         public async Task<ActionResult> GetTableCertificates()
         {
-            var certificatesDtos = await _certificateService.GetTableCertificates();
+            try
+            {
+                var certificatesDtos = await _certificateService.GetTableCertificates();
 
-            return Ok(certificatesDtos);
+                return Ok(certificatesDtos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
         }
 
         [HttpGet("/certificates/{handle}")]
         public async Task<ActionResult> GetCertificate(string handle)
         {
-            var certificateDto = await _certificateService.GetCertificate(handle);
+            try
+            {
+                var certificateDto = await _certificateService.GetCertificate(handle);
 
-            return Ok(certificateDto);
+                return Ok(certificateDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpPost("/certificates")]
         public async Task<ActionResult> PostCertificate([FromBody] CreateCertificateDTO createCertificateDto)
         {
-            var certificateDto = await _certificateService.PostCertificate(createCertificateDto);
+            try
+            {
+                var certificateDto = await _certificateService.PostCertificate(createCertificateDto);
 
-            return Created($"/certificates/{certificateDto.Handle}", certificateDto);
+                return Created($"/certificates/{certificateDto.Handle}", certificateDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpPost("/certificates/{handle}/comments")]
         public async Task<IActionResult> AddComment([FromBody] CreateCommentDTO createCommentDTO, string handle)
         {
-            var comment = await _commentService.AddComment(createCommentDTO, handle);
+            try
+            {
+                var comment = await _commentService.AddComment(createCommentDTO, handle);
 
-            return Ok(comment);
+                return Ok(comment);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpPut("/certificates/{handle}")]
         public async Task<ActionResult> UpdateCertificate([FromBody] UpdateCertificateDTO updateCertificateDTO, string handle)
         {
-            var certificateDto = await _certificateService.UpdateCertificate(handle, updateCertificateDTO);
+            try
+            {
+                var certificateDto = await _certificateService.UpdateCertificate(handle, updateCertificateDTO);
 
-            return Ok(certificateDto);
+                return Ok(certificateDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpDelete("/certificates/{handle}")]
         public async Task<ActionResult> DeleteCertificate(string handle)
         {
-            bool result = await _certificateService.DeleteCertificate(handle);
-
-            if (result)
+            try
             {
+                await _certificateService.DeleteCertificate(handle);
+
                 return NoContent();
             }
-            else
+            catch (Exception ex)
             {
-                return StatusCode(500, "An error occured while attempting to delete.");
+                return StatusCode(500, ex.Message);
             }
         }
     }

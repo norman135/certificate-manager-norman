@@ -124,7 +124,7 @@ namespace CertificatesManagerApi.Repository
             return CertificateMapper.ToDto(certificate);
         }
 
-        public async Task<bool> DeleteCertificate(Guid handle)
+        public async Task DeleteCertificate(Guid handle)
         {
             Certificate certificate = await _context
                 .Certificates
@@ -132,8 +132,6 @@ namespace CertificatesManagerApi.Repository
 
             _context.Certificates.Remove(certificate);
             await _context.SaveChangesAsync();
-
-            return true;
         }
     }
 }

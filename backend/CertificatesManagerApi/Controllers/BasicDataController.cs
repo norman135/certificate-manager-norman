@@ -26,22 +26,43 @@ namespace CertificatesManagerApi.Controllers
         [HttpGet("/users")]
         public async Task<IActionResult> GetUsers([FromQuery] UserSearchParameters searchParameters)
         {
-            var userDto = await _userService.GetUsers(searchParameters);
-            return Ok(userDto);
+            try
+            {
+                var userDto = await _userService.GetUsers(searchParameters);
+                return Ok(userDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpGet("/suppliers")]
         public async Task<IActionResult> GetSuppliers([FromQuery] SupplierSearchParameters searchParameters)
         {
-            var supplierDto = await _supplierService.GetSuppliers(searchParameters);
-            return Ok(supplierDto);
+            try
+            {
+                var supplierDto = await _supplierService.GetSuppliers(searchParameters);
+                return Ok(supplierDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpGet("/certificates/types")]
         public async Task<IActionResult> GetCertificateTypes()
         {
-            var certificateTypeDto = await _certificateTypeService.GetCertificateTypes();
-            return Ok(certificateTypeDto);
+            try
+            {
+                var certificateTypeDto = await _certificateTypeService.GetCertificateTypes();
+                return Ok(certificateTypeDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

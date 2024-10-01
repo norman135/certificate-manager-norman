@@ -35,11 +35,11 @@ namespace CertificatesManagerApi.Services
             return await _certificateRepository.UpdateCertificate(certificateHandle, updateCertificateDTO);
         }
 
-        public async Task<bool> DeleteCertificate(string handle)
+        public async Task DeleteCertificate(string handle)
         {
             Guid certificateHandle = Guid.Parse(handle);
 
-            return await _certificateRepository.DeleteCertificate(certificateHandle);
+            await _certificateRepository.DeleteCertificate(certificateHandle);
         }
     }
 }
