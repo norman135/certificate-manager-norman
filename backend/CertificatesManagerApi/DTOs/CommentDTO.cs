@@ -8,7 +8,6 @@
 
     public class CreateCommentDTO()
     {
-        public string CertificateHandle { get; set; }
         public string UserHandle { get; set; }
         public string CommentText { get; set; }
     }

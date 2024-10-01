@@ -4,7 +4,7 @@ public partial class Comment
 {
     public int Id { get; set; }
 
-    public Guid Handle { get; set; }
+    public Guid? Handle { get; set; }
 
     public string CommentText { get; set; } = null!;
 

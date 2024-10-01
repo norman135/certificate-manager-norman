@@ -15,16 +15,21 @@ namespace CertificatesManagerApi.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<CommentDTO>> GetComments()
+        public async Task<ICollection<CommentDTO>> GetComments()
         {
-            return await _context.Comments.Select(comment => CommentMapper.ToDto(comment)).ToListAsync();
+            return await _context
+                .Comments
+                .Include(c => c.User)
+                .Include(c => c.Certificate)
+                .Select(c => CommentMapper.ToDto(c))
+                .ToListAsync();
         }
 
-        public async Task<CommentDTO> AddComment(CreateCommentDTO createCommentDTO)
+        public async Task<CommentDTO> AddComment(CreateCommentDTO createCommentDTO, Guid certificateHandle)
         {
             Certificate commentCertificate = await _context
                 .Certificates
-                .FirstOrDefaultAsync(c => c.Handle == Guid.Parse(createCommentDTO.CertificateHandle));
+                .FirstOrDefaultAsync(c => c.Handle == certificateHandle);
 
             User commentUser = await _context
                 .Users

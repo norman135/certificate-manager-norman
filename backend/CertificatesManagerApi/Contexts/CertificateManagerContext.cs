@@ -109,10 +109,12 @@ public partial class CertificateManagerContext : DbContext
 
             entity.HasOne(d => d.Certificate).WithMany(p => p.CertificateUsers)
                 .HasForeignKey(d => d.CertificateId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("certificateusers_certificateid_fkey");
 
             entity.HasOne(d => d.User).WithMany(p => p.CertificateUsers)
                 .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("certificateusers_userid_fkey");
         });
 

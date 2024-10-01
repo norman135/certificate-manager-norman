@@ -2,7 +2,7 @@
 {
     public class UserDTO()
     {
-        public Guid Handle { get; set; }
+        public Guid? Handle { get; set; }
         public string Name { get; set; }
         public string FirstName { get; set; }
         public string Email { get; set; }

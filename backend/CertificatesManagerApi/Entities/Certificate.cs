@@ -4,7 +4,7 @@ public partial class Certificate
 {
     public int Id { get; set; }
 
-    public Guid Handle { get; set; }
+    public Guid? Handle { get; set; }
 
     public int? SupplierId { get; set; }
 

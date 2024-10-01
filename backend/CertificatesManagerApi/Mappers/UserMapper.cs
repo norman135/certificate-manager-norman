@@ -20,5 +20,19 @@ namespace CertificatesManagerApi.Mappers
 
             return userDto;
         }
+
+        public static User ToEntity(UserDTO userDTO)
+        {
+            return new()
+            {
+                Handle = userDTO.Handle,
+                Name = userDTO.Name,
+                FirstName = userDTO.FirstName,
+                Email = userDTO.Email,
+                UserId = userDTO.UserId,
+                Department = userDTO.Department,
+                Plant = userDTO.Plant
+            };
+        }
     }
 }

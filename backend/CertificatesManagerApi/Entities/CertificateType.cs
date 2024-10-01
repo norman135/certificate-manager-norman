@@ -4,7 +4,7 @@ public partial class CertificateType
 {
     public int Id { get; set; }
 
-    public Guid Handle { get; set; }
+    public Guid? Handle { get; set; }
 
     public string Type { get; set; } = null!;
 

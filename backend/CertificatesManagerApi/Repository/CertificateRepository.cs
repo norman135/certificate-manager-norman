@@ -15,7 +15,7 @@ namespace CertificatesManagerApi.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<TableCertificatesDTO>> GetCertificates()
+        public async Task<IEnumerable<TableCertificatesDTO>> GetTableCertificates()
         {
             return await _context.Certificates
                 .Include(c => c.Supplier)
@@ -28,6 +28,10 @@ namespace CertificatesManagerApi.Repository
             return await _context.Certificates
                 .Include(c => c.Supplier)
                 .Include(c => c.Type)
+                .Include(c => c.Comments)
+                    .ThenInclude(comment => comment.User)
+                .Include(c => c.CertificateUsers)
+                    .ThenInclude(cU => cU.User)
                 .Where(certificate => certificate.Handle.ToString() == handle)
                 .Select(certificate => CertificateMapper.ToDto(certificate))
                 .FirstOrDefaultAsync();
@@ -79,6 +83,8 @@ namespace CertificatesManagerApi.Repository
                 .CertificateTypes
                 .FirstOrDefaultAsync(cT => cT.Handle == Guid.Parse(updateCertificateDTO.CertificateTypeHandle));
 
+
+
             _context.Suppliers.Attach(supplier);
             _context.CertificateTypes.Attach(certificateType);
 
@@ -86,6 +92,31 @@ namespace CertificatesManagerApi.Repository
             certificate.Type = certificateType;
 
             _context.Certificates.Attach(certificate);
+
+            foreach (var participant in updateCertificateDTO.Participants)
+            {
+                User user = await _context
+                    .Users
+                    .FirstOrDefaultAsync(u => u.Handle == participant.Handle);
+
+                CertificateUser? certificateUser = _context
+                    .CertificateUsers
+                    .FirstOrDefault(cU => cU.User == user && cU.Certificate == certificate);
+
+                if (certificateUser == null)
+                {
+                    _context.Users.Attach(user);
+
+                    certificate.CertificateUsers
+                        .Add(new CertificateUser()
+                        {
+                            User = user,
+                            Certificate = certificate
+                        });
+                }
+            }
+
+
             _context.Certificates.Update(certificate);
 
             await _context.SaveChangesAsync();
@@ -99,17 +130,10 @@ namespace CertificatesManagerApi.Repository
                 .Certificates
                 .FirstOrDefaultAsync(c => c.Handle == handle);
 
-            try
-            {
-                _context.Certificates.Remove(certificate);
-                await _context.SaveChangesAsync();
+            _context.Certificates.Remove(certificate);
+            await _context.SaveChangesAsync();
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            return true;
         }
     }
 }

@@ -13,9 +13,9 @@ namespace CertificatesManagerApi.Services
             _certificateRepository = certificateRepository;
         }
 
-        public async Task<IEnumerable<TableCertificatesDTO>> GetCertificates()
+        public async Task<IEnumerable<TableCertificatesDTO>> GetTableCertificates()
         {
-            return await _certificateRepository.GetCertificates();
+            return await _certificateRepository.GetTableCertificates();
         }
 
         public async Task<CertificateDTO> GetCertificate(string handle)

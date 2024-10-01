@@ -9,16 +9,18 @@ namespace CertificatesManagerApi.Controllers
     public class CertificateController : ControllerBase
     {
         private readonly CertificateService _certificateService;
+        private readonly CommentService _commentService;
 
-        public CertificateController(CertificateService certificateService)
+        public CertificateController(CertificateService certificateService, CommentService commentService)
         {
             _certificateService = certificateService;
+            _commentService = commentService;
         }
 
         [HttpGet("/certificates")]
-        public async Task<ActionResult> GetCertificates()
+        public async Task<ActionResult> GetTableCertificates()
         {
-            var certificatesDtos = await _certificateService.GetCertificates();
+            var certificatesDtos = await _certificateService.GetTableCertificates();
 
             return Ok(certificatesDtos);
         }
@@ -37,6 +39,14 @@ namespace CertificatesManagerApi.Controllers
             var certificateDto = await _certificateService.PostCertificate(createCertificateDto);
 
             return Created($"/certificates/{certificateDto.Handle}", certificateDto);
+        }
+
+        [HttpPost("/certificates/{handle}/comments")]
+        public async Task<IActionResult> AddComment([FromBody] CreateCommentDTO createCommentDTO, string handle)
+        {
+            var comment = await _commentService.AddComment(createCommentDTO, handle);
+
+            return Ok(comment);
         }
 
         [HttpPut("/certificates/{handle}")]
