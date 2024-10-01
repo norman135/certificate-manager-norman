@@ -19,11 +19,13 @@ builder.Services.AddScoped<CertificateRepository>();
 builder.Services.AddScoped<CertificateTypeRepository>();
 builder.Services.AddScoped<SupplierRepository>();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<CommentRepository>();
 
 builder.Services.AddScoped<CertificateService>();
 builder.Services.AddScoped<CertificateTypeService>();
 builder.Services.AddScoped<SupplierService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<CommentService>();
 
 var app = builder.Build();
 

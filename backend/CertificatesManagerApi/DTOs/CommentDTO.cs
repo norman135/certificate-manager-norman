@@ -1,8 +1,14 @@
 ﻿namespace CertificatesManagerApi.DTOs
 {
-    public class CommentDTO(string name, string comment)
+    public class CommentDTO()
     {
-        public string UserName { get; set; } = name;
-        public string Comment { get; set; } = comment;
+        public string UserName { get; set; }
+        public string Comment { get; set; }
+    }
+
+    public class CreateCommentDTO()
+    {
+        public string UserHandle { get; set; }
+        public string CommentText { get; set; }
     }
 }

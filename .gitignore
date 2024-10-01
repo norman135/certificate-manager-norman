@@ -254,4 +254,4 @@ src/.vs/config/applicationhost.config
 .idea/
 
 # App Settings
-appsettings.Development.json
+/backend/CertificateManagerApi/appsettings.Development.json

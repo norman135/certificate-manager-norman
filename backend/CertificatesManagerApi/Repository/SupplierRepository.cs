@@ -1,6 +1,8 @@
 ﻿using CertificatesManagerApi.Contexts;
 using CertificatesManagerApi.DTOs;
 using CertificatesManagerApi.Mappers;
+using CertificatesManagerApi.SearchParameters;
+using CertificatesManagerApi.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace CertificatesManagerApi.Repository
@@ -14,9 +16,15 @@ namespace CertificatesManagerApi.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<SupplierDTO>> GetSuppliers()
+        public async Task<IEnumerable<SupplierDTO>> GetSuppliers(SupplierSearchParameters searchParameters)
         {
-            return await _context.Suppliers.Select(supplier => SupplierMapper.ToDto(supplier)).ToListAsync();
+            var query = Filter.FilterSupplier(_context.Suppliers.AsQueryable(), searchParameters);
+
+            var supplierDtos = await query
+                .Select(supplier => SupplierMapper.ToDto(supplier))
+                .ToListAsync();
+
+            return supplierDtos;
         }
     }
 }

@@ -1,9 +1,17 @@
 ﻿namespace CertificatesManagerApi.DTOs
 {
-    public class SupplierDTO(string name, int index, string city)
+    public class SupplierDTO()
     {
-        public string Name { get; set; } = name;
-        public int Index { get; set; } = index;
-        public string City { get; set; } = city;
+        public Guid? Handle { get; set; }
+        public string Name { get; set; }
+        public int Index { get; set; }
+        public string City { get; set; }
+    }
+
+    public class CreateSupplierDTO()
+    {
+        public string Name { get; set; }
+        public int Index { get; set; }
+        public string City { get; set; }
     }
 }

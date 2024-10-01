@@ -26,9 +26,10 @@ public partial class CertificateManagerContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasPostgresExtension("uuid-ossp");
+
         modelBuilder.Entity<Certificate>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("certificates_pkey");
@@ -41,6 +42,9 @@ public partial class CertificateManagerContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("createdat");
+            entity.Property(e => e.Handle)
+                .HasDefaultValueSql("uuid_generate_v4()")
+                .HasColumnName("handle");
             entity.Property(e => e.RowVersion).HasColumnName("rowversion");
             entity.Property(e => e.SupplierId).HasColumnName("supplierid");
             entity.Property(e => e.TypeId).HasColumnName("typeid");
@@ -48,12 +52,8 @@ public partial class CertificateManagerContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("updatedat");
-            entity.Property(e => e.ValidFrom)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("validfrom");
-            entity.Property(e => e.ValidTo)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("validto");
+            entity.Property(e => e.ValidFrom).HasColumnName("validfrom");
+            entity.Property(e => e.ValidTo).HasColumnName("validto");
 
             entity.HasOne(d => d.Supplier).WithMany(p => p.Certificates)
                 .HasForeignKey(d => d.SupplierId)
@@ -75,6 +75,9 @@ public partial class CertificateManagerContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("createdat");
+            entity.Property(e => e.Handle)
+                .HasDefaultValueSql("uuid_generate_v4()")
+                .HasColumnName("handle");
             entity.Property(e => e.RowVersion).HasColumnName("rowversion");
             entity.Property(e => e.Type)
                 .HasMaxLength(255)
@@ -106,10 +109,12 @@ public partial class CertificateManagerContext : DbContext
 
             entity.HasOne(d => d.Certificate).WithMany(p => p.CertificateUsers)
                 .HasForeignKey(d => d.CertificateId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("certificateusers_certificateid_fkey");
 
             entity.HasOne(d => d.User).WithMany(p => p.CertificateUsers)
                 .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("certificateusers_userid_fkey");
         });
 
@@ -128,6 +133,9 @@ public partial class CertificateManagerContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("createdat");
+            entity.Property(e => e.Handle)
+                .HasDefaultValueSql("uuid_generate_v4()")
+                .HasColumnName("handle");
             entity.Property(e => e.RowVersion).HasColumnName("rowversion");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -158,6 +166,9 @@ public partial class CertificateManagerContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("createdat");
+            entity.Property(e => e.Handle)
+                .HasDefaultValueSql("uuid_generate_v4()")
+                .HasColumnName("handle");
             entity.Property(e => e.Index).HasColumnName("index");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
@@ -183,9 +194,15 @@ public partial class CertificateManagerContext : DbContext
             entity.Property(e => e.Department)
                 .HasMaxLength(10)
                 .HasColumnName("department");
+            entity.Property(e => e.Email)
+                .HasMaxLength(255)
+                .HasColumnName("email");
             entity.Property(e => e.FirstName)
                 .HasMaxLength(255)
                 .HasColumnName("firstname");
+            entity.Property(e => e.Handle)
+                .HasDefaultValueSql("uuid_generate_v4()")
+                .HasColumnName("handle");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("name");
