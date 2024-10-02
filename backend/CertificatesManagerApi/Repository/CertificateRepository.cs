@@ -93,6 +93,15 @@ namespace CertificatesManagerApi.Repository
 
             _context.Certificates.Attach(certificate);
 
+            var certificateUsers = await _context
+                .CertificateUsers
+                .Where(cU => cU.Certificate.Id == certificate.Id)
+                .ToListAsync();
+
+            _context.CertificateUsers.RemoveRange(certificateUsers);
+
+            await _context.SaveChangesAsync();
+
             foreach (var participant in updateCertificateDTO.Participants)
             {
                 User user = await _context
@@ -103,17 +112,14 @@ namespace CertificatesManagerApi.Repository
                     .CertificateUsers
                     .FirstOrDefault(cU => cU.User == user && cU.Certificate == certificate);
 
-                if (certificateUser == null)
-                {
-                    _context.Users.Attach(user);
+                _context.Users.Attach(user);
 
-                    certificate.CertificateUsers
-                        .Add(new CertificateUser()
-                        {
-                            User = user,
-                            Certificate = certificate
-                        });
-                }
+                certificate.CertificateUsers
+                    .Add(new CertificateUser()
+                    {
+                        User = user,
+                        Certificate = certificate
+                    });
             }
 
 

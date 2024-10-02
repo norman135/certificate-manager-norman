@@ -4,7 +4,7 @@ import TextInput from '../input/TextInput';
 import CancelIcon from '../icons/CancelIcon';
 import Button from '../button/Button';
 import Supplier from '../../models/supplier.model';
-import { searchSuppliers } from '../../db/supplier-service';
+import { searchSuppliers } from '../../api/services/supplier-service';
 import { initialSupplier } from '../../utils/supplier.utils';
 import {
 	toSelectedLocale,

@@ -1,12 +1,14 @@
-import Certificate, { CertificateType } from '../models/certificate.model';
-import User from '../models/user.model';
+import Certificate from '../models/certificate.model';
 import { initialDate } from './format-date.utils';
 import { initialSupplier } from './supplier.utils';
 
 export const initialCertificate: Certificate = {
 	id: '',
 	supplier: initialSupplier,
-	type: CertificateType.none,
+	type: {
+		id: '',
+		type: 'Choose Type',
+	},
 	validFrom: initialDate,
 	validTo: initialDate,
 	pdf: '',

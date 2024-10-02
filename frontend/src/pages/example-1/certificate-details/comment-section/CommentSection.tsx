@@ -21,7 +21,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 }) => {
 	const [isNewComment, setIsNewComment] = useState<boolean>(false);
 	const [newComment, setNewComment] = useState<UserComment>({
-		user: user,
+		userName: user.name,
 		comment: '',
 	});
 	const { language } = useLanguageContext();
@@ -35,7 +35,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setNewComment({
-			user: user,
+			userName: user.name,
 			comment: e.target.value,
 		});
 	};
@@ -83,7 +83,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 					>
 						<div className="comment-user">
 							<span>{toSelectedLocale('user', language)}:</span>{' '}
-							{comment.user.name}
+							{comment.userName}
 						</div>
 						<div className="comment-text">
 							<span>{toSelectedLocale('comment', language)}:</span>{' '}

@@ -1,11 +1,10 @@
 import { FC, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import './CertificateDetails.css';
 import AppRoutes from '../../../common/app-routes/AppRoutes';
 import Button from '../../../common/components/button/Button';
 import Certificate, {
-	CertificateType,
+	CertificateTypeModel,
 } from '../../../common/models/certificate.model';
 import DatePicker from '../../../common/components/date-picker/DatePicker';
 import Select from '../../../common/components/select/Select';
@@ -13,9 +12,10 @@ import PdfViewer from '../pdf-viewer/PdfViewer';
 import { toIsoString } from '../../../common/utils/format-date.utils';
 import {
 	addCertificate,
+	addComment,
 	getCertificate,
 	updateCertificate,
-} from '../../../common/db/certificate-service';
+} from '../../../common/api/services/certificate-service';
 import initialCertificate from '../../../common/utils/certificate.utils';
 import {
 	toSelectedLocale,
@@ -29,6 +29,7 @@ import SearchIcon from '../../../common/components/icons/SearchIcon';
 import CommentSection from './comment-section/CommentSection';
 import { useCurrentUserContext } from '../../../common/contexts/user/User';
 import UserComment from '../../../common/models/comment.model';
+import getAllCertificateTypes from '../../../common/api/services/certificate-type-service';
 
 interface CertificateDetailsProps {
 	certificateId?: string;
@@ -39,17 +40,28 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 }): JSX.Element => {
 	const [certificate, setCertificate] =
 		useState<Certificate>(initialCertificate);
+	const [certificateTypes, setCertificateTypes] = useState<
+		CertificateTypeModel[]
+	>([initialCertificate.type]);
 	const [isUserDialogOpen, setIsUserDialogOpen] = useState<boolean>(false);
 	const { language } = useLanguageContext();
 	const { user } = useCurrentUserContext();
 
-	const navigate = useNavigate();
-
 	const goBack = (): void => {
-		navigate(AppRoutes.Example1);
+		window.location.href = AppRoutes.Example1;
 	};
 
 	useEffect(() => {
+		const fetchBasicData = async () => {
+			const _certificateTypes = await getAllCertificateTypes();
+
+			const _allCertificateTypes = certificateTypes.concat(_certificateTypes);
+
+			setCertificateTypes(_allCertificateTypes);
+		};
+
+		fetchBasicData();
+
 		if (certificateId) {
 			const fetchCertificate = async () => {
 				const _cert = await getCertificate(certificateId);
@@ -133,7 +145,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setCertificate((prev) => ({
 			...prev,
-			type: e.target.value as CertificateType,
+			type: {
+				id: e.target.value,
+			} as CertificateTypeModel,
 		}));
 	};
 
@@ -172,7 +186,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		if (certificate.supplier === initialCertificate.supplier) {
 			alert(toSelectedLocale('chooseSupplier', language));
 			return false;
-		} else if (certificate.type === initialCertificate.type) {
+		} else if (certificate.type.type === initialCertificate.type.type) {
 			alert(toSelectedLocale('chooseType', language));
 			return false;
 		} else if (certificate.pdf === initialCertificate.pdf) {
@@ -183,15 +197,18 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		}
 	};
 
-	const addComment = (comment: UserComment) => {
-		const _comments = certificate.comments;
+	const addCertificateComment = async (comment: UserComment) => {
+		if (await addComment(user.id, certificate.id, comment)) {
+			let _comments: UserComment[] = certificate.comments;
+			_comments.push(comment);
 
-		_comments?.push(comment);
-
-		setCertificate((prev) => ({
-			...prev,
-			comments: _comments,
-		}));
+			setCertificate((prev) => ({
+				...prev,
+				comments: _comments,
+			}));
+		} else {
+			console.error('Error adding comment.');
+		}
 	};
 
 	const userTableData = certificate.users
@@ -216,21 +233,11 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 					<div className="edit-certificate-input">
 						<label>{toSelectedLocale('certificateType', language)}</label>
 						<Select
-							options={[
-								{
-									value: CertificateType.none,
-									text: toSelectedLocale('selectOption', language),
-								},
-								{
-									value: CertificateType.printingPermission,
-									text: CertificateType.printingPermission,
-								},
-								{
-									value: CertificateType.ohsas,
-									text: CertificateType.ohsas,
-								},
-							]}
-							value={certificate.type!}
+							options={certificateTypes.map((type) => ({
+								value: type.id,
+								text: type.type,
+							}))}
+							value={certificate.type.id}
 							onChange={handleTypeChange}
 						/>
 					</div>
@@ -254,53 +261,57 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 							/>
 						</div>
 					</div>
-					<div className="edit-certificate-input-container">
-						<div className="edit-certificate-input">
-							{isUserDialogOpen ? (
-								<UserLookup
-									closeSearch={closeUserDialog}
-									selectUsers={selectUsers}
-								/>
-							) : null}
-						</div>
-					</div>
-					<div className="users-table">
-						<div className="edit-certificate-input">
-							<label>{toSelectedLocale('assignedUsers', language)}</label>
-							<Button
-								name={
-									<>
-										<SearchIcon
-											width={24}
-											height={24}
+					{certificateId ? (
+						<>
+							<div className="edit-certificate-input-container">
+								<div className="edit-certificate-input">
+									{isUserDialogOpen ? (
+										<UserLookup
+											closeSearch={closeUserDialog}
+											selectUsers={selectUsers}
 										/>
-										{toSelectedLocale('addParticipants', language)}
-									</>
-								}
-								color="black"
-								bg="white"
-								type="button"
-								onClick={openUserDialog}
-							/>
-						</div>
-						<Table
-							columns={[
-								'',
-								'Name',
-								toSelectedLocale('department', language),
-								toSelectedLocale('email', language),
-							]}
-							data={userTableData}
-							type="delete"
-							selectable={true}
-							onSelect={removeUser}
-						/>
-					</div>
+									) : null}
+								</div>
+							</div>
+							<div className="users-table">
+								<div className="edit-certificate-input">
+									<label>{toSelectedLocale('assignedUsers', language)}</label>
+									<Button
+										name={
+											<>
+												<SearchIcon
+													width={24}
+													height={24}
+												/>
+												{toSelectedLocale('addParticipants', language)}
+											</>
+										}
+										color="black"
+										bg="white"
+										type="button"
+										onClick={openUserDialog}
+									/>
+								</div>
+								<Table
+									columns={[
+										'',
+										'Name',
+										toSelectedLocale('department', language),
+										toSelectedLocale('email', language),
+									]}
+									data={userTableData}
+									type="delete"
+									selectable={true}
+									onSelect={removeUser}
+								/>
+							</div>
+						</>
+					) : null}
 					{certificateId ? (
 						<CommentSection
 							comments={certificate.comments}
 							user={user}
-							addComment={addComment}
+							addComment={addCertificateComment}
 						/>
 					) : null}
 				</div>

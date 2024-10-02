@@ -6,16 +6,17 @@ import formatDate from '../../common/utils/format-date.utils';
 import './Example1.css';
 import CertificateSettings from './certificate-settings/CertificateSettings';
 import Certificate from '../../common/models/certificate.model';
-import { getAllCertificates } from '../../common/db/certificate-service';
+import { getAllCertificates } from '../../common/api/services/certificate-service';
 import {
 	Languages,
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../common/contexts/language/Language';
 import Supplier from '../../common/models/supplier.model';
+import { TableCertificateDTO } from '../../common/models/dtos/certificate-dto';
 
 const Example1: FC = (): JSX.Element => {
-	const [certificates, setCertificates] = useState<Certificate[]>([]);
+	const [certificates, setCertificates] = useState<TableCertificateDTO[]>([]);
 	const { language } = useLanguageContext();
 
 	const fetchCertificates = async () => {
@@ -26,6 +27,10 @@ const Example1: FC = (): JSX.Element => {
 
 	const supplierNameDisplay = (supplier: Supplier): string => {
 		return `${supplier.name}, ${supplier.indexValue}, ${supplier.city}`;
+	};
+
+	const reloadPage = () => {
+		window.location.reload();
 	};
 
 	useEffect(() => {
@@ -54,14 +59,14 @@ const Example1: FC = (): JSX.Element => {
 					data={certificates.map((cert) => ({
 						settings: (
 							<CertificateSettings
-								certificateId={cert.id}
-								update={fetchCertificates}
+								certificateId={cert.handle}
+								update={reloadPage}
 							/>
 						),
-						supplier: supplierNameDisplay(cert.supplier),
-						type: cert.type,
-						validFrom: formatDate(cert.validFrom),
-						validTo: formatDate(cert.validTo),
+						supplier: cert.supplier,
+						type: cert.certificateType,
+						validFrom: cert.validFrom,
+						validTo: cert.validTo,
 					}))}
 				/>
 			</div>

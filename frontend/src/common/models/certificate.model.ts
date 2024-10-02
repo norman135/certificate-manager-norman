@@ -5,7 +5,7 @@ import User from './user.model';
 type Certificate = {
 	id: string;
 	supplier: Supplier;
-	type: CertificateType;
+	type: CertificateTypeModel;
 	validFrom: Date;
 	validTo: Date;
 	users?: User[];
@@ -13,15 +13,15 @@ type Certificate = {
 	comments: UserComment[];
 };
 
-export enum CertificateType {
-	none = '',
-	printingPermission = 'Permission of Printing',
-	ohsas = 'OHSAS 18001',
-}
+// export enum CertificateType {
+// 	none = '',
+// 	printingPermission = 'Permission of Printing',
+// 	ohsas = 'OHSAS 18001',
+// }
 
 export type CertificateTypeModel = {
 	id: string;
-	type: CertificateType;
+	type: string;
 };
 
 export default Certificate;

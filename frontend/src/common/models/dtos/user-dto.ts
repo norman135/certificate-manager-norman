@@ -1,5 +1,5 @@
-type User = {
-	id: string;
+export type UserDTO = {
+	handle: string;
 	name: string;
 	firstName: string;
 	email?: string;
@@ -7,5 +7,3 @@ type User = {
 	department: string;
 	plant: string;
 };
-
-export default User;

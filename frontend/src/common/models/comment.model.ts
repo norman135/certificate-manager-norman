@@ -1,7 +1,7 @@
 import User from './user.model';
 
 type UserComment = {
-	user: User;
+	userName: string;
 	comment: string;
 };
 

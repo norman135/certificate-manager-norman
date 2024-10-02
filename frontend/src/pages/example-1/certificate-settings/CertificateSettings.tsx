@@ -6,7 +6,7 @@ import DropDown, {
 import './CertificateSettings.css';
 import AppRoutes from '../../../common/app-routes/AppRoutes';
 import SettingsIcon from '../../../common/components/icons/SettingsIcon';
-import { deleteCertificate } from '../../../common/db/certificate-service';
+import { deleteCertificate } from '../../../common/api/services/certificate-service';
 import {
 	toSelectedLocale,
 	useLanguageContext,

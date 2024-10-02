@@ -5,6 +5,14 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ReactUIApp",
+        policyBuilder => policyBuilder.WithOrigins("http://localhost:3000")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -28,6 +36,8 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<CommentService>();
 
 var app = builder.Build();
+
+app.UseCors("ReactUIApp");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -9,7 +9,7 @@ import {
 } from '../common/contexts/language/Language';
 import { initialUser } from '../common/utils/user.utils';
 import User from '../common/models/user.model';
-import getAllUsers from '../common/db/user-service';
+import getAllUsers from '../common/api/services/user-service';
 import { useCurrentUserContext } from '../common/contexts/user/User';
 
 interface LayoutProps {
