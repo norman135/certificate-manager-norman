@@ -44,7 +44,7 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 
 		users.forEach((user) => {
 			options.push({
-				value: user.id,
+				value: user.handle,
 				text: user.name,
 			});
 		});
@@ -56,7 +56,7 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 		const value = e.target.value;
 
 		const _user = value
-			? users.filter((user) => user.id === e.target.value)[0]
+			? users.filter((user) => user.handle === e.target.value)[0]
 			: initialUser;
 
 		setUser(_user);
@@ -74,7 +74,7 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 							</div>
 							<Select
 								options={getUserOptions()}
-								value={user.id}
+								value={user.handle}
 								onChange={handleUserChange}
 							/>
 						</div>

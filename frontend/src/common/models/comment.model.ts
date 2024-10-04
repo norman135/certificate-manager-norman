@@ -5,4 +5,9 @@ type UserComment = {
 	comment: string;
 };
 
+export type PostComment = {
+	userHandle: string;
+	commentText: string;
+};
+
 export default UserComment;

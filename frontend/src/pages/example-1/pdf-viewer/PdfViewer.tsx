@@ -50,6 +50,7 @@ const PdfViewer: FC<PdfViewerProps> = ({
 	if (fileUrl != '') {
 		uint8ArrayDocumentToDataURL(base64ToUint8Array(fileUrl)).then(
 			(dataUrlString) => {
+				console.log(dataUrlString);
 				setDataUrl(dataUrlString);
 			},
 		);
@@ -73,6 +74,8 @@ const PdfViewer: FC<PdfViewerProps> = ({
 						});
 
 						const dataString: string = window.btoa(binary);
+
+						console.log(dataString);
 
 						setFileUrl(dataString);
 					} else {

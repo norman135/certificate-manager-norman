@@ -2,21 +2,18 @@ import { FC, useEffect, useState } from 'react';
 import AppRoutes from '../../common/app-routes/AppRoutes';
 import Button from '../../common/components/button/Button';
 import Table from '../../common/components/table/Table';
-import formatDate from '../../common/utils/format-date.utils';
 import './Example1.css';
 import CertificateSettings from './certificate-settings/CertificateSettings';
-import Certificate from '../../common/models/certificate.model';
+import { TableCertificate } from '../../common/models/certificate.model';
 import { getAllCertificates } from '../../common/api/services/certificate-service';
 import {
-	Languages,
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../common/contexts/language/Language';
 import Supplier from '../../common/models/supplier.model';
-import { TableCertificateDTO } from '../../common/models/dtos/certificate-dto';
 
 const Example1: FC = (): JSX.Element => {
-	const [certificates, setCertificates] = useState<TableCertificateDTO[]>([]);
+	const [certificates, setCertificates] = useState<TableCertificate[]>([]);
 	const { language } = useLanguageContext();
 
 	const fetchCertificates = async () => {
@@ -26,7 +23,7 @@ const Example1: FC = (): JSX.Element => {
 	};
 
 	const supplierNameDisplay = (supplier: Supplier): string => {
-		return `${supplier.name}, ${supplier.indexValue}, ${supplier.city}`;
+		return `${supplier.name}, ${supplier.index}, ${supplier.city}`;
 	};
 
 	const reloadPage = () => {

@@ -1,0 +1,365 @@
+{
+	"openapi": "3.0.1",
+	"info": {
+		"title": "CertificatesManagerApi",
+		"version": "1.0"
+	},
+	"paths": {
+		"/users": {
+			"get": {
+				"tags": ["BasicData"],
+				"parameters": [
+					{
+						"name": "Name",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "FirstName",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "UserId",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "Department",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "Plant",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				}
+			}
+		},
+		"/suppliers": {
+			"get": {
+				"tags": ["BasicData"],
+				"parameters": [
+					{
+						"name": "Index",
+						"in": "query",
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					},
+					{
+						"name": "Name",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "City",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				}
+			}
+		},
+		"/certificates/types": {
+			"get": {
+				"tags": ["BasicData"],
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				}
+			}
+		},
+		"/certificates": {
+			"get": {
+				"tags": ["Certificate"],
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				}
+			},
+			"post": {
+				"tags": ["Certificate"],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCertificateDTO"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCertificateDTO"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCertificateDTO"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				}
+			}
+		},
+		"/certificates/{handle}": {
+			"get": {
+				"tags": ["Certificate"],
+				"parameters": [
+					{
+						"name": "handle",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				}
+			},
+			"put": {
+				"tags": ["Certificate"],
+				"parameters": [
+					{
+						"name": "handle",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateCertificateDTO"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateCertificateDTO"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateCertificateDTO"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				}
+			},
+			"delete": {
+				"tags": ["Certificate"],
+				"parameters": [
+					{
+						"name": "handle",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				}
+			}
+		},
+		"/certificates/{handle}/comments": {
+			"post": {
+				"tags": ["Certificate"],
+				"parameters": [
+					{
+						"name": "handle",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCommentDTO"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCommentDTO"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCommentDTO"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"CreateCertificateDTO": {
+				"type": "object",
+				"properties": {
+					"supplierHandle": {
+						"type": "string",
+						"nullable": true
+					},
+					"certificateTypeHandle": {
+						"type": "string",
+						"nullable": true
+					},
+					"validFrom": {
+						"type": "string",
+						"nullable": true
+					},
+					"validTo": {
+						"type": "string",
+						"nullable": true
+					},
+					"document": {
+						"type": "string",
+						"format": "byte",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"CreateCommentDTO": {
+				"type": "object",
+				"properties": {
+					"userHandle": {
+						"type": "string",
+						"nullable": true
+					},
+					"commentText": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"UpdateCertificateDTO": {
+				"type": "object",
+				"properties": {
+					"supplierHandle": {
+						"type": "string",
+						"nullable": true
+					},
+					"certificateTypeHandle": {
+						"type": "string",
+						"nullable": true
+					},
+					"validFrom": {
+						"type": "string",
+						"nullable": true
+					},
+					"validTo": {
+						"type": "string",
+						"nullable": true
+					},
+					"document": {
+						"type": "string",
+						"format": "byte",
+						"nullable": true
+					},
+					"participants": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/UserDTO"
+						},
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"UserDTO": {
+				"type": "object",
+				"properties": {
+					"handle": {
+						"type": "string",
+						"format": "uuid",
+						"nullable": true
+					},
+					"name": {
+						"type": "string",
+						"nullable": true
+					},
+					"firstName": {
+						"type": "string",
+						"nullable": true
+					},
+					"email": {
+						"type": "string",
+						"nullable": true
+					},
+					"userId": {
+						"type": "string",
+						"nullable": true
+					},
+					"department": {
+						"type": "string",
+						"nullable": true
+					},
+					"plant": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			}
+		}
+	}
+}

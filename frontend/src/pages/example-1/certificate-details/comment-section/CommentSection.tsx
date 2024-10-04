@@ -49,7 +49,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 	};
 
 	const validateUser = (): boolean => {
-		if (!user.id) {
+		if (!user.handle) {
 			alert(toSelectedLocale('selectUser', language));
 			return false;
 		}

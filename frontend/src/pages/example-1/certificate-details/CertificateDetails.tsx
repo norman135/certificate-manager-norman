@@ -4,12 +4,14 @@ import './CertificateDetails.css';
 import AppRoutes from '../../../common/app-routes/AppRoutes';
 import Button from '../../../common/components/button/Button';
 import Certificate, {
-	CertificateTypeModel,
+	CertificateType,
 } from '../../../common/models/certificate.model';
 import DatePicker from '../../../common/components/date-picker/DatePicker';
 import Select from '../../../common/components/select/Select';
 import PdfViewer from '../pdf-viewer/PdfViewer';
-import { toIsoString } from '../../../common/utils/format-date.utils';
+import formatDate, {
+	toIsoString,
+} from '../../../common/utils/format-date.utils';
 import {
 	addCertificate,
 	addComment,
@@ -40,9 +42,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 }): JSX.Element => {
 	const [certificate, setCertificate] =
 		useState<Certificate>(initialCertificate);
-	const [certificateTypes, setCertificateTypes] = useState<
-		CertificateTypeModel[]
-	>([initialCertificate.type]);
+	const [certificateTypes, setCertificateTypes] = useState<CertificateType[]>([
+		initialCertificate.certificateType,
+	]);
 	const [isUserDialogOpen, setIsUserDialogOpen] = useState<boolean>(false);
 	const { language } = useLanguageContext();
 	const { user } = useCurrentUserContext();
@@ -78,7 +80,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			const fetchCerts = async () => {
 				setCertificate({
 					...initialCertificate,
-					id: uuidv4(),
+					handle: uuidv4(),
 				});
 			};
 
@@ -101,7 +103,15 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			updateCert();
 		} else {
 			const addCert = async () => {
-				if (!(await addCertificate(certificate))) {
+				if (
+					!(await addCertificate({
+						supplierHandle: certificate.supplier.handle,
+						certificateTypeHandle: certificate.certificateType.handle,
+						validFrom: certificate.validFrom,
+						validTo: certificate.validTo,
+						document: certificate.document,
+					}))
+				) {
 					console.error('Error attempting to add certificate');
 				}
 			};
@@ -114,7 +124,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	const resetInput = (): void => {
 		const _cert = initialCertificate;
 		if (certificateId) {
-			_cert.id = certificateId;
+			_cert.handle = certificateId;
 		}
 		setCertificate(_cert);
 	};
@@ -134,7 +144,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	};
 
 	const removeUser = (position: number | number[]) => {
-		const users = certificate.users;
+		const users = certificate.participants;
 		if (users) {
 			selectUsers(
 				users.filter((user, index) => (index != position ? user : null)),
@@ -146,24 +156,24 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		setCertificate((prev) => ({
 			...prev,
 			type: {
-				id: e.target.value,
-			} as CertificateTypeModel,
+				handle: e.target.value,
+			} as CertificateType,
 		}));
 	};
 
 	const handleValidFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const validFromDate = new Date(e.target.value);
 
-		if (validFromDate > certificate.validTo!) {
+		if (validFromDate > new Date(certificate.validTo)!) {
 			setCertificate((prev) => ({
 				...prev,
-				validFrom: validFromDate,
-				validTo: validFromDate,
+				validFrom: formatDate(validFromDate),
+				validTo: formatDate(validFromDate),
 			}));
 		} else {
 			setCertificate((prev) => ({
 				...prev,
-				validFrom: validFromDate,
+				validFrom: formatDate(validFromDate),
 			}));
 		}
 	};
@@ -171,7 +181,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	const handleValidToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCertificate((prev) => ({
 			...prev,
-			validTo: new Date(e.target.value),
+			validTo: e.target.value,
 		}));
 	};
 
@@ -186,10 +196,13 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		if (certificate.supplier === initialCertificate.supplier) {
 			alert(toSelectedLocale('chooseSupplier', language));
 			return false;
-		} else if (certificate.type.type === initialCertificate.type.type) {
+		} else if (
+			certificate.certificateType.name ===
+			initialCertificate.certificateType.name
+		) {
 			alert(toSelectedLocale('chooseType', language));
 			return false;
-		} else if (certificate.pdf === initialCertificate.pdf) {
+		} else if (certificate.document === initialCertificate.document) {
 			alert(toSelectedLocale('addPdf', language));
 			return false;
 		} else {
@@ -198,7 +211,12 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	};
 
 	const addCertificateComment = async (comment: UserComment) => {
-		if (await addComment(user.id, certificate.id, comment)) {
+		if (
+			await addComment(user.handle, certificate.handle, {
+				userHandle: user.handle,
+				commentText: comment.comment,
+			})
+		) {
 			let _comments: UserComment[] = certificate.comments;
 			_comments.push(comment);
 
@@ -211,8 +229,8 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		}
 	};
 
-	const userTableData = certificate.users
-		? certificate.users.map((user) => ({
+	const userTableData = certificate.participants
+		? certificate.participants.map((user) => ({
 				name: user.name,
 				department: user.department,
 				email: user.email,
@@ -234,10 +252,10 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<label>{toSelectedLocale('certificateType', language)}</label>
 						<Select
 							options={certificateTypes.map((type) => ({
-								value: type.id,
-								text: type.type,
+								value: type.handle,
+								text: type.name,
 							}))}
-							value={certificate.type.id}
+							value={certificate.certificateType.handle}
 							onChange={handleTypeChange}
 						/>
 					</div>
@@ -245,7 +263,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<label>{toSelectedLocale('validFrom', language)}</label>
 						<div className="edit-certificate-input-container">
 							<DatePicker
-								value={toIsoString(certificate.validFrom!)}
+								value={toIsoString(new Date(certificate.validFrom))}
 								onChange={handleValidFromChange}
 								min=""
 							/>
@@ -255,9 +273,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<label>{toSelectedLocale('validTo', language)}</label>
 						<div className="edit-certificate-input-container">
 							<DatePicker
-								value={toIsoString(certificate.validTo!)}
+								value={toIsoString(new Date(certificate.validTo))}
 								onChange={handleValidToChange}
-								min={toIsoString(certificate.validFrom!)}
+								min={toIsoString(new Date(certificate.validFrom))}
 							/>
 						</div>
 					</div>
@@ -317,7 +335,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 				</div>
 				<div className="pdf-preview-area">
 					<PdfViewer
-						fileUrl={certificate.pdf}
+						fileUrl={certificate.document}
 						setFileUrl={handlePdfChange}
 					/>
 				</div>

@@ -1,18 +1,24 @@
-import Certificate from '../../models/certificate.model';
-import UserComment from '../../models/comment.model';
+import Certificate, {
+	PostCertificate,
+	TableCertificate,
+} from '../../models/certificate.model';
+import Comment, { PostComment } from '../../models/comment.model';
+import formatDate from '../../utils/format-date.utils';
 import {
-	CertificateDTO,
-	CertificateAddDTO,
-	CertificateUpdateDTO,
-	TableCertificateDTO,
-} from '../../models/dtos/certificate-dto';
-import { CertificateMapper } from '../../utils/mappers/certificate-mapper';
-import { CommentMapper } from '../../utils/mappers/comment-mapper';
-import { addItem, getItem, updateItem, deleteItem, getAllItems } from '../api';
+	CertificatesClient,
+	CreateCertificateDTO,
+	CreateCommentDTO,
+} from '../generated';
 
-const addCertificate = async (certificate: Certificate): Promise<boolean> => {
+const certificatesClient = new CertificatesClient();
+
+const addCertificate = async (
+	_postCertificate: PostCertificate,
+): Promise<boolean> => {
 	try {
-		await addItem('certificates', CertificateMapper.ToAddDTO(certificate));
+		await certificatesClient.certificatesPOST(
+			_postCertificate as CreateCertificateDTO,
+		);
 		return true;
 	} catch (error) {
 		console.error('Error adding certificate:', error);
@@ -23,15 +29,19 @@ const addCertificate = async (certificate: Certificate): Promise<boolean> => {
 const addComment = async (
 	userId: string,
 	certificateId: string,
-	comment: UserComment,
+	postComment: PostComment,
 ): Promise<boolean> => {
 	try {
-		await addItem(
-			`certificates/${certificateId}/comments`,
-			CommentMapper.ToDTO(comment, userId),
+		const data = await certificatesClient.comments(
+			certificateId,
+			postComment as CreateCommentDTO,
 		);
 
-		return true;
+		if (data) {
+			return true;
+		} else {
+			return false;
+		}
 	} catch (error) {
 		console.error('Error adding comment: ', error);
 		return false;
@@ -40,9 +50,9 @@ const addComment = async (
 
 const getCertificate = async (id: string): Promise<Certificate | null> => {
 	try {
-		const certificateDTO: CertificateDTO = await getItem('certificates', id);
+		const certificate = await certificatesClient.certificatesGET2(id);
 
-		return CertificateMapper.ToModel(certificateDTO);
+		return certificate;
 	} catch (error) {
 		console.error('Error getting certificate:', error);
 		return null;
@@ -53,11 +63,15 @@ const updateCertificate = async (
 	certificate: Certificate,
 ): Promise<boolean> => {
 	try {
-		await updateItem(
-			'certificates',
-			certificate.id,
-			CertificateMapper.ToUpdateDTO(certificate),
-		);
+		await certificatesClient.certificatesPUT(certificate.handle, {
+			supplierHandle: certificate.supplier.handle,
+			certificateTypeHandle: certificate.certificateType.handle,
+			validFrom: certificate.validFrom,
+			validTo: certificate.validTo,
+			document: certificate.document,
+			participants: certificate.participants,
+		});
+
 		return true;
 	} catch (error) {
 		console.error('Error updating certificate:', error);
@@ -67,7 +81,8 @@ const updateCertificate = async (
 
 const deleteCertificate = async (id: string): Promise<boolean> => {
 	try {
-		await deleteItem('certificates', id);
+		await certificatesClient.certificatesDELETE(id);
+
 		return true;
 	} catch (error) {
 		console.error('Error deleting certificate:', error);
@@ -75,17 +90,12 @@ const deleteCertificate = async (id: string): Promise<boolean> => {
 	}
 };
 
-const getAllCertificates = async (): Promise<TableCertificateDTO[]> => {
+const getAllCertificates = async (): Promise<TableCertificate[]> => {
 	try {
-		let certificates: TableCertificateDTO[];
+		let certificates: TableCertificate[] =
+			(await certificatesClient.certificatesGET()) ?? [];
 
-		certificates = await getAllItems('certificates');
-
-		if (certificates) {
-			return certificates;
-		} else {
-			return [];
-		}
+		return certificates;
 	} catch (error) {
 		console.error('Error getting all certificates:', error);
 		return [];
@@ -93,6 +103,7 @@ const getAllCertificates = async (): Promise<TableCertificateDTO[]> => {
 };
 
 export {
+	certificatesClient,
 	addCertificate,
 	addComment,
 	getCertificate,

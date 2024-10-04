@@ -18,7 +18,7 @@ const SupplierInputLookup: FC<SupplierInputLookupProps> = ({
 	const [isSearchDialogOpen, setIsSearchDialogOpen] = useState<boolean>(false);
 
 	const displaySupplierName = (certificate: Certificate) => {
-		return `${certificate.supplier!.name}, ${certificate.supplier!.indexValue}, ${certificate.supplier!.city}`;
+		return `${certificate.supplier!.name}, ${certificate.supplier!.index}, ${certificate.supplier!.city}`;
 	};
 
 	const openSearchDialog = () => {
@@ -45,7 +45,7 @@ const SupplierInputLookup: FC<SupplierInputLookupProps> = ({
 			<input
 				type="text"
 				value={
-					certificate.supplier!.indexValue === initialSupplier.indexValue
+					certificate.supplier!.index === initialSupplier.index
 						? 'Select a Supplier'
 						: displaySupplierName(certificate)
 				}

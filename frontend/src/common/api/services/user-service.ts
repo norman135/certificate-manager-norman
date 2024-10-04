@@ -1,19 +1,18 @@
-import { UserDTO } from '../../models/dtos/user-dto';
 import User from '../../models/user.model';
-import { UserMapper } from '../../utils/mappers/user-mapper';
-import { getAllItems } from '../api';
+import { certificatesClient } from './certificate-service';
 
 const getAllUsers = async (): Promise<User[]> => {
 	try {
-		const usersData: UserDTO[] = await getAllItems('users');
+		const usersData: User[] =
+			(await certificatesClient.users(
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+			)) ?? [];
 
-		if (usersData) {
-			let users: User[] = usersData.map((user) => UserMapper.ToModel(user));
-
-			return users;
-		} else {
-			return [];
-		}
+		return usersData;
 	} catch (error) {
 		console.error('Error getting all users:', error);
 		return [];
@@ -28,19 +27,18 @@ export const searchInUsers = async (criteria: {
 	plant: string;
 }): Promise<User[]> => {
 	try {
-		const usersData: UserDTO[] = await getAllItems(
-			`users?name=${criteria.name}&firstName=${criteria.firstName}&userId=${criteria.userId}&department=${criteria.department}&plant=${criteria.plant}`,
-		);
+		const usersData: User[] =
+			(await certificatesClient.users(
+				criteria.name,
+				criteria.firstName,
+				criteria.userId,
+				criteria.department,
+				criteria.plant,
+			)) ?? [];
 
-		let users: User[] = usersData.map((user) => UserMapper.ToModel(user));
-
-		if (users) {
-			return users;
-		} else {
-			return [];
-		}
+		return usersData;
 	} catch (error) {
-		console.error('Error getting all users:', error);
+		console.error('Error searching users:', error);
 		return [];
 	}
 };

@@ -1,21 +1,13 @@
-import { SupplierDTO } from '../../models/dtos/supplier-dto';
 import Supplier from '../../models/supplier.model';
-import { SupplierMapper } from '../../utils/mappers/supplier-mapper';
-import { getAllItems } from '../api';
+import { certificatesClient } from './certificate-service';
 
 const getAllSuppliers = async (): Promise<Supplier[]> => {
 	try {
-		const supplierDTOs: SupplierDTO[] = await getAllItems('suppliers');
+		const suppliers: Supplier[] =
+			(await certificatesClient.suppliers(undefined, undefined, undefined)) ??
+			[];
 
-		const suppliers: Supplier[] = supplierDTOs.map((supplier) =>
-			SupplierMapper.ToModel(supplier),
-		);
-
-		if (suppliers) {
-			return suppliers;
-		} else {
-			return [];
-		}
+		return suppliers;
 	} catch (error) {
 		console.error('Error getting all Suppliers:', error);
 		return [];
@@ -27,17 +19,17 @@ export const searchSuppliers = async (criteria: {
 	index: string;
 	city: string;
 }): Promise<Supplier[]> => {
-	const supplierDTOs: SupplierDTO[] = await getAllItems(
-		`suppliers?name=${criteria.name}&index=${criteria.index}&city=${criteria.city}`,
-	);
+	try {
+		const suppliers: Supplier[] =
+			(await certificatesClient.suppliers(
+				parseInt(criteria.index),
+				criteria.name,
+				criteria.city,
+			)) ?? [];
 
-	const suppliers: Supplier[] = supplierDTOs.map((supplier) =>
-		SupplierMapper.ToModel(supplier),
-	);
-
-	if (suppliers) {
 		return suppliers;
-	} else {
+	} catch (error) {
+		console.error('Error searching Suppliers:', error);
 		return [];
 	}
 };

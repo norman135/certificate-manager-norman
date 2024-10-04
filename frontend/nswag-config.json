@@ -1,0 +1,25 @@
+{
+	"runtime": "NetCore31",
+	"swaggerGenerator": {
+		"fromSwagger": {
+			"url": "http://localhost:5062/swagger/v1/swagger.json"
+		}
+	},
+	"codeGenerators": {
+		"openApiToTypeScriptClient": {
+			"className": "ApiClient",
+			"moduleName": "",
+			"namespace": "",
+			"typeScriptVersion": 4.0,
+			"template": "Fetch",
+			"promiseType": "Promise",
+			"generateOptionalParameters": true,
+			"useTransformOptionsMethod": true,
+			"useTransformResultMethod": true,
+			"generateClientClasses": true,
+			"generateClientInterfaces": true,
+			"generateDtoTypes": true,
+			"output": "./src/api-client.ts"
+		}
+	}
+}

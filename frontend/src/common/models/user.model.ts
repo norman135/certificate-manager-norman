@@ -1,8 +1,8 @@
 type User = {
-	id: string;
+	handle: string;
 	name: string;
 	firstName: string;
-	email?: string;
+	email: string;
 	userId: string;
 	department: string;
 	plant: string;

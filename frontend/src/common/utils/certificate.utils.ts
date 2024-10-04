@@ -1,18 +1,18 @@
 import Certificate from '../models/certificate.model';
-import { initialDate } from './format-date.utils';
+import formatDate, { initialDate } from './format-date.utils';
 import { initialSupplier } from './supplier.utils';
 
 export const initialCertificate: Certificate = {
-	id: '',
+	handle: '',
 	supplier: initialSupplier,
-	type: {
-		id: '',
-		type: 'Choose Type',
+	certificateType: {
+		handle: '',
+		name: 'Choose Type',
 	},
-	validFrom: initialDate,
-	validTo: initialDate,
-	pdf: '',
-	users: [],
+	validFrom: formatDate(initialDate),
+	validTo: formatDate(initialDate),
+	document: '',
+	participants: [],
 	comments: [],
 };
 

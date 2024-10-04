@@ -1,8 +1,8 @@
 import Supplier from '../models/supplier.model';
 
 export const initialSupplier: Supplier = {
-	id: '',
+	handle: '',
 	name: '',
-	indexValue: '',
+	index: '',
 	city: '',
 };

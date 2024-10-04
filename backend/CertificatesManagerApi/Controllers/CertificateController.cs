@@ -6,16 +6,14 @@ namespace CertificatesManagerApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CertificateController : ControllerBase
+    public class CertificateController(
+        CertificateService certificateService,
+        CommentService commentService
+    ) : ControllerBase
     {
-        private readonly CertificateService _certificateService;
-        private readonly CommentService _commentService;
+        private readonly CertificateService _certificateService = certificateService;
+        private readonly CommentService _commentService = commentService;
 
-        public CertificateController(CertificateService certificateService, CommentService commentService)
-        {
-            _certificateService = certificateService;
-            _commentService = commentService;
-        }
 
         [HttpGet("/certificates")]
         public async Task<ActionResult> GetTableCertificates()

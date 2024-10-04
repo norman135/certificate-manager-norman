@@ -31,7 +31,7 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 	const supplierSearch = async (): Promise<void> => {
 		const result = await searchSuppliers({
 			name: supplierInfo.name,
-			index: supplierInfo.indexValue,
+			index: supplierInfo.index,
 			city: supplierInfo.city,
 		});
 
@@ -101,7 +101,7 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 						/>
 						<TextInput
 							label={toSelectedLocale('supplierIndex', language)}
-							value={supplierInfo.indexValue}
+							value={supplierInfo.index}
 							onchange={handleIndexChange}
 						/>
 						<TextInput
@@ -139,7 +139,7 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 						]}
 						data={suppliersBuffer.map((supplier) => ({
 							name: supplier.name,
-							index: supplier.indexValue,
+							index: supplier.index,
 							city: supplier.city,
 						}))}
 						selectable={true}

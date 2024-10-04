@@ -1,22 +1,12 @@
-import { CertificateTypeModel } from '../../models/certificate.model';
-import { CertificateTypeDTO } from '../../models/dtos/certificate-type-dto';
-import { CertificateTypeMapper } from '../../utils/mappers/certificate-type-mapper';
-import { getAllItems } from '../api';
+import { CertificateType } from '../../models/certificate.model';
+import { certificatesClient } from './certificate-service';
 
-const getAllCertificateTypes = async (): Promise<CertificateTypeModel[]> => {
+const getAllCertificateTypes = async (): Promise<CertificateType[]> => {
 	try {
-		const certificateTypes: CertificateTypeDTO[] =
-			await getAllItems('certificates/types');
+		const certificateTypes: CertificateType[] =
+			(await certificatesClient.types()) ?? [];
 
-		const certificateTypeModels: CertificateTypeModel[] = certificateTypes.map(
-			(type) => CertificateTypeMapper.ToModel(type),
-		);
-
-		if (certificateTypeModels) {
-			return certificateTypeModels;
-		} else {
-			return [];
-		}
+		return certificateTypes;
 	} catch (error) {
 		console.error('Error getting certificate types:', error);
 		return [];
