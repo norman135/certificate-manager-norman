@@ -2,7 +2,7 @@ import { ChangeEvent, FC, useEffect, useState } from 'react';
 import SideBar from './side-bar/SideBar';
 import './Layout.css';
 import Select from '../common/components/select/Select';
-import { UserDTO } from '../common/contexts/api-client';
+import { UserDTO } from '../common/api';
 import { useApiClientContext } from '../common/contexts/api-client/ApiClient';
 import {
 	Languages,
@@ -10,7 +10,6 @@ import {
 	useLanguageContext,
 } from '../common/contexts/language/Language';
 import { useCurrentUserContext } from '../common/contexts/user/User';
-import getAllUsers from '../common/services/user-service';
 import { initialUser } from '../common/utils/user.utils';
 
 interface LayoutProps {
@@ -28,7 +27,7 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 
 	useEffect(() => {
 		const getUsers = async () => {
-			const allUsers = await getAllUsers(basicDataClient);
+			const allUsers = await basicDataClient.usersGet();
 
 			setUsers(allUsers);
 		};

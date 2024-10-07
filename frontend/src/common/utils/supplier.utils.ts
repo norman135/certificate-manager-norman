@@ -1,4 +1,4 @@
-import { SupplierDTO } from '../contexts/api-client';
+import { SupplierDTO } from '../api';
 
 export const initialSupplier: SupplierDTO = {
 	handle: '',

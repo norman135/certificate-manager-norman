@@ -11,7 +11,6 @@ import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../../common/contexts/language/Language';
-import { deleteCertificate } from '../../../common/services/certificate-service';
 
 interface CertificateSettingsProps {
 	certificateId: string;
@@ -30,7 +29,9 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 	const _deleteCertificate = (id: string): void => {
 		if (confirm(toSelectedLocale('sure', language))) {
 			const deleteCert = async () => {
-				if (!(await deleteCertificate(certificateClient, id))) {
+				try {
+					await certificateClient.certificatesHandleDelete({ handle: id });
+				} catch {
 					console.error('Error deleting certificate!');
 				}
 			};

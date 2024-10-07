@@ -4,16 +4,12 @@ import Button from '../../common/components/button/Button';
 import Table from '../../common/components/table/Table';
 import './Example1.css';
 import CertificateSettings from './certificate-settings/CertificateSettings';
-import {
-	SupplierDTO,
-	TableCertificatesDTO,
-} from '../../common/contexts/api-client';
+import { TableCertificatesDTO } from '../../common/api';
 import { useApiClientContext } from '../../common/contexts/api-client/ApiClient';
 import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../common/contexts/language/Language';
-import { getAllCertificates } from '../../common/services/certificate-service';
 
 const Example1: FC = (): JSX.Element => {
 	const [certificates, setCertificates] = useState<TableCertificatesDTO[]>([]);
@@ -21,13 +17,9 @@ const Example1: FC = (): JSX.Element => {
 	const { certificateClient } = useApiClientContext();
 
 	const fetchCertificates = async () => {
-		const _certs = await getAllCertificates(certificateClient);
+		const _certs = await certificateClient.certificatesGet();
 
 		setCertificates(_certs);
-	};
-
-	const supplierNameDisplay = (supplier: SupplierDTO): string => {
-		return `${supplier.name}, ${supplier.index}, ${supplier.city}`;
 	};
 
 	const reloadPage = () => {

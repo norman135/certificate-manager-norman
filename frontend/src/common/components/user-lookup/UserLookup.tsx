@@ -1,12 +1,11 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import './Lookup.css';
-import { UserDTO } from '../../contexts/api-client';
+import { UserDTO } from '../../api';
 import { useApiClientContext } from '../../contexts/api-client/ApiClient';
 import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../contexts/language/Language';
-import getAllUsers, { searchInUsers } from '../../services/user-service';
 import { initialUser } from '../../utils/user.utils';
 import Button from '../button/Button';
 import CancelIcon from '../icons/CancelIcon';
@@ -30,7 +29,7 @@ const UserLookup: FC<UserLookupProps> = ({
 	const { basicDataClient } = useApiClientContext();
 
 	const searchUsers = async () => {
-		const users = await searchInUsers(basicDataClient, {
+		const users = await basicDataClient.usersGet({
 			name: userInfo.name ?? '',
 			firstName: userInfo.firstName ?? '',
 			userId: userInfo.userId ?? '',
@@ -95,7 +94,7 @@ const UserLookup: FC<UserLookupProps> = ({
 
 	useEffect(() => {
 		const getUsers = async () => {
-			const result = await getAllUsers(basicDataClient);
+			const result = await basicDataClient.usersGet();
 
 			setUsersBuffer(result);
 		};

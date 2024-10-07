@@ -1,5 +1,5 @@
 import { createContext, FC, useContext } from 'react';
-import { BasicDataApi, CertificateApi } from './apis';
+import { BasicDataApi, CertificateApi } from '../../api/apis';
 
 export type ApiClient = {
 	basicDataClient: BasicDataApi;

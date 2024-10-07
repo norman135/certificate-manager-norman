@@ -1,4 +1,4 @@
-import { UserDTO } from '../contexts/api-client';
+import { UserDTO } from '../api';
 
 export const initialUser: UserDTO = {
 	handle: '',

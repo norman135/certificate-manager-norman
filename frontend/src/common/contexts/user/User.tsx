@@ -1,6 +1,6 @@
 import { createContext, FC, useContext, useState } from 'react';
 import { initialUser } from '../../utils/user.utils';
-import { UserDTO } from '../api-client';
+import { UserDTO } from '../../api';
 
 export type CurrentUser = {
 	user: UserDTO;

@@ -1,6 +1,6 @@
 import { initialDate, toIsoString } from './format-date.utils';
 import { initialSupplier } from './supplier.utils';
-import { CertificateDTO } from '../contexts/api-client';
+import { CertificateDTO } from '../api';
 
 export const initialCertificate: CertificateDTO = {
 	handle: '',

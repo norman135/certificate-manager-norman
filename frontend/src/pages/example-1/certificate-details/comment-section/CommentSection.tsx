@@ -1,11 +1,7 @@
 import { ChangeEvent, FC, useState } from 'react';
 import Button from '../../../../common/components/button/Button';
 import './CommentSection.css';
-import {
-	CommentDTO,
-	CreateCommentDTO,
-	UserDTO,
-} from '../../../../common/contexts/api-client';
+import { CommentDTO, CreateCommentDTO, UserDTO } from '../../../../common/api';
 import {
 	toSelectedLocale,
 	useLanguageContext,

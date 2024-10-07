@@ -12,24 +12,18 @@ import Table from '../../../common/components/table/Table';
 import UserLookup from '../../../common/components/user-lookup/UserLookup';
 import {
 	CertificateDTO,
+	CertificatesPostRequest,
 	CertificateTypeDTO,
 	CommentDTO,
 	CreateCommentDTO,
 	UserDTO,
-} from '../../../common/contexts/api-client';
+} from '../../../common/api';
 import { useApiClientContext } from '../../../common/contexts/api-client/ApiClient';
 import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../../common/contexts/language/Language';
 import { useCurrentUserContext } from '../../../common/contexts/user/User';
-import {
-	addCertificate,
-	addComment,
-	getCertificate,
-	updateCertificate,
-} from '../../../common/services/certificate-service';
-import getAllCertificateTypes from '../../../common/services/certificate-type-service';
 import initialCertificate from '../../../common/utils/certificate.utils';
 import PdfViewer from '../pdf-viewer/PdfViewer';
 
@@ -56,7 +50,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 
 	useEffect(() => {
 		const fetchBasicData = async () => {
-			const _certificateTypes = await getAllCertificateTypes(basicDataClient);
+			const _certificateTypes = await basicDataClient.certificatesTypesGet();
 
 			const _allCertificateTypes = certificateTypes.concat(_certificateTypes);
 
@@ -67,7 +61,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 
 		if (certificateId) {
 			const fetchCertificate = async () => {
-				const _cert = await getCertificate(certificateClient, certificateId);
+				const _cert = await certificateClient.certificatesHandleGet({
+					handle: certificateId,
+				});
 
 				if (_cert) {
 					setCertificate(_cert);
@@ -96,29 +92,46 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 
 		if (certificateId) {
 			const updateCert = async () => {
-				if (!(await updateCertificate(certificateClient, certificate))) {
+				try {
+					await certificateClient.certificatesHandlePut({
+						handle: certificate.handle ?? '',
+						updateCertificateDTO: {
+							supplierHandle: certificate.supplier?.handle,
+							certificateTypeHandle: certificate.certificateType?.handle,
+							validFrom: certificate.validFrom,
+							validTo: certificate.validTo,
+							document: certificate.document,
+							participants: certificate.participants,
+						},
+					});
+				} catch {
 					console.error('Error attempting to update certificate.');
+					return;
 				}
 			};
 
 			updateCert();
 		} else {
 			const addCert = async () => {
-				if (
-					!(await addCertificate(certificateClient, {
-						supplierHandle: certificate.supplier?.handle,
-						certificateTypeHandle: certificate.certificateType?.handle,
-						validFrom: certificate.validFrom,
-						validTo: certificate.validTo,
-						document: certificate.document,
-					}))
-				) {
+				try {
+					await certificateClient.certificatesPost({
+						createCertificateDTO: {
+							supplierHandle: certificate.supplier?.handle,
+							certificateTypeHandle: certificate.certificateType?.handle,
+							validFrom: certificate.validFrom,
+							validTo: certificate.validTo,
+							document: certificate.document,
+						},
+					} as CertificatesPostRequest);
+				} catch {
 					console.error('Error attempting to add certificate');
+					return;
 				}
 			};
 
 			addCert();
 		}
+
 		goBack();
 	};
 
@@ -215,15 +228,13 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 
 	const addCertificateComment = async (comment: CreateCommentDTO) => {
 		if (
-			await addComment(
-				certificateClient,
-				user.handle ?? '',
-				certificate.handle ?? '',
-				{
+			await certificateClient.certificatesHandleCommentsPost({
+				handle: certificate.handle ?? '',
+				createCommentDTO: {
 					userHandle: user.handle ?? '',
 					commentText: comment.commentText ?? '',
 				},
-			)
+			})
 		) {
 			const _comments: CommentDTO[] = certificate.comments ?? [];
 			_comments.push({

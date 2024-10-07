@@ -1,14 +1,11 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import './Lookup.css';
-import { SupplierDTO } from '../../contexts/api-client';
+import { SupplierDTO, SuppliersGetRequest } from '../../api';
 import { useApiClientContext } from '../../contexts/api-client/ApiClient';
 import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../contexts/language/Language';
-import getAllSuppliers, {
-	searchSuppliers,
-} from '../../services/supplier-service';
 import { initialSupplier } from '../../utils/supplier.utils';
 import Button from '../button/Button';
 import CancelIcon from '../icons/CancelIcon';
@@ -34,7 +31,9 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 	const { basicDataClient } = useApiClientContext();
 
 	const supplierSearch = async (): Promise<void> => {
-		const result = await searchSuppliers(basicDataClient, supplierInfo);
+		const result = await basicDataClient.suppliersGet(
+			supplierInfo as SuppliersGetRequest,
+		);
 
 		setSuppliersBuffer(result);
 	};
@@ -49,7 +48,7 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 	const handleIndexChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setSupplierInfo((prev) => ({
 			...prev,
-			indexValue: e.target.value,
+			indexValue: parseInt(e.target.value),
 		}));
 	};
 
@@ -75,7 +74,7 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 
 	useEffect(() => {
 		const getSuppliers = async (): Promise<void> => {
-			const result = await getAllSuppliers(basicDataClient);
+			const result = await basicDataClient.suppliersGet();
 
 			setSuppliersBuffer(result);
 		};

@@ -2,10 +2,7 @@ import { Dispatch, FC, useState } from 'react';
 import CancelIcon from '../../../../common/components/icons/CancelIcon';
 import SearchIcon from '../../../../common/components/icons/SearchIcon';
 import SupplierLookup from '../../../../common/components/supplier-lookup/SupplierLookup';
-import {
-	CertificateDTO,
-	SupplierDTO,
-} from '../../../../common/contexts/api-client';
+import { CertificateDTO, SupplierDTO } from '../../../../common/api';
 import { initialSupplier } from '../../../../common/utils/supplier.utils';
 
 interface SupplierInputLookupProps {
