@@ -53,7 +53,7 @@ const Table = <T extends {} | null>({
 
 	const checkMarkAll = (
 		<CheckMark
-			_key="select-all-checkmark"
+			key="select-all-checkmark"
 			onChange={selectAll}
 			checked={selectedItems.length > 0 && selectedItems.length === data.length}
 		/>
@@ -84,7 +84,7 @@ const Table = <T extends {} | null>({
 
 			const checkMark = (
 				<CheckMark
-					_key={index.toString()}
+					key={index.toString()}
 					onChange={handleCheckMarkChange}
 					checked={selectedItems.includes(index)}
 				/>
@@ -92,7 +92,7 @@ const Table = <T extends {} | null>({
 
 			const radio = (
 				<Radio
-					identifier={index.toString()}
+					key={index.toString()}
 					onChange={handleRadioSelect}
 				/>
 			);

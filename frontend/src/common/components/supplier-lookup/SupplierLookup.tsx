@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import './Lookup.css';
 import { SupplierDTO } from '../../contexts/api-client';
 import { useApiClientContext } from '../../contexts/api-client/ApiClient';
@@ -6,7 +6,9 @@ import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../contexts/language/Language';
-import { searchSuppliers } from '../../services/supplier-service';
+import getAllSuppliers, {
+	searchSuppliers,
+} from '../../services/supplier-service';
 import { initialSupplier } from '../../utils/supplier.utils';
 import Button from '../button/Button';
 import CancelIcon from '../icons/CancelIcon';
@@ -70,6 +72,16 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 		selectSupplier(selectedSupplier);
 		closeSearch();
 	};
+
+	useEffect(() => {
+		const getSuppliers = async (): Promise<void> => {
+			const result = await getAllSuppliers(basicDataClient);
+
+			setSuppliersBuffer(result);
+		};
+
+		getSuppliers();
+	});
 
 	return (
 		<div className="search-container">

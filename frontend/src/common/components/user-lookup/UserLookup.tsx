@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import './Lookup.css';
 import { UserDTO } from '../../contexts/api-client';
 import { useApiClientContext } from '../../contexts/api-client/ApiClient';
@@ -6,7 +6,7 @@ import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../contexts/language/Language';
-import { searchInUsers } from '../../services/user-service';
+import getAllUsers, { searchInUsers } from '../../services/user-service';
 import { initialUser } from '../../utils/user.utils';
 import Button from '../button/Button';
 import CancelIcon from '../icons/CancelIcon';
@@ -92,6 +92,16 @@ const UserLookup: FC<UserLookupProps> = ({
 		selectUsers(selectedUsers);
 		closeSearch();
 	};
+
+	useEffect(() => {
+		const getUsers = async () => {
+			const result = await getAllUsers(basicDataClient);
+
+			setUsersBuffer(result);
+		};
+
+		getUsers();
+	});
 
 	return (
 		<div className="search-container">
