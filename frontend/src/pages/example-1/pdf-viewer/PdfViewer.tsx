@@ -13,47 +13,8 @@ const PdfViewer: FC<PdfViewerProps> = ({
 	fileUrl = '',
 	setFileUrl,
 }): JSX.Element => {
-	const [dataUrl, setDataUrl] = useState<string>('');
 	const { language } = useLanguageContext();
 
-	const base64ToUint8Array = (base64: string): Uint8Array => {
-		const binaryString = window.atob(base64);
-		const { length } = binaryString;
-		const uint8Array = new Uint8Array(length);
-		for (let i = 0; i < length; i++) {
-			uint8Array[i] = binaryString.charCodeAt(i);
-		}
-
-		return uint8Array;
-	};
-
-	const uint8ArrayDocumentToDataURL = (
-		byteArray: Uint8Array,
-	): Promise<string> => {
-		return new Promise((resolve) => {
-			const blob = new Blob([byteArray], { type: 'application/pdf' });
-
-			const reader = new FileReader();
-
-			reader.onloadend = () => {
-				if (reader.result) {
-					resolve(reader.result as string);
-				} else {
-					console.error("Can't get document data.");
-				}
-			};
-
-			reader.readAsDataURL(blob);
-		});
-	};
-
-	if (fileUrl != '') {
-		uint8ArrayDocumentToDataURL(base64ToUint8Array(fileUrl)).then(
-			(dataUrlString) => {
-				setDataUrl(dataUrlString);
-			},
-		);
-	}
 	const handlePDF = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
 
@@ -65,26 +26,23 @@ const PdfViewer: FC<PdfViewerProps> = ({
 
 				reader.onloadend = async () => {
 					if (reader.result) {
-						const data = new Uint8Array(reader.result as ArrayBuffer);
+						const dataUrl = reader.result as string;
 
-						let binary = '';
-						data.forEach((byte) => {
-							binary += String.fromCharCode(byte);
-						});
-
-						const dataString: string = window.btoa(binary);
-
-						setFileUrl(dataString);
+						setFileUrl(dataUrl.replace('data:application/pdf;base64,', ''));
 					} else {
 						console.error("Can't read PDF document.");
 					}
 				};
 
-				reader.readAsArrayBuffer(file);
+				reader.readAsDataURL(file);
 			} else {
 				alert('Please select a PDF file!');
 			}
 		}
+	};
+
+	const pdfDataUrl = (): string => {
+		return 'data:application/pdf;base64,' + fileUrl;
 	};
 
 	return (
@@ -104,7 +62,7 @@ const PdfViewer: FC<PdfViewerProps> = ({
 			/>
 			<iframe
 				title="Pdf Viewer"
-				src={dataUrl}
+				src={pdfDataUrl()}
 				className="pdf-preview-iframe"
 			/>
 		</>

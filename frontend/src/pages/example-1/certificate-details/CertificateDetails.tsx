@@ -200,8 +200,8 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 			return false;
 		}
 		if (
-			certificate.certificateType?.name ===
-			initialCertificate.certificateType?.name
+			certificate.certificateType?.handle ===
+			initialCertificate.certificateType?.handle
 		) {
 			alert(toSelectedLocale('chooseType', language));
 			return false;
