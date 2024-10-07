@@ -1,10 +1,10 @@
 import { createContext, FC, useContext, useState } from 'react';
 import { initialUser } from '../../utils/user.utils';
-import User from '../../models/user.model';
+import { UserDTO } from '../api-client';
 
 export type CurrentUser = {
-	user: User;
-	setUser: (user: User) => void;
+	user: UserDTO;
+	setUser: (user: UserDTO) => void;
 };
 
 export const CurrentUserContext = createContext<CurrentUser>({
@@ -23,13 +23,13 @@ interface CurrentUserContextProviderProps {
 const CurrentUserContextProvider: FC<CurrentUserContextProviderProps> = ({
 	children,
 }): JSX.Element => {
-	const [currentUser, setCurrentUser] = useState<User>(initialUser);
+	const [currentUser, setCurrentUser] = useState<UserDTO>(initialUser);
 
 	return (
 		<CurrentUserContext.Provider
 			value={{
 				user: currentUser,
-				setUser: (user: User) => setCurrentUser(user),
+				setUser: (user: UserDTO) => setCurrentUser(user),
 			}}
 		>
 			{children}

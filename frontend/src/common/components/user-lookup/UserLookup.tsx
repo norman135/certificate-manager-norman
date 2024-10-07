@@ -1,34 +1,42 @@
 import { ChangeEvent, FC, useState } from 'react';
 import './Lookup.css';
-import TextInput from '../input/TextInput';
-import CancelIcon from '../icons/CancelIcon';
-import Button from '../button/Button';
-import User from '../../models/user.model';
-import { initialUser } from '../../utils/user.utils';
-import { searchInUsers } from '../../api/services/user-service';
-import Table from '../table/Table';
+import { UserDTO } from '../../contexts/api-client';
+import { useApiClientContext } from '../../contexts/api-client/ApiClient';
 import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../contexts/language/Language';
+import { searchInUsers } from '../../services/user-service';
+import { initialUser } from '../../utils/user.utils';
+import Button from '../button/Button';
+import CancelIcon from '../icons/CancelIcon';
+import TextInput from '../input/TextInput';
+import Table from '../table/Table';
 
 interface UserLookupProps {
 	closeSearch: () => void;
-	selectUsers: (user: User[]) => void;
+	selectUsers: (user: UserDTO[]) => void;
 }
 
 const UserLookup: FC<UserLookupProps> = ({
 	closeSearch,
 	selectUsers,
 }): JSX.Element => {
-	const [usersBuffer, setUsersBuffer] = useState<User[]>([]);
-	const [userInfo, setuserInfo] = useState<User>(initialUser);
-	const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+	const [usersBuffer, setUsersBuffer] = useState<UserDTO[]>([]);
+	const [userInfo, setuserInfo] = useState<UserDTO>(initialUser);
+	const [selectedUsers, setSelectedUsers] = useState<UserDTO[]>([]);
 
 	const { language } = useLanguageContext();
+	const { basicDataClient } = useApiClientContext();
 
 	const searchUsers = async () => {
-		const users = await searchInUsers(userInfo);
+		const users = await searchInUsers(basicDataClient, {
+			name: userInfo.name ?? '',
+			firstName: userInfo.firstName ?? '',
+			userId: userInfo.userId ?? '',
+			department: userInfo.department ?? '',
+			plant: userInfo.plant ?? '',
+		});
 
 		setUsersBuffer(users);
 	};
@@ -109,27 +117,27 @@ const UserLookup: FC<UserLookupProps> = ({
 					<div className="search-criteria-input-area">
 						<TextInput
 							label="Name"
-							value={userInfo.name}
+							value={userInfo.name ?? ''}
 							onchange={handleNameChange}
 						/>
 						<TextInput
 							label={toSelectedLocale('firstName', language)}
-							value={userInfo.firstName}
+							value={userInfo.firstName ?? ''}
 							onchange={handleFirstNameChange}
 						/>
 						<TextInput
 							label={toSelectedLocale('userId', language)}
-							value={userInfo.userId}
+							value={userInfo.userId ?? ''}
 							onchange={handleUserIdChange}
 						/>
 						<TextInput
 							label={toSelectedLocale('department', language)}
-							value={userInfo.department}
+							value={userInfo.department ?? ''}
 							onchange={handleDepartmentChange}
 						/>
 						<TextInput
 							label={toSelectedLocale('plant', language)}
-							value={userInfo.plant}
+							value={userInfo.plant ?? ''}
 							onchange={handlePlantChange}
 						/>
 					</div>
@@ -167,7 +175,7 @@ const UserLookup: FC<UserLookupProps> = ({
 							department: user.department,
 							plant: user.plant,
 						}))}
-						selectable={true}
+						selectable
 						type="multi"
 						onSelect={handleSelect}
 					/>

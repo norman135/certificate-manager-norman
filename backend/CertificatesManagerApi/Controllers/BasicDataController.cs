@@ -1,3 +1,4 @@
+using CertificatesManagerApi.DTOs;
 using CertificatesManagerApi.SearchParameters;
 using CertificatesManagerApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ namespace CertificatesManagerApi.Controllers
         private readonly CertificateTypeService _certificateTypeService = certificateTypeService;
 
         [HttpGet("/users")]
+        [ProducesResponseType(typeof(List<UserDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUsers([FromQuery] UserSearchParameters searchParameters)
         {
             try
@@ -32,6 +34,7 @@ namespace CertificatesManagerApi.Controllers
         }
 
         [HttpGet("/suppliers")]
+        [ProducesResponseType(typeof(List<SupplierDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetSuppliers([FromQuery] SupplierSearchParameters searchParameters)
         {
             try
@@ -47,6 +50,7 @@ namespace CertificatesManagerApi.Controllers
         }
 
         [HttpGet("/certificates/types")]
+        [ProducesResponseType(typeof(List<CertificateTypeDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCertificateTypes()
         {
             try

@@ -16,6 +16,7 @@ namespace CertificatesManagerApi.Controllers
 
 
         [HttpGet("/certificates")]
+        [ProducesResponseType(typeof(List<TableCertificatesDTO>), StatusCodes.Status200OK)]
         public async Task<ActionResult> GetTableCertificates()
         {
             try
@@ -32,6 +33,7 @@ namespace CertificatesManagerApi.Controllers
         }
 
         [HttpGet("/certificates/{handle}")]
+        [ProducesResponseType(typeof(CertificateDTO), StatusCodes.Status200OK)]
         public async Task<ActionResult> GetCertificate(string handle)
         {
             try
@@ -47,6 +49,7 @@ namespace CertificatesManagerApi.Controllers
         }
 
         [HttpPost("/certificates")]
+        [ProducesResponseType(typeof(CertificateDTO), StatusCodes.Status201Created)]
         public async Task<ActionResult> PostCertificate([FromBody] CreateCertificateDTO createCertificateDto)
         {
             try
@@ -62,13 +65,14 @@ namespace CertificatesManagerApi.Controllers
         }
 
         [HttpPost("/certificates/{handle}/comments")]
+        [ProducesResponseType(typeof(CommentDTO), StatusCodes.Status201Created)]
         public async Task<IActionResult> AddComment([FromBody] CreateCommentDTO createCommentDTO, string handle)
         {
             try
             {
                 var comment = await _commentService.AddComment(createCommentDTO, handle);
 
-                return Ok(comment);
+                return Created($"/certificates/{handle}", comment);
             }
             catch (Exception ex)
             {
@@ -77,6 +81,7 @@ namespace CertificatesManagerApi.Controllers
         }
 
         [HttpPut("/certificates/{handle}")]
+        [ProducesResponseType(typeof(CertificateDTO), StatusCodes.Status200OK)]
         public async Task<ActionResult> UpdateCertificate([FromBody] UpdateCertificateDTO updateCertificateDTO, string handle)
         {
             try
@@ -92,6 +97,7 @@ namespace CertificatesManagerApi.Controllers
         }
 
         [HttpDelete("/certificates/{handle}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteCertificate(string handle)
         {
             try

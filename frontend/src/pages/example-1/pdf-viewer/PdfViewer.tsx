@@ -18,7 +18,7 @@ const PdfViewer: FC<PdfViewerProps> = ({
 
 	const base64ToUint8Array = (base64: string): Uint8Array => {
 		const binaryString = window.atob(base64);
-		const length = binaryString.length;
+		const { length } = binaryString;
 		const uint8Array = new Uint8Array(length);
 		for (let i = 0; i < length; i++) {
 			uint8Array[i] = binaryString.charCodeAt(i);
@@ -50,7 +50,6 @@ const PdfViewer: FC<PdfViewerProps> = ({
 	if (fileUrl != '') {
 		uint8ArrayDocumentToDataURL(base64ToUint8Array(fileUrl)).then(
 			(dataUrlString) => {
-				console.log(dataUrlString);
 				setDataUrl(dataUrlString);
 			},
 		);
@@ -74,8 +73,6 @@ const PdfViewer: FC<PdfViewerProps> = ({
 						});
 
 						const dataString: string = window.btoa(binary);
-
-						console.log(dataString);
 
 						setFileUrl(dataString);
 					} else {
@@ -106,7 +103,7 @@ const PdfViewer: FC<PdfViewerProps> = ({
 				onChange={handlePDF}
 			/>
 			<iframe
-				title={'Pdf Viewer'}
+				title="Pdf Viewer"
 				src={dataUrl}
 				className="pdf-preview-iframe"
 			/>

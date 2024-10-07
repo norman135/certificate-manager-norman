@@ -1,37 +1,37 @@
 import { FC, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './CertificateDetails.css';
+import CommentSection from './comment-section/CommentSection';
+import SupplierInputLookup from './supplier-lookup/SupplierInputLookup';
 import AppRoutes from '../../../common/app-routes/AppRoutes';
 import Button from '../../../common/components/button/Button';
-import Certificate, {
-	CertificateType,
-} from '../../../common/models/certificate.model';
 import DatePicker from '../../../common/components/date-picker/DatePicker';
+import SearchIcon from '../../../common/components/icons/SearchIcon';
 import Select from '../../../common/components/select/Select';
-import PdfViewer from '../pdf-viewer/PdfViewer';
-import formatDate, {
-	toIsoString,
-} from '../../../common/utils/format-date.utils';
+import Table from '../../../common/components/table/Table';
+import UserLookup from '../../../common/components/user-lookup/UserLookup';
+import {
+	CertificateDTO,
+	CertificateTypeDTO,
+	CommentDTO,
+	CreateCommentDTO,
+	UserDTO,
+} from '../../../common/contexts/api-client';
+import { useApiClientContext } from '../../../common/contexts/api-client/ApiClient';
+import {
+	toSelectedLocale,
+	useLanguageContext,
+} from '../../../common/contexts/language/Language';
+import { useCurrentUserContext } from '../../../common/contexts/user/User';
 import {
 	addCertificate,
 	addComment,
 	getCertificate,
 	updateCertificate,
-} from '../../../common/api/services/certificate-service';
+} from '../../../common/services/certificate-service';
+import getAllCertificateTypes from '../../../common/services/certificate-type-service';
 import initialCertificate from '../../../common/utils/certificate.utils';
-import {
-	toSelectedLocale,
-	useLanguageContext,
-} from '../../../common/contexts/language/Language';
-import SupplierInputLookup from './supplier-lookup/SupplierInputLookup';
-import Table from '../../../common/components/table/Table';
-import UserLookup from '../../../common/components/user-lookup/UserLookup';
-import User from '../../../common/models/user.model';
-import SearchIcon from '../../../common/components/icons/SearchIcon';
-import CommentSection from './comment-section/CommentSection';
-import { useCurrentUserContext } from '../../../common/contexts/user/User';
-import UserComment from '../../../common/models/comment.model';
-import getAllCertificateTypes from '../../../common/api/services/certificate-type-service';
+import PdfViewer from '../pdf-viewer/PdfViewer';
 
 interface CertificateDetailsProps {
 	certificateId?: string;
@@ -41,13 +41,14 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	certificateId,
 }): JSX.Element => {
 	const [certificate, setCertificate] =
-		useState<Certificate>(initialCertificate);
-	const [certificateTypes, setCertificateTypes] = useState<CertificateType[]>([
-		initialCertificate.certificateType,
-	]);
+		useState<CertificateDTO>(initialCertificate);
+	const [certificateTypes, setCertificateTypes] = useState<
+		CertificateTypeDTO[]
+	>([initialCertificate.certificateType as CertificateTypeDTO]);
 	const [isUserDialogOpen, setIsUserDialogOpen] = useState<boolean>(false);
 	const { language } = useLanguageContext();
 	const { user } = useCurrentUserContext();
+	const { certificateClient, basicDataClient } = useApiClientContext();
 
 	const goBack = (): void => {
 		window.location.href = AppRoutes.Example1;
@@ -55,7 +56,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 
 	useEffect(() => {
 		const fetchBasicData = async () => {
-			const _certificateTypes = await getAllCertificateTypes();
+			const _certificateTypes = await getAllCertificateTypes(basicDataClient);
 
 			const _allCertificateTypes = certificateTypes.concat(_certificateTypes);
 
@@ -66,7 +67,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 
 		if (certificateId) {
 			const fetchCertificate = async () => {
-				const _cert = await getCertificate(certificateId);
+				const _cert = await getCertificate(certificateClient, certificateId);
 
 				if (_cert) {
 					setCertificate(_cert);
@@ -95,7 +96,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 
 		if (certificateId) {
 			const updateCert = async () => {
-				if (!(await updateCertificate(certificate))) {
+				if (!(await updateCertificate(certificateClient, certificate))) {
 					console.error('Error attempting to update certificate.');
 				}
 			};
@@ -104,9 +105,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		} else {
 			const addCert = async () => {
 				if (
-					!(await addCertificate({
-						supplierHandle: certificate.supplier.handle,
-						certificateTypeHandle: certificate.certificateType.handle,
+					!(await addCertificate(certificateClient, {
+						supplierHandle: certificate.supplier?.handle,
+						certificateTypeHandle: certificate.certificateType?.handle,
 						validFrom: certificate.validFrom,
 						validTo: certificate.validTo,
 						document: certificate.document,
@@ -136,15 +137,16 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		setIsUserDialogOpen(false);
 	};
 
-	const selectUsers = (users: User[]) => {
+	const selectUsers = (users: UserDTO[]) => {
 		setCertificate((prev) => ({
 			...prev,
-			users: users,
+			participants: users,
 		}));
 	};
 
 	const removeUser = (position: number | number[]) => {
 		const users = certificate.participants;
+
 		if (users) {
 			selectUsers(
 				users.filter((user, index) => (index != position ? user : null)),
@@ -155,25 +157,25 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setCertificate((prev) => ({
 			...prev,
-			type: {
+			certificateType: {
 				handle: e.target.value,
-			} as CertificateType,
+			} as CertificateTypeDTO,
 		}));
 	};
 
 	const handleValidFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const validFromDate = new Date(e.target.value);
 
-		if (validFromDate > new Date(certificate.validTo)!) {
+		if (validFromDate > new Date(certificate.validTo ?? '')) {
 			setCertificate((prev) => ({
 				...prev,
-				validFrom: formatDate(validFromDate),
-				validTo: formatDate(validFromDate),
+				validFrom: e.target.value,
+				validTo: e.target.value,
 			}));
 		} else {
 			setCertificate((prev) => ({
 				...prev,
-				validFrom: formatDate(validFromDate),
+				validFrom: e.target.value,
 			}));
 		}
 	};
@@ -188,7 +190,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	const handlePdfChange = (file: string) => {
 		setCertificate((prev) => ({
 			...prev,
-			pdf: file,
+			document: file,
 		}));
 	};
 
@@ -196,29 +198,38 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		if (certificate.supplier === initialCertificate.supplier) {
 			alert(toSelectedLocale('chooseSupplier', language));
 			return false;
-		} else if (
-			certificate.certificateType.name ===
-			initialCertificate.certificateType.name
+		}
+		if (
+			certificate.certificateType?.name ===
+			initialCertificate.certificateType?.name
 		) {
 			alert(toSelectedLocale('chooseType', language));
 			return false;
-		} else if (certificate.document === initialCertificate.document) {
+		}
+		if (certificate.document === initialCertificate.document) {
 			alert(toSelectedLocale('addPdf', language));
 			return false;
-		} else {
-			return true;
 		}
+		return true;
 	};
 
-	const addCertificateComment = async (comment: UserComment) => {
+	const addCertificateComment = async (comment: CreateCommentDTO) => {
 		if (
-			await addComment(user.handle, certificate.handle, {
-				userHandle: user.handle,
-				commentText: comment.comment,
-			})
+			await addComment(
+				certificateClient,
+				user.handle ?? '',
+				certificate.handle ?? '',
+				{
+					userHandle: user.handle ?? '',
+					commentText: comment.commentText ?? '',
+				},
+			)
 		) {
-			let _comments: UserComment[] = certificate.comments;
-			_comments.push(comment);
+			const _comments: CommentDTO[] = certificate.comments ?? [];
+			_comments.push({
+				userName: user.name,
+				comment: comment.commentText,
+			});
 
 			setCertificate((prev) => ({
 				...prev,
@@ -252,10 +263,10 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<label>{toSelectedLocale('certificateType', language)}</label>
 						<Select
 							options={certificateTypes.map((type) => ({
-								value: type.handle,
-								text: type.name,
+								value: type.handle ?? '',
+								text: type.name ?? '',
 							}))}
-							value={certificate.certificateType.handle}
+							value={certificate.certificateType?.handle ?? ''}
 							onChange={handleTypeChange}
 						/>
 					</div>
@@ -263,7 +274,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<label>{toSelectedLocale('validFrom', language)}</label>
 						<div className="edit-certificate-input-container">
 							<DatePicker
-								value={toIsoString(new Date(certificate.validFrom))}
+								value={certificate.validFrom ?? ''}
 								onChange={handleValidFromChange}
 								min=""
 							/>
@@ -273,9 +284,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 						<label>{toSelectedLocale('validTo', language)}</label>
 						<div className="edit-certificate-input-container">
 							<DatePicker
-								value={toIsoString(new Date(certificate.validTo))}
+								value={certificate.validTo ?? ''}
 								onChange={handleValidToChange}
-								min={toIsoString(new Date(certificate.validFrom))}
+								min={certificate.validFrom ?? ''}
 							/>
 						</div>
 					</div>
@@ -319,7 +330,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 									]}
 									data={userTableData}
 									type="delete"
-									selectable={true}
+									selectable
 									onSelect={removeUser}
 								/>
 							</div>
@@ -327,7 +338,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 					) : null}
 					{certificateId ? (
 						<CommentSection
-							comments={certificate.comments}
+							comments={certificate.comments ?? []}
 							user={user}
 							addComment={addCertificateComment}
 						/>
@@ -335,7 +346,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 				</div>
 				<div className="pdf-preview-area">
 					<PdfViewer
-						fileUrl={certificate.document}
+						fileUrl={certificate.document ?? undefined}
 						setFileUrl={handlePdfChange}
 					/>
 				</div>

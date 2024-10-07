@@ -2,23 +2,25 @@ import { ChangeEvent, FC, useEffect, useState } from 'react';
 import SideBar from './side-bar/SideBar';
 import './Layout.css';
 import Select from '../common/components/select/Select';
+import { UserDTO } from '../common/contexts/api-client';
+import { useApiClientContext } from '../common/contexts/api-client/ApiClient';
 import {
 	Languages,
 	toSelectedLocale,
 	useLanguageContext,
 } from '../common/contexts/language/Language';
-import { initialUser } from '../common/utils/user.utils';
-import User from '../common/models/user.model';
-import getAllUsers from '../common/api/services/user-service';
 import { useCurrentUserContext } from '../common/contexts/user/User';
+import getAllUsers from '../common/services/user-service';
+import { initialUser } from '../common/utils/user.utils';
 
 interface LayoutProps {
 	children: JSX.Element;
 }
 const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
-	const [users, setUsers] = useState<User[]>([initialUser]);
+	const [users, setUsers] = useState<UserDTO[]>([initialUser]);
 	const { language, setLanguage } = useLanguageContext();
 	const { user, setUser } = useCurrentUserContext();
+	const { basicDataClient } = useApiClientContext();
 
 	const handleLanguageChange = (e: ChangeEvent<HTMLSelectElement>) => {
 		setLanguage(e.target.value);
@@ -26,7 +28,7 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 
 	useEffect(() => {
 		const getUsers = async () => {
-			const allUsers = await getAllUsers();
+			const allUsers = await getAllUsers(basicDataClient);
 
 			setUsers(allUsers);
 		};
@@ -44,8 +46,8 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 
 		users.forEach((user) => {
 			options.push({
-				value: user.handle,
-				text: user.name,
+				value: user.handle ?? '',
+				text: user.name ?? '',
 			});
 		});
 
@@ -53,7 +55,7 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 	};
 
 	const handleUserChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		const value = e.target.value;
+		const { value } = e.target;
 
 		const _user = value
 			? users.filter((user) => user.handle === e.target.value)[0]
@@ -74,7 +76,7 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 							</div>
 							<Select
 								options={getUserOptions()}
-								value={user.handle}
+								value={user.handle ?? ''}
 								onChange={handleUserChange}
 							/>
 						</div>

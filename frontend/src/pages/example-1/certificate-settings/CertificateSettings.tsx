@@ -6,11 +6,12 @@ import DropDown, {
 import './CertificateSettings.css';
 import AppRoutes from '../../../common/app-routes/AppRoutes';
 import SettingsIcon from '../../../common/components/icons/SettingsIcon';
-import { deleteCertificate } from '../../../common/api/services/certificate-service';
+import { useApiClientContext } from '../../../common/contexts/api-client/ApiClient';
 import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../../common/contexts/language/Language';
+import { deleteCertificate } from '../../../common/services/certificate-service';
 
 interface CertificateSettingsProps {
 	certificateId: string;
@@ -22,13 +23,14 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 	update,
 }): JSX.Element => {
 	const { language } = useLanguageContext();
+	const { certificateClient } = useApiClientContext();
 
 	const navigate = useNavigate();
 
 	const _deleteCertificate = (id: string): void => {
 		if (confirm(toSelectedLocale('sure', language))) {
 			const deleteCert = async () => {
-				if (!(await deleteCertificate(id))) {
+				if (!(await deleteCertificate(certificateClient, id))) {
 					console.error('Error deleting certificate!');
 				}
 			};

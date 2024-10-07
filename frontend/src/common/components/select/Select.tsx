@@ -19,7 +19,7 @@ const Select: FC<SelectProps> = ({ options, value, onChange }): JSX.Element => {
 		>
 			{options.map((option, index) => (
 				<option
-					key={index.toString()}
+					key={option.value + index.toString()}
 					value={option.value}
 				>
 					{option.text}

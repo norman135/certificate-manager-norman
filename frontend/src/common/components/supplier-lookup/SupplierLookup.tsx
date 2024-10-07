@@ -1,73 +1,72 @@
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import './Lookup.css';
-import TextInput from '../input/TextInput';
-import CancelIcon from '../icons/CancelIcon';
-import Button from '../button/Button';
-import Supplier from '../../models/supplier.model';
-import { searchSuppliers } from '../../api/services/supplier-service';
-import { initialSupplier } from '../../utils/supplier.utils';
+import { SupplierDTO } from '../../contexts/api-client';
+import { useApiClientContext } from '../../contexts/api-client/ApiClient';
 import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../contexts/language/Language';
+import { searchSuppliers } from '../../services/supplier-service';
+import { initialSupplier } from '../../utils/supplier.utils';
+import Button from '../button/Button';
+import CancelIcon from '../icons/CancelIcon';
+import TextInput from '../input/TextInput';
 import Table from '../table/Table';
 
 interface SupplierLookupProps {
 	closeSearch: () => void;
-	selectSupplier: (supplier: Supplier) => void;
+	selectSupplier: (supplier: SupplierDTO) => void;
 }
 
 const SupplierLookup: FC<SupplierLookupProps> = ({
 	closeSearch,
 	selectSupplier,
 }): JSX.Element => {
-	const [suppliersBuffer, setSuppliersBuffer] = useState<Supplier[]>([]);
-	const [supplierInfo, setSupplierInfo] = useState<Supplier>(initialSupplier);
+	const [suppliersBuffer, setSuppliersBuffer] = useState<SupplierDTO[]>([]);
+	const [supplierInfo, setSupplierInfo] =
+		useState<SupplierDTO>(initialSupplier);
 	const [selectedSupplier, setSelectedSupplier] =
-		useState<Supplier>(initialSupplier);
+		useState<SupplierDTO>(initialSupplier);
 
 	const { language } = useLanguageContext();
+	const { basicDataClient } = useApiClientContext();
 
 	const supplierSearch = async (): Promise<void> => {
-		const result = await searchSuppliers({
-			name: supplierInfo.name,
-			index: supplierInfo.index,
-			city: supplierInfo.city,
-		});
+		const result = await searchSuppliers(basicDataClient, supplierInfo);
 
 		setSuppliersBuffer(result);
 	};
 
-	const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setSupplierInfo((prev) => ({
 			...prev,
 			name: e.target.value,
 		}));
 	};
 
-	const handleIndexChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleIndexChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setSupplierInfo((prev) => ({
 			...prev,
 			indexValue: e.target.value,
 		}));
 	};
 
-	const handleCityChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleCityChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setSupplierInfo((prev) => ({
 			...prev,
 			city: e.target.value,
 		}));
 	};
 
-	const clearFields = () => {
+	const clearFields = (): void => {
 		setSupplierInfo(initialSupplier);
 	};
 
-	const handleSelect = (index: number | number[]) => {
+	const handleSelect = (index: number | number[]): void => {
 		setSelectedSupplier(suppliersBuffer[index as number]);
 	};
 
-	const handleSave = () => {
+	const handleSave = (): void => {
 		selectSupplier(selectedSupplier);
 		closeSearch();
 	};
@@ -96,17 +95,17 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 					<div className="search-criteria-input-area">
 						<TextInput
 							label={toSelectedLocale('supplierName', language)}
-							value={supplierInfo.name}
+							value={supplierInfo.name ?? ''}
 							onchange={handleNameChange}
 						/>
 						<TextInput
 							label={toSelectedLocale('supplierIndex', language)}
-							value={supplierInfo.index}
+							value={supplierInfo.index?.toString() ?? ''}
 							onchange={handleIndexChange}
 						/>
 						<TextInput
 							label={toSelectedLocale('city', language)}
-							value={supplierInfo.city}
+							value={supplierInfo.city ?? ''}
 							onchange={handleCityChange}
 						/>
 					</div>
@@ -142,7 +141,7 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 							index: supplier.index,
 							city: supplier.city,
 						}))}
-						selectable={true}
+						selectable
 						type="single"
 						onSelect={handleSelect}
 					/>

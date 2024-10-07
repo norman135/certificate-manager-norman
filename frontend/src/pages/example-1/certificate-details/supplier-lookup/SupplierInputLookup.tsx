@@ -1,14 +1,16 @@
 import { Dispatch, FC, useState } from 'react';
-import Certificate from '../../../../common/models/certificate.model';
-import { initialSupplier } from '../../../../common/utils/supplier.utils';
-import SearchIcon from '../../../../common/components/icons/SearchIcon';
 import CancelIcon from '../../../../common/components/icons/CancelIcon';
+import SearchIcon from '../../../../common/components/icons/SearchIcon';
 import SupplierLookup from '../../../../common/components/supplier-lookup/SupplierLookup';
-import Supplier from '../../../../common/models/supplier.model';
+import {
+	CertificateDTO,
+	SupplierDTO,
+} from '../../../../common/contexts/api-client';
+import { initialSupplier } from '../../../../common/utils/supplier.utils';
 
 interface SupplierInputLookupProps {
-	certificate: Certificate;
-	setCertificate: Dispatch<React.SetStateAction<Certificate>>;
+	certificate: CertificateDTO;
+	setCertificate: Dispatch<React.SetStateAction<CertificateDTO>>;
 }
 
 const SupplierInputLookup: FC<SupplierInputLookupProps> = ({
@@ -17,7 +19,7 @@ const SupplierInputLookup: FC<SupplierInputLookupProps> = ({
 }): JSX.Element => {
 	const [isSearchDialogOpen, setIsSearchDialogOpen] = useState<boolean>(false);
 
-	const displaySupplierName = (certificate: Certificate) => {
+	const displaySupplierName = (certificate: CertificateDTO) => {
 		return `${certificate.supplier!.name}, ${certificate.supplier!.index}, ${certificate.supplier!.city}`;
 	};
 
@@ -29,10 +31,10 @@ const SupplierInputLookup: FC<SupplierInputLookupProps> = ({
 		setIsSearchDialogOpen(false);
 	};
 
-	const selectSupplier = (supplier: Supplier) => {
+	const selectSupplier = (supplier: SupplierDTO) => {
 		setCertificate((prev) => ({
 			...prev,
-			supplier: supplier as Supplier,
+			supplier: supplier as SupplierDTO,
 		}));
 	};
 
@@ -49,7 +51,7 @@ const SupplierInputLookup: FC<SupplierInputLookupProps> = ({
 						? 'Select a Supplier'
 						: displaySupplierName(certificate)
 				}
-				disabled={true}
+				disabled
 				style={{
 					cursor: 'not-allowed',
 				}}

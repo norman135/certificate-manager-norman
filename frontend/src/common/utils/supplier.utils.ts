@@ -1,8 +1,8 @@
-import Supplier from '../models/supplier.model';
+import { SupplierDTO } from '../contexts/api-client';
 
-export const initialSupplier: Supplier = {
+export const initialSupplier: SupplierDTO = {
 	handle: '',
 	name: '',
-	index: '',
+	index: undefined,
 	city: '',
 };

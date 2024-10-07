@@ -1,17 +1,20 @@
 import { ChangeEvent, FC, useState } from 'react';
 import Button from '../../../../common/components/button/Button';
 import './CommentSection.css';
-import UserComment from '../../../../common/models/comment.model';
-import User from '../../../../common/models/user.model';
+import {
+	CommentDTO,
+	CreateCommentDTO,
+	UserDTO,
+} from '../../../../common/contexts/api-client';
 import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../../../common/contexts/language/Language';
 
 interface CommentSectionProps {
-	comments: UserComment[];
-	user: User;
-	addComment: (comment: UserComment) => void;
+	comments: CommentDTO[];
+	user: UserDTO;
+	addComment: (comment: CreateCommentDTO) => void;
 }
 
 const CommentSection: FC<CommentSectionProps> = ({
@@ -20,9 +23,9 @@ const CommentSection: FC<CommentSectionProps> = ({
 	addComment,
 }) => {
 	const [isNewComment, setIsNewComment] = useState<boolean>(false);
-	const [newComment, setNewComment] = useState<UserComment>({
-		userName: user.name,
-		comment: '',
+	const [newComment, setNewComment] = useState<CreateCommentDTO>({
+		userHandle: user.handle,
+		commentText: '',
 	});
 	const { language } = useLanguageContext();
 
@@ -35,8 +38,8 @@ const CommentSection: FC<CommentSectionProps> = ({
 
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setNewComment({
-			userName: user.name,
-			comment: e.target.value,
+			userHandle: user.handle,
+			commentText: e.target.value,
 		});
 	};
 
@@ -57,7 +60,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 	};
 
 	const validateComment = (): boolean => {
-		if (!newComment.comment.trim()) {
+		if (!newComment.commentText?.trim()) {
 			alert(toSelectedLocale('addComment', language));
 			return false;
 		}

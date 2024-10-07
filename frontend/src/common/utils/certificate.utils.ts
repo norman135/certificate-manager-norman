@@ -1,16 +1,16 @@
-import Certificate from '../models/certificate.model';
-import formatDate, { initialDate } from './format-date.utils';
+import { initialDate, toIsoString } from './format-date.utils';
 import { initialSupplier } from './supplier.utils';
+import { CertificateDTO } from '../contexts/api-client';
 
-export const initialCertificate: Certificate = {
+export const initialCertificate: CertificateDTO = {
 	handle: '',
 	supplier: initialSupplier,
 	certificateType: {
 		handle: '',
 		name: 'Choose Type',
 	},
-	validFrom: formatDate(initialDate),
-	validTo: formatDate(initialDate),
+	validFrom: toIsoString(initialDate),
+	validTo: toIsoString(initialDate),
 	document: '',
 	participants: [],
 	comments: [],

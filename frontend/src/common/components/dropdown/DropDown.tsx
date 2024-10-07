@@ -10,7 +10,7 @@ interface DropDownProps {
 	items: DropDownItem[];
 }
 
-const handleClick = (item: DropDownItem) => {
+const handleClick = (item: DropDownItem): void => {
 	item.action();
 };
 

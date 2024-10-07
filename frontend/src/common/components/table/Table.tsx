@@ -1,8 +1,8 @@
 import { ChangeEvent, ReactNode, useState } from 'react';
 import './Table.css';
-import CancelIcon from '../icons/CancelIcon';
 import CheckMark from './checkmark/CheckMark';
 import Radio from './radio/Radio';
+import CancelIcon from '../icons/CancelIcon';
 
 interface TableProps<T> {
 	columns: string[];
@@ -23,7 +23,7 @@ const Table = <T extends {} | null>({
 
 	const addIfNotExist = (index: number) => {
 		if (!selectedItems.includes(index)) {
-			let sel = [index];
+			const sel = [index];
 			selectedItems.forEach((index) => {
 				sel.push(index);
 			});
@@ -43,7 +43,7 @@ const Table = <T extends {} | null>({
 	};
 
 	const selectAll = (e: ChangeEvent<HTMLInputElement>) => {
-		const checked = e.target.checked;
+		const { checked } = e.target;
 
 		const selected = checked ? data.map((item, index) => index) : [];
 
@@ -71,7 +71,7 @@ const Table = <T extends {} | null>({
 	}
 
 	const generateRows = (): ReactNode[][] => {
-		let rows: ReactNode[][] = [[]];
+		const rows: ReactNode[][] = [[]];
 
 		data.forEach((obj: T, index) => {
 			const handleCheckMarkChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -112,7 +112,7 @@ const Table = <T extends {} | null>({
 				</div>
 			);
 
-			let cells: ReactNode[] = [];
+			const cells: ReactNode[] = [];
 
 			if (selectable) {
 				cells.push(

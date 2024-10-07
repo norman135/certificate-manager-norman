@@ -4,25 +4,29 @@ import Button from '../../common/components/button/Button';
 import Table from '../../common/components/table/Table';
 import './Example1.css';
 import CertificateSettings from './certificate-settings/CertificateSettings';
-import { TableCertificate } from '../../common/models/certificate.model';
-import { getAllCertificates } from '../../common/api/services/certificate-service';
+import {
+	SupplierDTO,
+	TableCertificatesDTO,
+} from '../../common/contexts/api-client';
+import { useApiClientContext } from '../../common/contexts/api-client/ApiClient';
 import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../common/contexts/language/Language';
-import Supplier from '../../common/models/supplier.model';
+import { getAllCertificates } from '../../common/services/certificate-service';
 
 const Example1: FC = (): JSX.Element => {
-	const [certificates, setCertificates] = useState<TableCertificate[]>([]);
+	const [certificates, setCertificates] = useState<TableCertificatesDTO[]>([]);
 	const { language } = useLanguageContext();
+	const { certificateClient } = useApiClientContext();
 
 	const fetchCertificates = async () => {
-		const _certs = await getAllCertificates();
+		const _certs = await getAllCertificates(certificateClient);
 
 		setCertificates(_certs);
 	};
 
-	const supplierNameDisplay = (supplier: Supplier): string => {
+	const supplierNameDisplay = (supplier: SupplierDTO): string => {
 		return `${supplier.name}, ${supplier.index}, ${supplier.city}`;
 	};
 
@@ -56,7 +60,7 @@ const Example1: FC = (): JSX.Element => {
 					data={certificates.map((cert) => ({
 						settings: (
 							<CertificateSettings
-								certificateId={cert.handle}
+								certificateId={cert.handle ?? ''}
 								update={reloadPage}
 							/>
 						),

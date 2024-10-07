@@ -1,6 +1,6 @@
-import User from '../models/user.model';
+import { UserDTO } from '../contexts/api-client';
 
-export const initialUser: User = {
+export const initialUser: UserDTO = {
 	handle: '',
 	name: '',
 	firstName: '',
