@@ -81,7 +81,7 @@ const SupplierLookup: FC<SupplierLookupProps> = ({
 		};
 
 		getSuppliers();
-	});
+	}, []);
 
 	return (
 		<div className="search-container">

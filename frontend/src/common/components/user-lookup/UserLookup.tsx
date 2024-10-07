@@ -101,7 +101,7 @@ const UserLookup: FC<UserLookupProps> = ({
 		};
 
 		getUsers();
-	});
+	}, []);
 
 	return (
 		<div className="search-container">
