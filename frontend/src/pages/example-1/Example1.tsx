@@ -13,12 +13,15 @@ import {
 
 const Example1: FC = (): JSX.Element => {
 	const [certificates, setCertificates] = useState<TableCertificatesDTO[]>([]);
+	const [loader, setLoader] = useState<boolean>(true);
+
 	const { language } = useLanguageContext();
 	const { certificateClient } = useApiClientContext();
 
 	const fetchCertificates = async () => {
 		const _certs = await certificateClient.certificatesGet();
 
+		setLoader(false);
 		setCertificates(_certs);
 	};
 
@@ -41,27 +44,31 @@ const Example1: FC = (): JSX.Element => {
 				onClick={() => {}}
 			/>
 			<div className="certificates-table">
-				<Table
-					columns={[
-						'',
-						toSelectedLocale('supplier', language),
-						toSelectedLocale('type', language),
-						toSelectedLocale('validFrom', language),
-						toSelectedLocale('validTo', language),
-					]}
-					data={certificates.map((cert) => ({
-						settings: (
-							<CertificateSettings
-								certificateId={cert.handle ?? ''}
-								update={reloadPage}
-							/>
-						),
-						supplier: cert.supplier,
-						type: cert.certificateType,
-						validFrom: cert.validFrom,
-						validTo: cert.validTo,
-					}))}
-				/>
+				{loader ? (
+					'Loading...'
+				) : (
+					<Table
+						columns={[
+							'',
+							toSelectedLocale('supplier', language),
+							toSelectedLocale('type', language),
+							toSelectedLocale('validFrom', language),
+							toSelectedLocale('validTo', language),
+						]}
+						data={certificates.map((cert) => ({
+							settings: (
+								<CertificateSettings
+									certificateId={cert.handle ?? ''}
+									update={reloadPage}
+								/>
+							),
+							supplier: cert.supplier,
+							type: cert.certificateType,
+							validFrom: cert.validFrom,
+							validTo: cert.validTo,
+						}))}
+					/>
+				)}
 			</div>
 		</>
 	);

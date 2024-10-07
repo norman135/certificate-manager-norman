@@ -40,6 +40,8 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		CertificateTypeDTO[]
 	>([initialCertificate.certificateType as CertificateTypeDTO]);
 	const [isUserDialogOpen, setIsUserDialogOpen] = useState<boolean>(false);
+	const [loader, setLoader] = useState<boolean>(true);
+
 	const { language } = useLanguageContext();
 	const { user } = useCurrentUserContext();
 	const { certificateClient, basicDataClient } = useApiClientContext();
@@ -70,18 +72,13 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 				} else {
 					console.error('Error retrieving certificate.');
 				}
+
+				setLoader(false);
 			};
 
 			fetchCertificate();
 		} else {
-			const fetchCerts = async () => {
-				setCertificate({
-					...initialCertificate,
-					handle: uuidv4(),
-				});
-			};
-
-			fetchCerts();
+			setLoader(false);
 		}
 	}, [certificateId]);
 
@@ -261,125 +258,133 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 
 	return (
 		<div className="edit-certificate">
-			<div className="edit-certificate-input-area">
-				<div className="edit-certificate-inputs">
-					<div className="edit-certificate-input">
-						<label>{toSelectedLocale('supplier', language)}</label>
-						<SupplierInputLookup
-							certificate={certificate}
-							setCertificate={setCertificate}
-						/>
-					</div>
-					<div className="edit-certificate-input">
-						<label>{toSelectedLocale('certificateType', language)}</label>
-						<Select
-							options={certificateTypes.map((type) => ({
-								value: type.handle ?? '',
-								text: type.name ?? '',
-							}))}
-							value={certificate.certificateType?.handle ?? ''}
-							onChange={handleTypeChange}
-						/>
-					</div>
-					<div className="edit-certificate-input">
-						<label>{toSelectedLocale('validFrom', language)}</label>
-						<div className="edit-certificate-input-container">
-							<DatePicker
-								value={certificate.validFrom ?? ''}
-								onChange={handleValidFromChange}
-								min=""
-							/>
-						</div>
-					</div>
-					<div className="edit-certificate-input">
-						<label>{toSelectedLocale('validTo', language)}</label>
-						<div className="edit-certificate-input-container">
-							<DatePicker
-								value={certificate.validTo ?? ''}
-								onChange={handleValidToChange}
-								min={certificate.validFrom ?? ''}
-							/>
-						</div>
-					</div>
-					{certificateId ? (
-						<>
-							<div className="edit-certificate-input-container">
-								<div className="edit-certificate-input">
-									{isUserDialogOpen ? (
-										<UserLookup
-											closeSearch={closeUserDialog}
-											selectUsers={selectUsers}
-										/>
-									) : null}
-								</div>
-							</div>
-							<div className="users-table">
-								<div className="edit-certificate-input">
-									<label>{toSelectedLocale('assignedUsers', language)}</label>
-									<Button
-										name={
-											<>
-												<SearchIcon
-													width={24}
-													height={24}
-												/>
-												{toSelectedLocale('addParticipants', language)}
-											</>
-										}
-										color="black"
-										bg="white"
-										type="button"
-										onClick={openUserDialog}
-									/>
-								</div>
-								<Table
-									columns={[
-										'',
-										'Name',
-										toSelectedLocale('department', language),
-										toSelectedLocale('email', language),
-									]}
-									data={userTableData}
-									type="delete"
-									selectable
-									onSelect={removeUser}
+			{loader ? (
+				'Loading...'
+			) : (
+				<>
+					<div className="edit-certificate-input-area">
+						<div className="edit-certificate-inputs">
+							<div className="edit-certificate-input">
+								<label>{toSelectedLocale('supplier', language)}</label>
+								<SupplierInputLookup
+									certificate={certificate}
+									setCertificate={setCertificate}
 								/>
 							</div>
-						</>
-					) : null}
-					{certificateId ? (
-						<CommentSection
-							comments={certificate.comments ?? []}
-							user={user}
-							addComment={addCertificateComment}
+							<div className="edit-certificate-input">
+								<label>{toSelectedLocale('certificateType', language)}</label>
+								<Select
+									options={certificateTypes.map((type) => ({
+										value: type.handle ?? '',
+										text: type.name ?? '',
+									}))}
+									value={certificate.certificateType?.handle ?? ''}
+									onChange={handleTypeChange}
+								/>
+							</div>
+							<div className="edit-certificate-input">
+								<label>{toSelectedLocale('validFrom', language)}</label>
+								<div className="edit-certificate-input-container">
+									<DatePicker
+										value={certificate.validFrom ?? ''}
+										onChange={handleValidFromChange}
+										min=""
+									/>
+								</div>
+							</div>
+							<div className="edit-certificate-input">
+								<label>{toSelectedLocale('validTo', language)}</label>
+								<div className="edit-certificate-input-container">
+									<DatePicker
+										value={certificate.validTo ?? ''}
+										onChange={handleValidToChange}
+										min={certificate.validFrom ?? ''}
+									/>
+								</div>
+							</div>
+							{certificateId ? (
+								<>
+									<div className="edit-certificate-input-container">
+										<div className="edit-certificate-input">
+											{isUserDialogOpen ? (
+												<UserLookup
+													closeSearch={closeUserDialog}
+													selectUsers={selectUsers}
+												/>
+											) : null}
+										</div>
+									</div>
+									<div className="users-table">
+										<div className="edit-certificate-input">
+											<label>
+												{toSelectedLocale('assignedUsers', language)}
+											</label>
+											<Button
+												name={
+													<>
+														<SearchIcon
+															width={24}
+															height={24}
+														/>
+														{toSelectedLocale('addParticipants', language)}
+													</>
+												}
+												color="black"
+												bg="white"
+												type="button"
+												onClick={openUserDialog}
+											/>
+										</div>
+										<Table
+											columns={[
+												'',
+												'Name',
+												toSelectedLocale('department', language),
+												toSelectedLocale('email', language),
+											]}
+											data={userTableData}
+											type="delete"
+											selectable
+											onSelect={removeUser}
+										/>
+									</div>
+								</>
+							) : null}
+							{certificateId ? (
+								<CommentSection
+									comments={certificate.comments ?? []}
+									user={user}
+									addComment={addCertificateComment}
+								/>
+							) : null}
+						</div>
+						<div className="pdf-preview-area">
+							<PdfViewer
+								fileUrl={certificate.document ?? undefined}
+								setFileUrl={handlePdfChange}
+							/>
+						</div>
+					</div>
+					<div className="edit-certificate-buttons-area">
+						<Button
+							name={toSelectedLocale('save', language)}
+							color="white"
+							bg="#c0cc38"
+							type="button"
+							onClick={handleSave}
+							to=""
 						/>
-					) : null}
-				</div>
-				<div className="pdf-preview-area">
-					<PdfViewer
-						fileUrl={certificate.document ?? undefined}
-						setFileUrl={handlePdfChange}
-					/>
-				</div>
-			</div>
-			<div className="edit-certificate-buttons-area">
-				<Button
-					name={toSelectedLocale('save', language)}
-					color="white"
-					bg="#c0cc38"
-					type="button"
-					onClick={handleSave}
-					to=""
-				/>
-				<Button
-					name={toSelectedLocale('reset', language)}
-					color="black"
-					bg="rgba(0,0,0,0)"
-					type="button"
-					to=""
-					onClick={resetInput}
-				/>
-			</div>
+						<Button
+							name={toSelectedLocale('reset', language)}
+							color="black"
+							bg="rgba(0,0,0,0)"
+							type="button"
+							to=""
+							onClick={resetInput}
+						/>
+					</div>
+				</>
+			)}
 		</div>
 	);
 };
