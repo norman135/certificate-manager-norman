@@ -1,8 +1,8 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import SideBar from './side-bar/SideBar';
 import './Layout.css';
-import Select from '../common/components/select/Select';
 import { UserDTO } from '../common/api';
+import Select from '../common/components/select/Select';
 import { useApiClientContext } from '../common/contexts/api-client/ApiClient';
 import {
 	Languages,
@@ -21,12 +21,12 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 	const { user, setUser } = useCurrentUserContext();
 	const { basicDataClient } = useApiClientContext();
 
-	const handleLanguageChange = (e: ChangeEvent<HTMLSelectElement>) => {
+	const handleLanguageChange = (e: ChangeEvent<HTMLSelectElement>): void => {
 		setLanguage(e.target.value);
 	};
 
 	useEffect(() => {
-		const getUsers = async () => {
+		const getUsers = async (): Promise<void> => {
 			const allUsers = await basicDataClient.usersGet();
 
 			setUsers(allUsers);
@@ -35,7 +35,10 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 		getUsers();
 	}, []);
 
-	const getUserOptions = () => {
+	const getUserOptions = (): {
+		value: string;
+		text: string;
+	}[] => {
 		const options = [
 			{
 				value: '',
@@ -43,21 +46,21 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 			},
 		];
 
-		users.forEach((user) => {
+		users.forEach((_user) => {
 			options.push({
-				value: user.handle ?? '',
-				text: user.name ?? '',
+				value: _user.handle ?? '',
+				text: _user.name ?? '',
 			});
 		});
 
 		return options;
 	};
 
-	const handleUserChange = (e: ChangeEvent<HTMLSelectElement>) => {
+	const handleUserChange = (e: ChangeEvent<HTMLSelectElement>): void => {
 		const { value } = e.target;
 
 		const _user = value
-			? users.filter((user) => user.handle === e.target.value)[0]
+			? users.filter((__user) => __user.handle === e.target.value)[0]
 			: initialUser;
 
 		setUser(_user);

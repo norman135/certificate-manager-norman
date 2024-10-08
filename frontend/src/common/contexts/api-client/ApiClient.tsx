@@ -11,7 +11,7 @@ export const ApiClientContext = createContext<ApiClient>({
 	certificateClient: new CertificateApi(),
 });
 
-export const useApiClientContext = () => {
+export const useApiClientContext = (): ApiClient => {
 	return useContext(ApiClientContext);
 };
 

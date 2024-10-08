@@ -12,20 +12,20 @@ interface TableProps<T> {
 	onSelect?: (selected: number | number[]) => void;
 }
 
-const Table = <T extends {} | null>({
+const Table = <T extends object | null>({
 	columns,
 	data,
 	selectable = false,
 	type = 'single',
-	onSelect = () => {},
+	onSelect = (): void => {},
 }: TableProps<T>): JSX.Element => {
 	const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
-	const addIfNotExist = (index: number) => {
+	const addIfNotExist = (index: number): void => {
 		if (!selectedItems.includes(index)) {
 			const sel = [index];
-			selectedItems.forEach((index) => {
-				sel.push(index);
+			selectedItems.forEach((item) => {
+				sel.push(item);
 			});
 
 			setSelectedItems(sel);
@@ -33,7 +33,7 @@ const Table = <T extends {} | null>({
 		}
 	};
 
-	const removeIfExists = (index: number) => {
+	const removeIfExists = (index: number): void => {
 		if (selectedItems.includes(index)) {
 			const selected = selectedItems.filter((item) => item != index);
 
@@ -42,7 +42,7 @@ const Table = <T extends {} | null>({
 		}
 	};
 
-	const selectAll = (e: ChangeEvent<HTMLInputElement>) => {
+	const selectAll = (e: ChangeEvent<HTMLInputElement>): void => {
 		const { checked } = e.target;
 
 		const selected = checked ? data.map((item, index) => index) : [];
@@ -74,11 +74,13 @@ const Table = <T extends {} | null>({
 		const rows: ReactNode[][] = [[]];
 
 		data.forEach((obj: T, index) => {
-			const handleCheckMarkChange = (e: ChangeEvent<HTMLInputElement>) => {
+			const handleCheckMarkChange = (
+				e: ChangeEvent<HTMLInputElement>,
+			): void => {
 				e.target.checked ? addIfNotExist(index) : removeIfExists(index);
 			};
 
-			const handleRadioSelect = () => {
+			const handleRadioSelect = (): void => {
 				onSelect(index);
 			};
 
@@ -102,6 +104,11 @@ const Table = <T extends {} | null>({
 					key={index.toString()}
 					onClick={() => {
 						onSelect(index);
+					}}
+					onKeyDown={(e) => {
+						if (e.key === 'Enter') {
+							onSelect(index);
+						}
 					}}
 					style={{ cursor: 'pointer' }}
 				>
@@ -145,7 +152,9 @@ const Table = <T extends {} | null>({
 				{generateRows().map((row, index) => (
 					<tr key={index.toString()}>
 						{row
-							? row.map((node, index) => <td key={index.toString()}>{node}</td>)
+							? row.map((node, rowIndex) => (
+									<td key={rowIndex.toString()}>{node}</td>
+								))
 							: null}
 					</tr>
 				))}

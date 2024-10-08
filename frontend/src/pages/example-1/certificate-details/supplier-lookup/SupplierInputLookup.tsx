@@ -1,8 +1,8 @@
 import { Dispatch, FC, useState } from 'react';
+import { CertificateDTO, SupplierDTO } from '../../../../common/api';
 import CancelIcon from '../../../../common/components/icons/CancelIcon';
 import SearchIcon from '../../../../common/components/icons/SearchIcon';
 import SupplierLookup from '../../../../common/components/supplier-lookup/SupplierLookup';
-import { CertificateDTO, SupplierDTO } from '../../../../common/api';
 import { initialSupplier } from '../../../../common/utils/supplier.utils';
 
 interface SupplierInputLookupProps {
@@ -16,26 +16,26 @@ const SupplierInputLookup: FC<SupplierInputLookupProps> = ({
 }): JSX.Element => {
 	const [isSearchDialogOpen, setIsSearchDialogOpen] = useState<boolean>(false);
 
-	const displaySupplierName = (certificate: CertificateDTO) => {
-		return `${certificate.supplier!.name}, ${certificate.supplier!.index}, ${certificate.supplier!.city}`;
+	const displaySupplierName = (_certificate: CertificateDTO): string => {
+		return `${_certificate.supplier!.name}, ${_certificate.supplier!.index}, ${_certificate.supplier!.city}`;
 	};
 
-	const openSearchDialog = () => {
+	const openSearchDialog = (): void => {
 		setIsSearchDialogOpen(true);
 	};
 
-	const closeSearchDialog = () => {
+	const closeSearchDialog = (): void => {
 		setIsSearchDialogOpen(false);
 	};
 
-	const selectSupplier = (supplier: SupplierDTO) => {
+	const selectSupplier = (supplier: SupplierDTO): void => {
 		setCertificate((prev) => ({
 			...prev,
 			supplier: supplier as SupplierDTO,
 		}));
 	};
 
-	const clearSupplier = () => {
+	const clearSupplier = (): void => {
 		selectSupplier(initialSupplier);
 	};
 

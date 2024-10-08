@@ -15,7 +15,7 @@ const PdfViewer: FC<PdfViewerProps> = ({
 }): JSX.Element => {
 	const { language } = useLanguageContext();
 
-	const handlePDF = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handlePDF = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		const file = event.target.files?.[0];
 
 		if (file) {
@@ -24,7 +24,7 @@ const PdfViewer: FC<PdfViewerProps> = ({
 			if (isPDF) {
 				const reader = new FileReader();
 
-				reader.onloadend = async () => {
+				reader.onloadend = async (): Promise<void> => {
 					if (reader.result) {
 						const dataUrl = reader.result as string;
 

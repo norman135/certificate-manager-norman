@@ -29,7 +29,7 @@ const Button: FC<ButtonProps> = ({
 					className="button"
 					style={{
 						backgroundColor: bg,
-						color,
+						color: color,
 					}}
 				>
 					{name}
@@ -41,13 +41,13 @@ const Button: FC<ButtonProps> = ({
 						disabled
 							? {
 									backgroundColor: bg,
-									color,
+									color: color,
 									cursor: 'not-allowed',
 									opacity: 0.5,
 								}
 							: {
 									backgroundColor: bg,
-									color,
+									color: color,
 								}
 					}
 					onClick={onClick}

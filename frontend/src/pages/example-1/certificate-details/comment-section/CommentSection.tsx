@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useState } from 'react';
+import { CommentDTO, CreateCommentDTO, UserDTO } from '../../../../common/api';
 import Button from '../../../../common/components/button/Button';
 import './CommentSection.css';
-import { CommentDTO, CreateCommentDTO, UserDTO } from '../../../../common/api';
 import {
 	toSelectedLocale,
 	useLanguageContext,
@@ -25,21 +25,21 @@ const CommentSection: FC<CommentSectionProps> = ({
 	});
 	const { language } = useLanguageContext();
 
-	const openNewComment = () => {
+	const openNewComment = (): void => {
 		if (!validateUser()) {
 			return;
 		}
 		setIsNewComment(true);
 	};
 
-	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
 		setNewComment({
 			userHandle: user.handle,
 			commentText: e.target.value,
 		});
 	};
 
-	const handleSend = () => {
+	const handleSend = (): void => {
 		if (!validateComment()) {
 			return;
 		}

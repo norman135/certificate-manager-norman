@@ -21,7 +21,7 @@ const handleSubmenuClick = (
 	e:
 		| React.MouseEvent<HTMLDivElement, MouseEvent>
 		| React.KeyboardEvent<HTMLDivElement>,
-) => {
+): void => {
 	e.stopPropagation();
 };
 

@@ -23,7 +23,7 @@ export const LanguageContext = createContext<Language>({
 	setLanguage: () => {},
 });
 
-export const useLanguageContext = () => {
+export const useLanguageContext = (): Language => {
 	return useContext(LanguageContext);
 };
 

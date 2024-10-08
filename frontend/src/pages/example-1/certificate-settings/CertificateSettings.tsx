@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AppRoutes from '../../../common/app-routes/AppRoutes';
 import DropDown, {
 	DropDownItem,
 } from '../../../common/components/dropdown/DropDown';
 import './CertificateSettings.css';
-import AppRoutes from '../../../common/app-routes/AppRoutes';
 import SettingsIcon from '../../../common/components/icons/SettingsIcon';
 import { useApiClientContext } from '../../../common/contexts/api-client/ApiClient';
 import {
@@ -28,7 +28,7 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 
 	const _deleteCertificate = (id: string): void => {
 		if (confirm(toSelectedLocale('sure', language))) {
-			const deleteCert = async () => {
+			const deleteCert = async (): Promise<void> => {
 				try {
 					await certificateClient.certificatesHandleDelete({ handle: id });
 				} catch {
@@ -42,11 +42,11 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 	};
 
 	const certificateDropDown = (id: string): DropDownItem[] => {
-		const handleEdit = () => {
+		const handleEdit = (): void => {
 			navigate(`${AppRoutes.EditCertificate}${id}`);
 		};
 
-		const handleDelete = () => {
+		const handleDelete = (): void => {
 			_deleteCertificate(id);
 		};
 

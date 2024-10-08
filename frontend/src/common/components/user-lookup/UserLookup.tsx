@@ -28,7 +28,7 @@ const UserLookup: FC<UserLookupProps> = ({
 	const { language } = useLanguageContext();
 	const { basicDataClient } = useApiClientContext();
 
-	const searchUsers = async () => {
+	const searchUsers = async (): Promise<void> => {
 		const users = await basicDataClient.usersGet({
 			name: userInfo.name ?? '',
 			firstName: userInfo.firstName ?? '',
@@ -40,46 +40,46 @@ const UserLookup: FC<UserLookupProps> = ({
 		setUsersBuffer(users);
 	};
 
-	const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setuserInfo((prev) => ({
 			...prev,
 			name: e.target.value,
 		}));
 	};
 
-	const handleFirstNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleFirstNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setuserInfo((prev) => ({
 			...prev,
 			firstName: e.target.value,
 		}));
 	};
 
-	const handleDepartmentChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleDepartmentChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setuserInfo((prev) => ({
 			...prev,
 			department: e.target.value,
 		}));
 	};
 
-	const handleUserIdChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleUserIdChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setuserInfo((prev) => ({
 			...prev,
 			userId: e.target.value,
 		}));
 	};
 
-	const handlePlantChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handlePlantChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setuserInfo((prev) => ({
 			...prev,
 			plant: e.target.value,
 		}));
 	};
 
-	const clearFields = () => {
+	const clearFields = (): void => {
 		setuserInfo(initialUser);
 	};
 
-	const handleSelect = (selected: number | number[]) => {
+	const handleSelect = (selected: number | number[]): void => {
 		const _selectedUsers = usersBuffer.filter((user, index) =>
 			(selected as number[]).includes(index) ? user : null,
 		);
@@ -87,13 +87,13 @@ const UserLookup: FC<UserLookupProps> = ({
 		setSelectedUsers(_selectedUsers);
 	};
 
-	const handleSave = () => {
+	const handleSave = (): void => {
 		selectUsers(selectedUsers);
 		closeSearch();
 	};
 
 	useEffect(() => {
-		const getUsers = async () => {
+		const getUsers = async (): Promise<void> => {
 			const result = await basicDataClient.usersGet();
 
 			setUsersBuffer(result);

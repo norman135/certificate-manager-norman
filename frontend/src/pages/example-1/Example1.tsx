@@ -1,10 +1,10 @@
 import { FC, useEffect, useState } from 'react';
+import CertificateSettings from './certificate-settings/CertificateSettings';
+import { TableCertificatesDTO } from '../../common/api';
 import AppRoutes from '../../common/app-routes/AppRoutes';
 import Button from '../../common/components/button/Button';
 import Table from '../../common/components/table/Table';
 import './Example1.css';
-import CertificateSettings from './certificate-settings/CertificateSettings';
-import { TableCertificatesDTO } from '../../common/api';
 import { useApiClientContext } from '../../common/contexts/api-client/ApiClient';
 import {
 	toSelectedLocale,
@@ -18,14 +18,14 @@ const Example1: FC = (): JSX.Element => {
 	const { language } = useLanguageContext();
 	const { certificateClient } = useApiClientContext();
 
-	const fetchCertificates = async () => {
+	const fetchCertificates = async (): Promise<void> => {
 		const _certs = await certificateClient.certificatesGet();
 
 		setLoader(false);
 		setCertificates(_certs);
 	};
 
-	const reloadPage = () => {
+	const reloadPage = (): void => {
 		window.location.reload();
 	};
 

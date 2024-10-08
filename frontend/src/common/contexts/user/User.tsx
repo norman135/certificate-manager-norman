@@ -1,6 +1,6 @@
 import { createContext, FC, useContext, useState } from 'react';
-import { initialUser } from '../../utils/user.utils';
 import { UserDTO } from '../../api';
+import { initialUser } from '../../utils/user.utils';
 
 export type CurrentUser = {
 	user: UserDTO;
@@ -12,7 +12,7 @@ export const CurrentUserContext = createContext<CurrentUser>({
 	setUser: () => {},
 });
 
-export const useCurrentUserContext = () => {
+export const useCurrentUserContext = (): CurrentUser => {
 	return useContext(CurrentUserContext);
 };
 

@@ -1,15 +1,7 @@
 import { FC, useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import './CertificateDetails.css';
 import CommentSection from './comment-section/CommentSection';
 import SupplierInputLookup from './supplier-lookup/SupplierInputLookup';
-import AppRoutes from '../../../common/app-routes/AppRoutes';
-import Button from '../../../common/components/button/Button';
-import DatePicker from '../../../common/components/date-picker/DatePicker';
-import SearchIcon from '../../../common/components/icons/SearchIcon';
-import Select from '../../../common/components/select/Select';
-import Table from '../../../common/components/table/Table';
-import UserLookup from '../../../common/components/user-lookup/UserLookup';
 import {
 	CertificateDTO,
 	CertificatesPostRequest,
@@ -18,6 +10,13 @@ import {
 	CreateCommentDTO,
 	UserDTO,
 } from '../../../common/api';
+import AppRoutes from '../../../common/app-routes/AppRoutes';
+import Button from '../../../common/components/button/Button';
+import DatePicker from '../../../common/components/date-picker/DatePicker';
+import SearchIcon from '../../../common/components/icons/SearchIcon';
+import Select from '../../../common/components/select/Select';
+import Table from '../../../common/components/table/Table';
+import UserLookup from '../../../common/components/user-lookup/UserLookup';
 import { useApiClientContext } from '../../../common/contexts/api-client/ApiClient';
 import {
 	toSelectedLocale,
@@ -51,7 +50,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	};
 
 	useEffect(() => {
-		const fetchBasicData = async () => {
+		const fetchBasicData = async (): Promise<void> => {
 			const _certificateTypes = await basicDataClient.certificatesTypesGet();
 
 			const _allCertificateTypes = certificateTypes.concat(_certificateTypes);
@@ -62,7 +61,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		fetchBasicData();
 
 		if (certificateId) {
-			const fetchCertificate = async () => {
+			const fetchCertificate = async (): Promise<void> => {
 				const _cert = await certificateClient.certificatesHandleGet({
 					handle: certificateId,
 				});
@@ -88,7 +87,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		}
 
 		if (certificateId) {
-			const updateCert = async () => {
+			const updateCert = async (): Promise<void> => {
 				try {
 					await certificateClient.certificatesHandlePut({
 						handle: certificate.handle ?? '',
@@ -109,7 +108,7 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 
 			updateCert();
 		} else {
-			const addCert = async () => {
+			const addCert = async (): Promise<void> => {
 				try {
 					await certificateClient.certificatesPost({
 						createCertificateDTO: {
@@ -139,32 +138,32 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		}
 		setCertificate(_cert);
 	};
-	const openUserDialog = () => {
+	const openUserDialog = (): void => {
 		setIsUserDialogOpen(true);
 	};
 
-	const closeUserDialog = () => {
+	const closeUserDialog = (): void => {
 		setIsUserDialogOpen(false);
 	};
 
-	const selectUsers = (users: UserDTO[]) => {
+	const selectUsers = (users: UserDTO[]): void => {
 		setCertificate((prev) => ({
 			...prev,
 			participants: users,
 		}));
 	};
 
-	const removeUser = (position: number | number[]) => {
+	const removeUser = (position: number | number[]): void => {
 		const users = certificate.participants;
 
 		if (users) {
 			selectUsers(
-				users.filter((user, index) => (index != position ? user : null)),
+				users.filter((_user, index) => (index != position ? _user : null)),
 			);
 		}
 	};
 
-	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+	const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
 		setCertificate((prev) => ({
 			...prev,
 			certificateType: {
@@ -173,7 +172,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		}));
 	};
 
-	const handleValidFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleValidFromChange = (
+		e: React.ChangeEvent<HTMLInputElement>,
+	): void => {
 		const validFromDate = new Date(e.target.value);
 
 		if (validFromDate > new Date(certificate.validTo ?? '')) {
@@ -190,14 +191,16 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		}
 	};
 
-	const handleValidToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleValidToChange = (
+		e: React.ChangeEvent<HTMLInputElement>,
+	): void => {
 		setCertificate((prev) => ({
 			...prev,
 			validTo: e.target.value,
 		}));
 	};
 
-	const handlePdfChange = (file: string) => {
+	const handlePdfChange = (file: string): void => {
 		setCertificate((prev) => ({
 			...prev,
 			document: file,
@@ -223,7 +226,9 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 		return true;
 	};
 
-	const addCertificateComment = async (comment: CreateCommentDTO) => {
+	const addCertificateComment = async (
+		comment: CreateCommentDTO,
+	): Promise<void> => {
 		if (
 			await certificateClient.certificatesHandleCommentsPost({
 				handle: certificate.handle ?? '',
@@ -249,10 +254,10 @@ const CertificateDetails: FC<CertificateDetailsProps> = ({
 	};
 
 	const userTableData = certificate.participants
-		? certificate.participants.map((user) => ({
-				name: user.name,
-				department: user.department,
-				email: user.email,
+		? certificate.participants.map((_user) => ({
+				name: _user.name,
+				department: _user.department,
+				email: _user.email,
 			}))
 		: [];
 
