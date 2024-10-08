@@ -1,32 +1,33 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import SideBar from './side-bar/SideBar';
 import './Layout.css';
+import { UserDTO } from '../common/api';
 import Select from '../common/components/select/Select';
+import { useApiClientContext } from '../common/contexts/api-client/ApiClient';
 import {
 	Languages,
 	toSelectedLocale,
 	useLanguageContext,
 } from '../common/contexts/language/Language';
-import { initialUser } from '../common/utils/user.utils';
-import User from '../common/models/user.model';
-import getAllUsers from '../common/db/user-service';
 import { useCurrentUserContext } from '../common/contexts/user/User';
+import { initialUser } from '../common/utils/user.utils';
 
 interface LayoutProps {
 	children: JSX.Element;
 }
 const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
-	const [users, setUsers] = useState<User[]>([initialUser]);
+	const [users, setUsers] = useState<UserDTO[]>([initialUser]);
 	const { language, setLanguage } = useLanguageContext();
 	const { user, setUser } = useCurrentUserContext();
+	const { basicDataClient } = useApiClientContext();
 
-	const handleLanguageChange = (e: ChangeEvent<HTMLSelectElement>) => {
+	const handleLanguageChange = (e: ChangeEvent<HTMLSelectElement>): void => {
 		setLanguage(e.target.value);
 	};
 
 	useEffect(() => {
-		const getUsers = async () => {
-			const allUsers = await getAllUsers();
+		const getUsers = async (): Promise<void> => {
+			const allUsers = await basicDataClient.usersGet();
 
 			setUsers(allUsers);
 		};
@@ -34,7 +35,10 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 		getUsers();
 	}, []);
 
-	const getUserOptions = () => {
+	const getUserOptions = (): {
+		value: string;
+		text: string;
+	}[] => {
 		const options = [
 			{
 				value: '',
@@ -42,21 +46,21 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 			},
 		];
 
-		users.forEach((user) => {
+		users.forEach((_user) => {
 			options.push({
-				value: user.id,
-				text: user.name,
+				value: _user.handle ?? '',
+				text: _user.name ?? '',
 			});
 		});
 
 		return options;
 	};
 
-	const handleUserChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		const value = e.target.value;
+	const handleUserChange = (e: ChangeEvent<HTMLSelectElement>): void => {
+		const { value } = e.target;
 
 		const _user = value
-			? users.filter((user) => user.id === e.target.value)[0]
+			? users.filter((__user) => __user.handle === e.target.value)[0]
 			: initialUser;
 
 		setUser(_user);
@@ -74,7 +78,7 @@ const Layout: FC<LayoutProps> = ({ children }): JSX.Element => {
 							</div>
 							<Select
 								options={getUserOptions()}
-								value={user.id}
+								value={user.handle ?? ''}
 								onChange={handleUserChange}
 							/>
 						</div>

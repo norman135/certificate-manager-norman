@@ -1,17 +1,16 @@
 import { ChangeEvent, FC, useState } from 'react';
+import { CommentDTO, CreateCommentDTO, UserDTO } from '../../../../common/api';
 import Button from '../../../../common/components/button/Button';
 import './CommentSection.css';
-import UserComment from '../../../../common/models/comment.model';
-import User from '../../../../common/models/user.model';
 import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../../../common/contexts/language/Language';
 
 interface CommentSectionProps {
-	comments: UserComment[];
-	user: User;
-	addComment: (comment: UserComment) => void;
+	comments: CommentDTO[];
+	user: UserDTO;
+	addComment: (comment: CreateCommentDTO) => void;
 }
 
 const CommentSection: FC<CommentSectionProps> = ({
@@ -20,27 +19,27 @@ const CommentSection: FC<CommentSectionProps> = ({
 	addComment,
 }) => {
 	const [isNewComment, setIsNewComment] = useState<boolean>(false);
-	const [newComment, setNewComment] = useState<UserComment>({
-		user: user,
-		comment: '',
+	const [newComment, setNewComment] = useState<CreateCommentDTO>({
+		userHandle: user.handle,
+		commentText: '',
 	});
 	const { language } = useLanguageContext();
 
-	const openNewComment = () => {
+	const openNewComment = (): void => {
 		if (!validateUser()) {
 			return;
 		}
 		setIsNewComment(true);
 	};
 
-	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
 		setNewComment({
-			user: user,
-			comment: e.target.value,
+			userHandle: user.handle,
+			commentText: e.target.value,
 		});
 	};
 
-	const handleSend = () => {
+	const handleSend = (): void => {
 		if (!validateComment()) {
 			return;
 		}
@@ -49,7 +48,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 	};
 
 	const validateUser = (): boolean => {
-		if (!user.id) {
+		if (!user.handle) {
 			alert(toSelectedLocale('selectUser', language));
 			return false;
 		}
@@ -57,7 +56,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 	};
 
 	const validateComment = (): boolean => {
-		if (!newComment.comment.trim()) {
+		if (!newComment.commentText?.trim()) {
 			alert(toSelectedLocale('addComment', language));
 			return false;
 		}
@@ -83,7 +82,7 @@ const CommentSection: FC<CommentSectionProps> = ({
 					>
 						<div className="comment-user">
 							<span>{toSelectedLocale('user', language)}:</span>{' '}
-							{comment.user.name}
+							{comment.userName}
 						</div>
 						<div className="comment-text">
 							<span>{toSelectedLocale('comment', language)}:</span>{' '}

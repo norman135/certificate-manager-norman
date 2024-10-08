@@ -1,14 +1,13 @@
 import { Dispatch, FC, useState } from 'react';
-import Certificate from '../../../../common/models/certificate.model';
-import { initialSupplier } from '../../../../common/utils/supplier.utils';
-import SearchIcon from '../../../../common/components/icons/SearchIcon';
+import { CertificateDTO, SupplierDTO } from '../../../../common/api';
 import CancelIcon from '../../../../common/components/icons/CancelIcon';
+import SearchIcon from '../../../../common/components/icons/SearchIcon';
 import SupplierLookup from '../../../../common/components/supplier-lookup/SupplierLookup';
-import Supplier from '../../../../common/models/supplier.model';
+import { initialSupplier } from '../../../../common/utils/supplier.utils';
 
 interface SupplierInputLookupProps {
-	certificate: Certificate;
-	setCertificate: Dispatch<React.SetStateAction<Certificate>>;
+	certificate: CertificateDTO;
+	setCertificate: Dispatch<React.SetStateAction<CertificateDTO>>;
 }
 
 const SupplierInputLookup: FC<SupplierInputLookupProps> = ({
@@ -17,26 +16,26 @@ const SupplierInputLookup: FC<SupplierInputLookupProps> = ({
 }): JSX.Element => {
 	const [isSearchDialogOpen, setIsSearchDialogOpen] = useState<boolean>(false);
 
-	const displaySupplierName = (certificate: Certificate) => {
-		return `${certificate.supplier!.name}, ${certificate.supplier!.indexValue}, ${certificate.supplier!.city}`;
+	const displaySupplierName = (_certificate: CertificateDTO): string => {
+		return `${_certificate.supplier!.name}, ${_certificate.supplier!.index}, ${_certificate.supplier!.city}`;
 	};
 
-	const openSearchDialog = () => {
+	const openSearchDialog = (): void => {
 		setIsSearchDialogOpen(true);
 	};
 
-	const closeSearchDialog = () => {
+	const closeSearchDialog = (): void => {
 		setIsSearchDialogOpen(false);
 	};
 
-	const selectSupplier = (supplier: Supplier) => {
+	const selectSupplier = (supplier: SupplierDTO): void => {
 		setCertificate((prev) => ({
 			...prev,
-			supplier: supplier as Supplier,
+			supplier: supplier as SupplierDTO,
 		}));
 	};
 
-	const clearSupplier = () => {
+	const clearSupplier = (): void => {
 		selectSupplier(initialSupplier);
 	};
 
@@ -45,11 +44,11 @@ const SupplierInputLookup: FC<SupplierInputLookupProps> = ({
 			<input
 				type="text"
 				value={
-					certificate.supplier!.indexValue === initialSupplier.indexValue
+					certificate.supplier!.index === initialSupplier.index
 						? 'Select a Supplier'
 						: displaySupplierName(certificate)
 				}
-				disabled={true}
+				disabled
 				style={{
 					cursor: 'not-allowed',
 				}}

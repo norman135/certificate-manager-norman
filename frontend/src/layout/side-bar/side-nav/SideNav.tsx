@@ -3,7 +3,6 @@ import SideNavItem from './SideNavItem';
 import '../SideBar.css';
 import AppRoutes from '../../../common/app-routes/AppRoutes';
 import {
-	Languages,
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../../common/contexts/language/Language';

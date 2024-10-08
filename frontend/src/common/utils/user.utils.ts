@@ -1,10 +1,11 @@
-import User from '../models/user.model';
+import { UserDTO } from '../api';
 
-export const initialUser: User = {
-	id: '',
+export const initialUser: UserDTO = {
+	handle: '',
 	name: '',
 	firstName: '',
 	userId: '',
+	email: '',
 	department: '',
 	plant: '',
 };

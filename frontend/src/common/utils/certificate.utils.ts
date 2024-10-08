@@ -1,16 +1,18 @@
-import Certificate, { CertificateType } from '../models/certificate.model';
-import User from '../models/user.model';
-import { initialDate } from './format-date.utils';
+import { initialDate, toIsoString } from './format-date.utils';
 import { initialSupplier } from './supplier.utils';
+import { CertificateDTO } from '../api';
 
-export const initialCertificate: Certificate = {
-	id: '',
+export const initialCertificate: CertificateDTO = {
+	handle: '',
 	supplier: initialSupplier,
-	type: CertificateType.none,
-	validFrom: initialDate,
-	validTo: initialDate,
-	pdf: '',
-	users: [],
+	certificateType: {
+		handle: '',
+		name: 'Choose Type',
+	},
+	validFrom: toIsoString(initialDate),
+	validTo: toIsoString(initialDate),
+	document: '',
+	participants: [],
 	comments: [],
 };
 

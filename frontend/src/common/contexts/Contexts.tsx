@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import ApiClientContextProvider from './api-client/ApiClient';
 import LanguageContextProvider from './language/Language';
 import CurrentUserContextProvider from './user/User';
 
@@ -9,7 +10,9 @@ interface ContextsProps {
 const Contexts: FC<ContextsProps> = ({ children }) => {
 	return (
 		<LanguageContextProvider>
-			<CurrentUserContextProvider>{children}</CurrentUserContextProvider>
+			<CurrentUserContextProvider>
+				<ApiClientContextProvider>{children}</ApiClientContextProvider>
+			</CurrentUserContextProvider>
 		</LanguageContextProvider>
 	);
 };

@@ -1,12 +1,12 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AppRoutes from '../../../common/app-routes/AppRoutes';
 import DropDown, {
 	DropDownItem,
 } from '../../../common/components/dropdown/DropDown';
 import './CertificateSettings.css';
-import AppRoutes from '../../../common/app-routes/AppRoutes';
 import SettingsIcon from '../../../common/components/icons/SettingsIcon';
-import { deleteCertificate } from '../../../common/db/certificate-service';
+import { useApiClientContext } from '../../../common/contexts/api-client/ApiClient';
 import {
 	toSelectedLocale,
 	useLanguageContext,
@@ -22,13 +22,16 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 	update,
 }): JSX.Element => {
 	const { language } = useLanguageContext();
+	const { certificateClient } = useApiClientContext();
 
 	const navigate = useNavigate();
 
 	const _deleteCertificate = (id: string): void => {
 		if (confirm(toSelectedLocale('sure', language))) {
-			const deleteCert = async () => {
-				if (!(await deleteCertificate(id))) {
+			const deleteCert = async (): Promise<void> => {
+				try {
+					await certificateClient.certificatesHandleDelete({ handle: id });
+				} catch {
 					console.error('Error deleting certificate!');
 				}
 			};
@@ -39,11 +42,11 @@ const CertificateSettings: FC<CertificateSettingsProps> = ({
 	};
 
 	const certificateDropDown = (id: string): DropDownItem[] => {
-		const handleEdit = () => {
+		const handleEdit = (): void => {
 			navigate(`${AppRoutes.EditCertificate}${id}`);
 		};
 
-		const handleDelete = () => {
+		const handleDelete = (): void => {
 			_deleteCertificate(id);
 		};
 

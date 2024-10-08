@@ -1,78 +1,85 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import './Lookup.css';
-import TextInput from '../input/TextInput';
-import CancelIcon from '../icons/CancelIcon';
-import Button from '../button/Button';
-import User from '../../models/user.model';
-import { initialUser } from '../../utils/user.utils';
-import { searchInUsers } from '../../db/user-service';
-import Table from '../table/Table';
+import { UserDTO } from '../../api';
+import { useApiClientContext } from '../../contexts/api-client/ApiClient';
 import {
 	toSelectedLocale,
 	useLanguageContext,
 } from '../../contexts/language/Language';
+import { initialUser } from '../../utils/user.utils';
+import Button from '../button/Button';
+import CancelIcon from '../icons/CancelIcon';
+import TextInput from '../input/TextInput';
+import Table from '../table/Table';
 
 interface UserLookupProps {
 	closeSearch: () => void;
-	selectUsers: (user: User[]) => void;
+	selectUsers: (user: UserDTO[]) => void;
 }
 
 const UserLookup: FC<UserLookupProps> = ({
 	closeSearch,
 	selectUsers,
 }): JSX.Element => {
-	const [usersBuffer, setUsersBuffer] = useState<User[]>([]);
-	const [userInfo, setuserInfo] = useState<User>(initialUser);
-	const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+	const [usersBuffer, setUsersBuffer] = useState<UserDTO[]>([]);
+	const [userInfo, setuserInfo] = useState<UserDTO>(initialUser);
+	const [selectedUsers, setSelectedUsers] = useState<UserDTO[]>([]);
 
 	const { language } = useLanguageContext();
+	const { basicDataClient } = useApiClientContext();
 
-	const searchUsers = async () => {
-		const users = await searchInUsers(userInfo);
+	const searchUsers = async (): Promise<void> => {
+		const users = await basicDataClient.usersGet({
+			name: userInfo.name ?? '',
+			firstName: userInfo.firstName ?? '',
+			userId: userInfo.userId ?? '',
+			department: userInfo.department ?? '',
+			plant: userInfo.plant ?? '',
+		});
 
 		setUsersBuffer(users);
 	};
 
-	const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setuserInfo((prev) => ({
 			...prev,
 			name: e.target.value,
 		}));
 	};
 
-	const handleFirstNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleFirstNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setuserInfo((prev) => ({
 			...prev,
 			firstName: e.target.value,
 		}));
 	};
 
-	const handleDepartmentChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleDepartmentChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setuserInfo((prev) => ({
 			...prev,
 			department: e.target.value,
 		}));
 	};
 
-	const handleUserIdChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleUserIdChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setuserInfo((prev) => ({
 			...prev,
 			userId: e.target.value,
 		}));
 	};
 
-	const handlePlantChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handlePlantChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		setuserInfo((prev) => ({
 			...prev,
 			plant: e.target.value,
 		}));
 	};
 
-	const clearFields = () => {
+	const clearFields = (): void => {
 		setuserInfo(initialUser);
 	};
 
-	const handleSelect = (selected: number | number[]) => {
+	const handleSelect = (selected: number | number[]): void => {
 		const _selectedUsers = usersBuffer.filter((user, index) =>
 			(selected as number[]).includes(index) ? user : null,
 		);
@@ -80,10 +87,20 @@ const UserLookup: FC<UserLookupProps> = ({
 		setSelectedUsers(_selectedUsers);
 	};
 
-	const handleSave = () => {
+	const handleSave = (): void => {
 		selectUsers(selectedUsers);
 		closeSearch();
 	};
+
+	useEffect(() => {
+		const getUsers = async (): Promise<void> => {
+			const result = await basicDataClient.usersGet();
+
+			setUsersBuffer(result);
+		};
+
+		getUsers();
+	}, []);
 
 	return (
 		<div className="search-container">
@@ -109,27 +126,27 @@ const UserLookup: FC<UserLookupProps> = ({
 					<div className="search-criteria-input-area">
 						<TextInput
 							label="Name"
-							value={userInfo.name}
+							value={userInfo.name ?? ''}
 							onchange={handleNameChange}
 						/>
 						<TextInput
 							label={toSelectedLocale('firstName', language)}
-							value={userInfo.firstName}
+							value={userInfo.firstName ?? ''}
 							onchange={handleFirstNameChange}
 						/>
 						<TextInput
 							label={toSelectedLocale('userId', language)}
-							value={userInfo.userId}
+							value={userInfo.userId ?? ''}
 							onchange={handleUserIdChange}
 						/>
 						<TextInput
 							label={toSelectedLocale('department', language)}
-							value={userInfo.department}
+							value={userInfo.department ?? ''}
 							onchange={handleDepartmentChange}
 						/>
 						<TextInput
 							label={toSelectedLocale('plant', language)}
-							value={userInfo.plant}
+							value={userInfo.plant ?? ''}
 							onchange={handlePlantChange}
 						/>
 					</div>
@@ -167,7 +184,7 @@ const UserLookup: FC<UserLookupProps> = ({
 							department: user.department,
 							plant: user.plant,
 						}))}
-						selectable={true}
+						selectable
 						type="multi"
 						onSelect={handleSelect}
 					/>

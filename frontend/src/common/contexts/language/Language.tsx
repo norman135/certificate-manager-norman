@@ -1,4 +1,4 @@
-import { Children, createContext, FC, useContext, useState } from 'react';
+import { createContext, FC, useContext, useState } from 'react';
 import * as dictionary from './lang.dict.json';
 
 export type Language = {
@@ -14,9 +14,8 @@ export enum Languages {
 export const toSelectedLocale = (key: string, language: string): string => {
 	if (language === Languages.English) {
 		return dictionary[key as keyof typeof dictionary][0];
-	} else {
-		return dictionary[key as keyof typeof dictionary][1];
 	}
+	return dictionary[key as keyof typeof dictionary][1];
 };
 
 export const LanguageContext = createContext<Language>({
@@ -24,7 +23,7 @@ export const LanguageContext = createContext<Language>({
 	setLanguage: () => {},
 });
 
-export const useLanguageContext = () => {
+export const useLanguageContext = (): Language => {
 	return useContext(LanguageContext);
 };
 

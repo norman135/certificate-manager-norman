@@ -10,12 +10,12 @@ interface PdfViewerProps {
 }
 
 const PdfViewer: FC<PdfViewerProps> = ({
-	fileUrl,
+	fileUrl = '',
 	setFileUrl,
 }): JSX.Element => {
 	const { language } = useLanguageContext();
 
-	const handlePDF = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handlePDF = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		const file = event.target.files?.[0];
 
 		if (file) {
@@ -24,9 +24,14 @@ const PdfViewer: FC<PdfViewerProps> = ({
 			if (isPDF) {
 				const reader = new FileReader();
 
-				reader.onloadend = () => {
-					const dataUrl = reader.result as string;
-					setFileUrl(dataUrl);
+				reader.onloadend = async (): Promise<void> => {
+					if (reader.result) {
+						const dataUrl = reader.result as string;
+
+						setFileUrl(dataUrl.replace('data:application/pdf;base64,', ''));
+					} else {
+						console.error("Can't read PDF document.");
+					}
 				};
 
 				reader.readAsDataURL(file);
@@ -34,6 +39,10 @@ const PdfViewer: FC<PdfViewerProps> = ({
 				alert('Please select a PDF file!');
 			}
 		}
+	};
+
+	const pdfDataUrl = (): string => {
+		return 'data:application/pdf;base64,' + fileUrl;
 	};
 
 	return (
@@ -52,8 +61,8 @@ const PdfViewer: FC<PdfViewerProps> = ({
 				onChange={handlePDF}
 			/>
 			<iframe
-				title={'Pdf Viewer'}
-				src={fileUrl}
+				title="Pdf Viewer"
+				src={pdfDataUrl()}
 				className="pdf-preview-iframe"
 			/>
 		</>

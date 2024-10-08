@@ -1,8 +1,8 @@
 import { ChangeEvent, ReactNode, useState } from 'react';
 import './Table.css';
-import CancelIcon from '../icons/CancelIcon';
 import CheckMark from './checkmark/CheckMark';
 import Radio from './radio/Radio';
+import CancelIcon from '../icons/CancelIcon';
 
 interface TableProps<T> {
 	columns: string[];
@@ -12,20 +12,20 @@ interface TableProps<T> {
 	onSelect?: (selected: number | number[]) => void;
 }
 
-const Table = <T extends {} | null>({
+const Table = <T extends object | null>({
 	columns,
 	data,
 	selectable = false,
 	type = 'single',
-	onSelect = () => {},
+	onSelect = (): void => {},
 }: TableProps<T>): JSX.Element => {
 	const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
-	const addIfNotExist = (index: number) => {
+	const addIfNotExist = (index: number): void => {
 		if (!selectedItems.includes(index)) {
-			let sel = [index];
-			selectedItems.forEach((index) => {
-				sel.push(index);
+			const sel = [index];
+			selectedItems.forEach((item) => {
+				sel.push(item);
 			});
 
 			setSelectedItems(sel);
@@ -33,7 +33,7 @@ const Table = <T extends {} | null>({
 		}
 	};
 
-	const removeIfExists = (index: number) => {
+	const removeIfExists = (index: number): void => {
 		if (selectedItems.includes(index)) {
 			const selected = selectedItems.filter((item) => item != index);
 
@@ -42,8 +42,8 @@ const Table = <T extends {} | null>({
 		}
 	};
 
-	const selectAll = (e: ChangeEvent<HTMLInputElement>) => {
-		const checked = e.target.checked;
+	const selectAll = (e: ChangeEvent<HTMLInputElement>): void => {
+		const { checked } = e.target;
 
 		const selected = checked ? data.map((item, index) => index) : [];
 
@@ -71,14 +71,16 @@ const Table = <T extends {} | null>({
 	}
 
 	const generateRows = (): ReactNode[][] => {
-		let rows: ReactNode[][] = [[]];
+		const rows: ReactNode[][] = [[]];
 
 		data.forEach((obj: T, index) => {
-			const handleCheckMarkChange = (e: ChangeEvent<HTMLInputElement>) => {
+			const handleCheckMarkChange = (
+				e: ChangeEvent<HTMLInputElement>,
+			): void => {
 				e.target.checked ? addIfNotExist(index) : removeIfExists(index);
 			};
 
-			const handleRadioSelect = () => {
+			const handleRadioSelect = (): void => {
 				onSelect(index);
 			};
 
@@ -103,6 +105,11 @@ const Table = <T extends {} | null>({
 					onClick={() => {
 						onSelect(index);
 					}}
+					onKeyDown={(e) => {
+						if (e.key === 'Enter') {
+							onSelect(index);
+						}
+					}}
 					style={{ cursor: 'pointer' }}
 				>
 					<CancelIcon
@@ -112,7 +119,7 @@ const Table = <T extends {} | null>({
 				</div>
 			);
 
-			let cells: ReactNode[] = [];
+			const cells: ReactNode[] = [];
 
 			if (selectable) {
 				cells.push(
@@ -145,7 +152,9 @@ const Table = <T extends {} | null>({
 				{generateRows().map((row, index) => (
 					<tr key={index.toString()}>
 						{row
-							? row.map((node, index) => <td key={index.toString()}>{node}</td>)
+							? row.map((node, rowIndex) => (
+									<td key={rowIndex.toString()}>{node}</td>
+								))
 							: null}
 					</tr>
 				))}

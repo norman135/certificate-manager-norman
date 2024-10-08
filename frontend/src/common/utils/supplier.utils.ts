@@ -1,8 +1,8 @@
-import Supplier from '../models/supplier.model';
+import { SupplierDTO } from '../api';
 
-export const initialSupplier: Supplier = {
-	id: '',
+export const initialSupplier: SupplierDTO = {
+	handle: '',
 	name: '',
-	indexValue: '',
+	index: undefined,
 	city: '',
 };
