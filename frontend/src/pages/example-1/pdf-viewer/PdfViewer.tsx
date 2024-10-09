@@ -42,7 +42,11 @@ const PdfViewer: FC<PdfViewerProps> = ({
 	};
 
 	const pdfDataUrl = (): string => {
-		return 'data:application/pdf;base64,' + fileUrl;
+		if (fileUrl.trim()) {
+			return 'data:application/pdf;base64,' + fileUrl;
+		} else {
+			return '';
+		}
 	};
 
 	return (
